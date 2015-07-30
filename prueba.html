@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Badge</title>
+        <link href="css/asl.css" rel="stylesheet" type="text/css" media="screen, projection" />
+        <link href="css/reset.css" rel="stylesheet" type="text/css" media="screen, projection" />
+        <link href="css/styles.css" rel="stylesheet" type="text/css" media="screen, projection" />
+        <script type="text/javascript">
+        "use strict";
+		
+		//console.log('' == 0);
+		
+		/*var test = 0;
+			if(test){
+				console.log("verdad");
+			}else{
+				console.log("falso");
+			}*/
+
+            
+        </script>
+    </head>
+    <body class="badge">
+        <div class="container">
+            <img src="img/kalin.png" />
+            <div class="user_info">
+                <div>Hola, soy</div>
+                <div class="name" id="b_name"><strong></strong></div>
+                <!--<div><strong>Empleado</strong></div>-->
+            </div>
+        </div>
+        <input id="txt_cant" type="number">
+        <input type="button" onclick="xdd()" value="check">
+        <script type="text/javascript" src="js/core.js"></script>
+        <script type="text/javascript" src="js/item.js"></script>
+        <script type="text/javascript">
+        "use strict";
+            //ItemType.SERIE = 9;
+            //ItemType.SERIE.a = 5;
+		 	//console.log(ItemType.SERIE);
+            function xdd(){
+            var unitDecimals = 0;
+			var oTxtCant = document.getElementById('txt_cant');
+                    var decimalRegExp = new RegExp('([\\.][\\d]{0,2}$)|(^[\\d]*[\\d]*$)');
+
+                    var isValidNumber = decimalRegExp.test(oTxtCant.value);
+                    var  str='2255';
+                    console.log(oTxtCant.value+' '+isValidNumber+' '+JSON.stringify(str.match('\\.')));
+}
+         </script>
+    </body>
+</html>

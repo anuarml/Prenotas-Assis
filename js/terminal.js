@@ -1,0 +1,3 @@
+var terminal = {
+	number : 'A'
+};
