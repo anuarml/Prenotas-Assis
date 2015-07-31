@@ -1,17 +1,26 @@
 ﻿<?php
     // ----------------SQL Server config------------------------
-    $host = '192.168.2.15';     // Dirección del servidor.
+    // SBXCENTRO
+    /*$host = '192.168.2.15';     // Dirección del servidor.
     $user = 'sbx';               // Nombre de usuario.
     $password = 'Grupo2015!';      // Contraseña
+    $database = 'SBX_Local_Pruebas';// Nombre de base de datos.
+    */
+    // SERVERSOPORTE
+    $host = '192.168.96.83';     // Dirección del servidor.
+    $user = 'sa';               // Nombre de usuario.
+    $password = 'Tho2010';      // Contraseña
     $database = 'SBX_Local_Pruebas';// Nombre de base de datos.
 
 
     // --------------- App Config ------------------------
-    $rootPath = 'C:\inetpub\scan_products\\'; // Ruta base de la aplicación.
+    $rootPath = 'C:\inetpub\wwwroot\HolaMundoWs\LeeWs\Prenotas-Assis\\'; // Ruta base de la aplicación.
     
     //Numero de veces que se va a imprimir la prenota
     $print_times = 1;
 
+    $cfg_priceList = '(Precio Lista)';
+    $cfg_currency = 'Pesos';
 
     // ----------  Nombre de tablas  -----------------
 	$table_prenote = 'OperationOnHold';
@@ -31,7 +40,12 @@
 	$table_inventoryOnHand = 'InventoryOnHand';
 	
 	$table_user = '[User]';
-	$table_person = 'Person';	
+	$table_person = 'Person';
+
+    $table_priceList = '[PriceList]';
+    $table_priceListDetail = '[PriceListDetail]';
+
+    $table_currency = '[Currency]';
 	// --------------------------------------
     
     $db_url = 'sqlsrv:server='.$host.';Database='.$database;
