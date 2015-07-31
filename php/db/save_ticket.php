@@ -57,12 +57,13 @@
 
 				$link->beginTransaction();
 
-				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, LastUpdate, CreationUserID, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, Code, CustomerUUID, SalesPersonUserID, Total, Quantity, Reference, Comment) VALUES (:id, :UUID, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :code, :customer_id, :id_employee, :total, :narticles, :reference, :comment)');
+				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, LastUpdate, CreationUserID, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, Code, CustomerUUID, SalesPersonUserID, Total, Quantity, Reference, Comment) VALUES (:id, :UUID, :creationDate, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :code, :customer_id, :id_employee, :total, :narticles, :reference, :comment)');
 				
 				//$handle = $link->prepare( ' INSERT INTO ' .$table_prenote. ' ( [ID], [UUID], [LastUpdate], [CreationUserID], [LastUpdateUserID], [Type], [TypeDescription], [Dte], [Tme], [StoreID], [Workstation], [Code], [SalesPersonUserID], [Total], [Quantity] ) VALUES ( 0, :UUID, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, 2, :workstation, :code, :id_employee, :total, :narticles ) ' );
 
 				
 				$handle->bindParam(':UUID', $prenote_uuid);
+				$handle->bindParam(':creationDate', $lastUpdate);
 				$handle->bindParam(':lastUpdate', $lastUpdate);
 				$handle->bindParam(':dte', $dte);
 				$handle->bindParam(':tme', $tme);
