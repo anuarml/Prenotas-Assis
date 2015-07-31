@@ -215,7 +215,7 @@
 		include('config.php');
 
 		$handle = $link->prepare('SELECT'.
-			' o.name, optionID, mandatory'.
+			' o.name, ito.optionID, ito.mandatory, ito.OptionListID optionListID'.
 
 			' FROM '.$table_itemOption.' ito'.
 

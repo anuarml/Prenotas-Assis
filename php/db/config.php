@@ -30,9 +30,11 @@
 	$table_itembarcode = 'ItemBarcode';
     $table_itemSerial = 'ItemSerial';
 	$table_itemCombination = 'ItemCombination';
-    $table_itemOption = 'ItemOption';
+    $table_itemOption = '[ItemOption]';
 	$table_optionDetail = 'OptionDetail';
 	$table_option = '[Option]';
+
+    $table_optionListDetail = '[OptionListDetail]';
 
     $table_unit = 'Unit';
     $table_itemUnit = 'ItemUnit';

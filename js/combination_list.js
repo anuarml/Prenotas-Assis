@@ -40,13 +40,13 @@ var CombinationList = {
         var product = JSON.parse(window.localStorage.getItem('product'));
         asl.title(product.options[optionListNum].name);
 
-        this.requestOptionList( product.ID, product.options[optionListNum].optionID);
+        this.requestOptionList( product.ID, product.options[optionListNum].optionID, product.options[optionListNum].optionListID);
     },
 
-    requestOptionList: function(itemID, optionID){
+    requestOptionList: function(itemID, optionID, optionListID){
         var aOptionDetail = window.localStorage.getItem('aOptionDetail');
 
-        var url = 'php/db/get_item_option_list.php?optionID='+optionID+'&itemId='+itemID+'&aOptionDetails='+aOptionDetail;
+        var url = 'php/db/get_item_option_list.php?optionID='+optionID+'&itemId='+itemID+'&aOptionDetails='+aOptionDetail+'&optionListID='+optionListID;
 
         var handle = function(response){
             try{
