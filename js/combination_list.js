@@ -127,10 +127,10 @@ var CombinationList = {
         var optionListNum = JSON.parse(window.localStorage.getItem('optionListNum'));
         var product = JSON.parse(window.localStorage.getItem('product'));
 		
-		if(parseInt(e.currentTarget.children[1].innerHTML) == 0){
+		/*if(parseInt(e.currentTarget.children[1].innerHTML) == 0){
 			asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:' ,'No hay artículos disponibles con esa opción',['OK'],[null]);
 			return;
-		}
+		}*/
 
         if ( optionID ) {
             var aOptionDetail = JSON.parse( window.localStorage.getItem('aOptionDetail'));

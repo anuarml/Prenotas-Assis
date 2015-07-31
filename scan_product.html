@@ -409,7 +409,7 @@
 							}
 							else{
 								if(product.SerialID){
-									if(totalQuantity > product.serialQuantity){
+									/*if(totalQuantity > product.serialQuantity){
 										var availableSerial = product.serialQuantity - quantityOnPrenote;
 										var msg = 'Solo hay ' + availableSerial + ' producto(s) disponibles con ese serial.';
 
@@ -420,7 +420,7 @@
 										//addProduct = false;
 										asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', msg, ['OK'], [null]);
 										return;
-									}
+									}*/
 								}
 								else{
 									asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Serial no registrado.',['OK'],[null]);
@@ -431,7 +431,7 @@
 						}else if(product.ItemTypeID == ItemType.LOTE){
 							
 							if(product.SerialID){
-								if(totalQuantity > product.serialQuantity){
+								/*if(totalQuantity > product.serialQuantity){
 									var availableSerial = product.serialQuantity - quantityOnPrenote;
 									var msg = 'Solo hay ' + availableSerial + ' producto(s) disponibles en el lote.';
 
@@ -442,7 +442,7 @@
 									//addProduct = false;
 									asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', msg, ['OK'], [null]);
 									return;
-								}
+								}*/
 							}
 							else{
 								asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Lote no registrado.',['OK'],[null]);
@@ -454,7 +454,7 @@
 						
 		            	var availableQuantity = product.QuantityOnHand - quantityOnPrenote;
 
-						if(totalQuantity > product.QuantityOnHand){
+						/*if(totalQuantity > product.QuantityOnHand){
 							var msg = 'Solo hay ' + availableQuantity + ' producto(s) disponibles.';
 
 							if(availableQuantity == 0){
@@ -463,7 +463,7 @@
 
 							asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', msg, ['OK'], [null]);
 							return;
-						}
+						}*/
 
 						//if(addProduct){
 							
