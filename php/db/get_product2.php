@@ -169,7 +169,7 @@
 	function getCombinationInfo($link, $itemID, $combinationID){
 		include('config.php');
 
-		$handle = $link->prepare('SELECT itmC.ID, itmC.UUID, itmC.ExternalID, Name FROM '.$table_itemCombination.' itmC LEFT JOIN '.$table_optionDetail.' optD ON optD.ExternalID = itmC.ExternalID WHERE ItemID = :ID AND itmC.ID = :combination');
+		$handle = $link->prepare('SELECT itemCombination.ID, itemCombination.UUID, itemCombination.ExternalID, Name FROM '.$table_itemCombination.' itemCombination LEFT JOIN '.$table_optionDetail.' optD ON optD.ExternalID = itemCombination.ExternalID WHERE ItemID = :ID AND itemCombination.ID = :combination');
 
 		$handle->bindParam(':ID', $itemID);
 		$handle->bindParam(':combination', $combinationID);
@@ -215,15 +215,15 @@
 		include('config.php');
 
 		$handle = $link->prepare('SELECT'.
-			' o.name, ito.optionID, ito.mandatory, ito.OptionListID optionListID'.
+			' option.name, itemOption.optionID, itemOption.mandatory, itemOption.OptionListID optionListID'.
 
-			' FROM '.$table_itemOption.' ito'.
+			' FROM '.$table_itemOption.' itemOption'.
 
-			' JOIN '.$table_option.' o ON ito.optionID=o.ID'.
+			' JOIN '.$table_option.' option ON itemOption.optionID=option.ID'.
 
 			' WHERE ItemID = :ID'.
 
-			' ORDER BY o.externalID'
+			' ORDER BY option.externalID'
 		);
 
 		$handle->bindParam(':ID', $itemID);
