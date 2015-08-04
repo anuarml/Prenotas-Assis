@@ -5,6 +5,9 @@
 		if(isset($_GET['optionID']) && $_GET['optionID'] != ""){
 			$optionID = $_GET['optionID'];
 			$itemId = $_GET['itemId'];
+			$optionListID = isset($_GET['optionListID'])? $_GET['optionListID'] : null;
+
+
 			$aOptionDetails = json_decode($_GET['aOptionDetails']);
 			
 			$link = new PDO(   $db_url, 
@@ -14,24 +17,45 @@
 		                            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 		                        ));
 
-			$handle = $link->prepare('SELECT'.
-				' id, name, externalID'.
 
-				' FROM '.$table_optionDetail.
+			if($optionListID && $optionListID != 'null'){
+				$query =
+					'SELECT OptionDetail.ID id, OptionDetail.ExternalID externalID, OptionDetail.Name name '.
+					'FROM '.$table_optionDetail.' OptionDetail '.
+					'JOIN '.$table_optionListDetail.' OptionListDetail ON OptionDetail.ID = OptionListDetail.OptionDetailID '.
+					'JOIN '.$table_itemOption.' ItemOption ON OptionListDetail.OptionListID = ItemOption.OptionListID '.
+					'WHERE ItemOption.OptionListID = :optionListID '.
+					'ORDER BY OptionDetail.Name DESC';
+			}
+			else{
+				$query =
+					'SELECT OptionDetail.ID id, OptionDetail.ExternalID externalID, OptionDetail.Name name '.
+					'FROM '.$table_optionDetail.' OptionDetail '.
+					'WHERE OptionDetail.OptionID = :optionID '.
+					'ORDER BY OptionDetail.Name DESC';
+			}
 
-				' WHERE OptionID = :optionID'
-			);
 
-			$handle->bindParam(':optionID', $optionID);
-		 
+			$handle = $link->prepare( $query );
+
+
+			if($optionListID && $optionListID != 'null'){
+				$handle->bindParam(':optionListID', $optionListID);
+			}
+			else{
+				$handle->bindParam(':optionID', $optionID);
+			}
+
+
 		    $handle->execute();
+
 
 		    if(($aResult = $handle->fetchAll(PDO::FETCH_OBJ)) !== false){
 				for($numberOfRow = 0; $numberOfRow < count($aResult); $numberOfRow++){
 					$quantity = getQuantityOnHand($aOptionDetails, $itemId, $aResult[$numberOfRow]->id, $link);
 					$aResult[$numberOfRow]->quantity = $quantity;
 				}
-				error_log(json_encode($aResult));
+				//error_log(json_encode($aResult));
 		    	echo json_encode($aResult);
 		    }
 		    else echo json_encode(false);

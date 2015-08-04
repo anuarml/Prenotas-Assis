@@ -6,9 +6,10 @@
 		
 		
 		
-		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, LastUpdate, CreationUserID, LastUpdateUserID,  OperationOnHoldUUID, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID) VALUES (0, :UUID, :last_update, :create_id, :update_id, :prenote_uuid, :ItemUUID, :combinationID, :combinationUUID, :serialID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0)');
+		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, LastUpdate, CreationUserID, LastUpdateUserID,  OperationOnHoldUUID, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID) VALUES (0, :UUID, :creationDate, :last_update, :create_id, :update_id, :prenote_uuid, :ItemUUID, :combinationID, :combinationUUID, :serialID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0)');
 				
 		$handle->bindParam(':UUID', $prenoteDetails_uuid);
+		$handle->bindParam(':creationDate', $lastUpdate);
 		$handle->bindParam(':last_update', $lastUpdate);
 		$handle->bindParam(':id_employee', $id_employee, PDO::PARAM_INT);
 		$handle->bindParam(':create_id', $id_employee, PDO::PARAM_INT);

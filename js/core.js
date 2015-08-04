@@ -48,10 +48,10 @@ var oPrenote = function(attr) {
 	this.product = attr.product || [];
     this.terminal = attr.terminal || '00';
     this.employeeName = attr.employeeName || '';
-	this.store_id = cfg.store.id || 0;
-	this.store_name = cfg.store.name || '';
+	//this.store_id = cfg.store.id || 0;
+	//this.store_name = cfg.store.name || '';
     this.printer = attr.printer || '';
-    this.customerUUID = cfg.customerUUID || '';
+    //this.customerUUID = cfg.customerUUID || '';
 	this.cotizationNumber = attr.cotizationNumber || '';
 	this.clientName = attr.clientName || '';
 };

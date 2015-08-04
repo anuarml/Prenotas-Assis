@@ -151,7 +151,7 @@
 						jProduct.UnitID = oUnit.unitID;
 						jProduct.unitName = oUnit.name;
 						jProduct.unitFactor = oUnit.factor;
-						jProduct.Price = productPrice.times(oUnit.factor).toNumber();
+						//jProduct.Price = productPrice.times(oUnit.factor).toNumber();
 						//jProduct.Price = oUnit.factor * jProduct.basePrice;
 						//show_product_info(jProduct);
 					}
@@ -281,9 +281,11 @@
 					}
 
 					asl.title(product.scanCode);
+
+					requestItemPrice(product.ID, product.UnitID, product.optionID);
 					
 					document.getElementById('p_description').innerHTML = product.Description;
-					document.getElementById('p_price').innerHTML = '$' + product.Price;
+					//document.getElementById('p_price').innerHTML = '$' + product.Price;
 					document.getElementById('txt_cant').value = 1;
 
 					if ( (product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE) &&
@@ -409,7 +411,7 @@
 							}
 							else{
 								if(product.SerialID){
-									if(totalQuantity > product.serialQuantity){
+									/*if(totalQuantity > product.serialQuantity){
 										var availableSerial = product.serialQuantity - quantityOnPrenote;
 										var msg = 'Solo hay ' + availableSerial + ' producto(s) disponibles con ese serial.';
 
@@ -420,7 +422,7 @@
 										//addProduct = false;
 										asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', msg, ['OK'], [null]);
 										return;
-									}
+									}*/
 								}
 								else{
 									asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Serial no registrado.',['OK'],[null]);
@@ -431,7 +433,7 @@
 						}else if(product.ItemTypeID == ItemType.LOTE){
 							
 							if(product.SerialID){
-								if(totalQuantity > product.serialQuantity){
+								/*if(totalQuantity > product.serialQuantity){
 									var availableSerial = product.serialQuantity - quantityOnPrenote;
 									var msg = 'Solo hay ' + availableSerial + ' producto(s) disponibles en el lote.';
 
@@ -442,7 +444,7 @@
 									//addProduct = false;
 									asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', msg, ['OK'], [null]);
 									return;
-								}
+								}*/
 							}
 							else{
 								asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Lote no registrado.',['OK'],[null]);
@@ -454,7 +456,7 @@
 						
 		            	var availableQuantity = product.QuantityOnHand - quantityOnPrenote;
 
-						if(totalQuantity > product.QuantityOnHand){
+						/*if(totalQuantity > product.QuantityOnHand){
 							var msg = 'Solo hay ' + availableQuantity + ' producto(s) disponibles.';
 
 							if(availableQuantity == 0){
@@ -463,7 +465,7 @@
 
 							asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', msg, ['OK'], [null]);
 							return;
-						}
+						}*/
 
 						//if(addProduct){
 							
@@ -573,6 +575,8 @@
 							product.optionUUID = itemCombination.UUID;
 							product.optionID = itemCombination.ID;
 							product.QuantityOnHand = parseFloat(itemCombination.QuantityOnHand);
+
+							requestItemPrice(product.ID, null, product.optionID);
 
 							if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
 								unlockSerialInput();
@@ -841,7 +845,41 @@
 						oTxtCant.value = 1;
 					}
 				}
+			}
 
+			function requestItemPrice(itemID, unitID, itemCombinationID){
+				var url = 'php/db/get_item_price.php?ItemID='+itemID;
+
+				if(itemCombinationID){
+					url += '&itemCombinationID='+itemCombinationID;
+				}
+
+				if(unitID){
+					url += '&unitID='+unitID;
+				}
+
+	            var handle = function(response){
+	                try{
+	                    var oResponse = JSON.parse(response);
+	                    
+	                    if(oResponse.status == 'success'){
+
+	                    	var itemPrice = oResponse.msg;
+
+							product.Price = parseFloat(itemPrice) || 0;
+							
+							document.getElementById('p_price').innerHTML = '$' + product.Price.toFixed(2);
+	                    }
+	                    else{
+	                    	asl.notify(asl.notifications.application, asl.priority.normal,'Error', oResponse.msg,['OK'],[null]);
+	                    }
+	                }
+	                catch(e){
+	                    alert(response);
+	                }
+	            };
+
+	            ajaxRequest('GET', url, handle);
 			}
 			
         </script>
