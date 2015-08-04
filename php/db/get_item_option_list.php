@@ -18,7 +18,7 @@
 		                        ));
 
 
-			if($optionListID){
+			if($optionListID && $optionListID != 'null'){
 				$query =
 					'SELECT OptionDetail.ID id, OptionDetail.ExternalID externalID, OptionDetail.Name name '.
 					'FROM '.$table_optionDetail.' OptionDetail '.
@@ -39,7 +39,7 @@
 			$handle = $link->prepare( $query );
 
 
-			if($optionListID){
+			if($optionListID && $optionListID != 'null'){
 				$handle->bindParam(':optionListID', $optionListID);
 			}
 			else{
@@ -52,7 +52,7 @@
 
 		    if(($aResult = $handle->fetchAll(PDO::FETCH_OBJ)) !== false){
 				for($numberOfRow = 0; $numberOfRow < count($aResult); $numberOfRow++){
-					$quantity = getQuantityOnHand($aOptionDetails, $itemId, $aResult[$numberOfRow]->ID, $link);
+					$quantity = getQuantityOnHand($aOptionDetails, $itemId, $aResult[$numberOfRow]->id, $link);
 					$aResult[$numberOfRow]->quantity = $quantity;
 				}
 				//error_log(json_encode($aResult));
