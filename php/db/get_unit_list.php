@@ -12,7 +12,7 @@
 	                        ));	
 
 		//$handle = $link->prepare('SELECT unitID, name, factor FROM '.$table_itemUnit.' itmUnit LEFT JOIN '.$table_unit.' unit ON UnitID = unit.ID WHERE ItemID = :itemID');
-		$handle = $link->prepare('SELECT itmUnit.unitID, unit.name, itmUnit.factor FROM '.$table_itemUnit.' itmUnit LEFT JOIN '.$table_unit.' unit ON itmUnit.UnitID = unit.ID WHERE itmUnit.ItemID = :itemID');
+		$handle = $link->prepare('SELECT itemUnit.unitID, unit.name, itemUnit.factor FROM '.$table_itemUnit.' itemUnit LEFT JOIN '.$table_unit.' unit ON itemUnit.UnitID = unit.ID WHERE itemUnit.ItemID = :itemID');
 
 		$handle->bindParam(':itemID', $itemid);
 	 

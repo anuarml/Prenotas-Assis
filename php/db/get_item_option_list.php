@@ -71,7 +71,7 @@
 		include('config.php');
 		
 		$query = 'SELECT SUM(QuantityOnHand) quantity FROM '.$table_inventoryOnHand.' ih JOIN 
-		'.$table_itemCombination.' ic ON ItemCombinationID = ic.ID where ih.ItemID = :itemId';
+		'.$table_itemCombination.' itemCombination ON ItemCombinationID = itemCombination.ID where ih.ItemID = :itemId';
 		
 		for($numberOfOptions = 0; $numberOfOptions < count($aOptionDetails) + 1; $numberOfOptions++){
 			if($numberOfOptions < 9){

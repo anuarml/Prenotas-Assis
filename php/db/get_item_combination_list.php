@@ -17,56 +17,56 @@
 			//$handle = $link->prepare('SELECT ic.ID, ic.ExternalID optionEID, od.Name optionDetailName, o.Name optionName, ic.UUID  FROM '.$table_itemCombination.' ic LEFT JOIN '.$table_optionDetail.' od ON od.ExternalID = ic.ExternalID LEFT JOIN '.$table_option.' o ON o.ID = OptionID WHERE ItemID = :ID');
 
 			$handle = $link->prepare(
-				'SELECT ic.ID, ic.UUID, ic.ExternalID combinationEID,'.
-				'od1.ExternalID optionEID1, od1.Name optionDName1,'.
-				'od2.ExternalID optionEID2, od2.Name optionDName2,'.
-				'od3.ExternalID optionEID3, od3.Name optionDName3,'.
-				'od4.ExternalID optionEID4, od4.Name optionDName4,'.
-				'od5.ExternalID optionEID5, od5.Name optionDName5,'.
-				'od6.ExternalID optionEID6, od6.Name optionDName6,'.
-				'od7.ExternalID optionEID7, od7.Name optionDName7,'.
-				'od8.ExternalID optionEID8, od8.Name optionDName8,'.
-				'od9.ExternalID optionEID9, od9.Name optionDName9,'.
-				'od10.ExternalID optionEID10, od10.Name optionDName10,'.
-				'o1.ID optionID1,o1.Name optionName1,'.
-				'o2.ID optionID2,o2.Name optionName2,'.
-				'o3.ID optionID3,o3.Name optionName3,'.
-				'o4.ID optionID4,o4.Name optionName4,'.
-				'o5.ID optionID5,o5.Name optionName5,'.
-				'o6.ID optionID6,o6.Name optionName6,'.
-				'o7.ID optionID7,o7.Name optionName7,'.
-				'o8.ID optionID8,o8.Name optionName8,'.
-				'o9.ID optionID9,o9.Name optionName9,'.
-				'o10.ID optionID10,o10.Name optionName10,'.
+				'SELECT itemCombination.ID, itemCombination.UUID, itemCombination.ExternalID combinationEID,'.
+				'optionDetail1.ExternalID optionEID1, optionDetail1.Name optionDName1,'.
+				'optionDetail2.ExternalID optionEID2, optionDetail2.Name optionDName2,'.
+				'optionDetail3.ExternalID optionEID3, optionDetail3.Name optionDName3,'.
+				'optionDetail4.ExternalID optionEID4, optionDetail4.Name optionDName4,'.
+				'optionDetail5.ExternalID optionEID5, optionDetail5.Name optionDName5,'.
+				'optionDetail6.ExternalID optionEID6, optionDetail6.Name optionDName6,'.
+				'optionDetail7.ExternalID optionEID7, optionDetail7.Name optionDName7,'.
+				'optionDetail8.ExternalID optionEID8, optionDetail8.Name optionDName8,'.
+				'optionDetail9.ExternalID optionEID9, optionDetail9.Name optionDName9,'.
+				'optionDetail0.ExternalID optionEID10, optionDetail0.Name optionDName10,'.
+				'option1.ID optionID1,option1.Name optionName1,'.
+				'option2.ID optionID2,option2.Name optionName2,'.
+				'option3.ID optionID3,option3.Name optionName3,'.
+				'option4.ID optionID4,option4.Name optionName4,'.
+				'option5.ID optionID5,option5.Name optionName5,'.
+				'option6.ID optionID6,option6.Name optionName6,'.
+				'option7.ID optionID7,option7.Name optionName7,'.
+				'option8.ID optionID8,option8.Name optionName8,'.
+				'option9.ID optionID9,option9.Name optionName9,'.
+				'option10.ID optionID10,option10.Name optionName10,'.
 				'quantityOnHand'.
 
-				' FROM '.$table_itemCombination.' ic '.
+				' FROM '.$table_itemCombination.' itemCombination '.
 
-				'left join '.$table_optionDetail.' od1 ON od1.ID = ic.OptionDetail01ID '.
-				'left join '.$table_optionDetail.' od2 ON od2.ID = ic.OptionDetail02ID '.
-				'left join '.$table_optionDetail.' od3 ON od3.ID = ic.OptionDetail03ID '.
-				'left join '.$table_optionDetail.' od4 ON od4.ID = ic.OptionDetail04ID '.
-				'left join '.$table_optionDetail.' od5 ON od5.ID = ic.OptionDetail05ID '.
-				'left join '.$table_optionDetail.' od6 ON od6.ID = ic.OptionDetail06ID '.
-				'left join '.$table_optionDetail.' od7 ON od7.ID = ic.OptionDetail07ID '.
-				'left join '.$table_optionDetail.' od8 ON od8.ID = ic.OptionDetail08ID '.
-				'left join '.$table_optionDetail.' od9 ON od9.ID = ic.OptionDetail09ID '.
-				'left join '.$table_optionDetail.' od10 ON od10.ID = ic.OptionDetail10ID '.
+				'left join '.$table_optionDetail.' optionDetail1 ON optionDetail1.ID = itemCombination.OptionDetail01ID '.
+				'left join '.$table_optionDetail.' optionDetail2 ON optionDetail2.ID = itemCombination.OptionDetail02ID '.
+				'left join '.$table_optionDetail.' optionDetail3 ON optionDetail3.ID = itemCombination.OptionDetail03ID '.
+				'left join '.$table_optionDetail.' optionDetail4 ON optionDetail4.ID = itemCombination.OptionDetail04ID '.
+				'left join '.$table_optionDetail.' optionDetail5 ON optionDetail5.ID = itemCombination.OptionDetail05ID '.
+				'left join '.$table_optionDetail.' optionDetail6 ON optionDetail6.ID = itemCombination.OptionDetail06ID '.
+				'left join '.$table_optionDetail.' optionDetail7 ON optionDetail7.ID = itemCombination.OptionDetail07ID '.
+				'left join '.$table_optionDetail.' optionDetail8 ON optionDetail8.ID = itemCombination.OptionDetail08ID '.
+				'left join '.$table_optionDetail.' optionDetail9 ON optionDetail9.ID = itemCombination.OptionDetail09ID '.
+				'left join '.$table_optionDetail.' optionDetail0 ON optionDetail0.ID = itemCombination.OptionDetail10ID '.
 
-				'left join '.$table_option.' o1 ON o1.ID = od1.OptionID '.
-				'left join '.$table_option.' o2 ON o2.ID = od2.OptionID '.
-				'left join '.$table_option.' o3 ON o3.ID = od3.OptionID '.
-				'left join '.$table_option.' o4 ON o4.ID = od4.OptionID '.
-				'left join '.$table_option.' o5 ON o5.ID = od5.OptionID '.
-				'left join '.$table_option.' o6 ON o6.ID = od6.OptionID '.
-				'left join '.$table_option.' o7 ON o7.ID = od7.OptionID '.
-				'left join '.$table_option.' o8 ON o8.ID = od8.OptionID '.
-				'left join '.$table_option.' o9 ON o9.ID = od9.OptionID '.
-				'left join '.$table_option.' o10 ON o10.ID = od10.OptionID '.
+				'left join '.$table_option.' option1 ON option1.ID = optionDetail1.OptionID '.
+				'left join '.$table_option.' option2 ON option2.ID = optionDetail2.OptionID '.
+				'left join '.$table_option.' option3 ON option3.ID = optionDetail3.OptionID '.
+				'left join '.$table_option.' option4 ON option4.ID = optionDetail4.OptionID '.
+				'left join '.$table_option.' option5 ON option5.ID = optionDetail5.OptionID '.
+				'left join '.$table_option.' option6 ON option6.ID = optionDetail6.OptionID '.
+				'left join '.$table_option.' option7 ON option7.ID = optionDetail7.OptionID '.
+				'left join '.$table_option.' option8 ON option8.ID = optionDetail8.OptionID '.
+				'left join '.$table_option.' option9 ON option9.ID = optionDetail9.OptionID '.
+				'left join '.$table_option.' option10 ON option10.ID = optionDetail0.OptionID '.
 
-				'left join '.$table_inventoryOnHand.' ih ON ih.ItemID = ic.ItemID AND ih.ItemCombinationID = ic.ID'.
+				'left join '.$table_inventoryOnHand.' ih ON ih.ItemID = itemCombination.ItemID AND ih.ItemCombinationID = itemCombination.ID'.
 
-				' WHERE ic.ItemID = :ID'
+				' WHERE itemCombination.ItemID = :ID'
 			);
 
 			$handle->bindParam(':ID', $id);
