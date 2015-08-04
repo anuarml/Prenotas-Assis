@@ -6,7 +6,7 @@
 		
 		
 		
-		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, LastUpdate, CreationUserID, LastUpdateUserID,  OperationOnHoldUUID, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID) VALUES (0, :UUID, :creationDate, :last_update, :create_id, :update_id, :prenote_uuid, :ItemUUID, :combinationID, :combinationUUID, :serialID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0)');
+		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, LastUpdate, CreationUserID, LastUpdateUserID,  OperationOnHoldUUID, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID) VALUES (0, :UUID, :creationDate, :last_update, :create_id, :update_id, :prenote_uuid, :ItemUUID, :combinationID, :combinationUUID, :serialID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID)');
 				
 		$handle->bindParam(':UUID', $prenoteDetails_uuid);
 		$handle->bindParam(':creationDate', $lastUpdate);
@@ -24,7 +24,7 @@
 		$handle->bindParam(':barcode', $barcode);
 		$handle->bindParam(':combinationID', $combinationID);
 		$handle->bindParam(':combinationUUID', $combinationUUID);
-		
+		$handle->bindValue(':recordStatusID', '1');
 		
 	 	$lenght = count($product);
 
