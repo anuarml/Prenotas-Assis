@@ -19,8 +19,10 @@
     //Numero de veces que se va a imprimir la prenota
     $print_times = 1;
 
-    $cfg_priceList = '(Precio Lista)';
-    $cfg_currency = 'Pesos';
+    $cfg_priceList = '(Precio Lista)';  // Lista de precios
+    $cfg_currency = 'Pesos';            // Moneda
+    $cfg_client = '5';                  // Cliente
+    $cfg_store = '1';                   // Sucursal
 
     // ----------  Nombre de tablas  -----------------
 	$table_prenote = 'OperationOnHold';
@@ -48,6 +50,9 @@
     $table_priceListDetail = '[PriceListDetail]';
 
     $table_currency = '[Currency]';
+
+    $table_customer = '[Customer]';
+    $table_store = '[Store]';
 	// --------------------------------------
     
     $db_url = 'sqlsrv:server='.$host.';Database='.$database;

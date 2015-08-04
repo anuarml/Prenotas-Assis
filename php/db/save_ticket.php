@@ -55,9 +55,25 @@
 
 				$code = generate_barcode(true, $code, $terminalCode);
 
+				// Se obtiene la información del cliente configurado.
+				$customer = getCustomer($link);
+				
+				if($customer){
+					$prenote->customerUUID = $customer->uuid;
+					$prenote->customerID = $customer->id;
+				}
+
+				$store = getStore($link);
+
+				if($store){
+					$prenote->store_id = $store->id;
+					$prenote->store_name = $store->name;
+				}
+
+
 				$link->beginTransaction();
 
-				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, LastUpdate, CreationUserID, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, Code, CustomerUUID, SalesPersonUserID, Label, Total, Quantity, Reference, Comment) VALUES (:id, :UUID, :creationDate, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :code, :customer_id, :id_employee, :label, :total, :narticles, :reference, :comment)');
+				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, LastUpdate, CreationUserID, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, Code, CustomerID, CustomerUUID, SalesPersonUserID, Label, Total, Quantity, Reference, Comment) VALUES (:id, :UUID, :creationDate, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :code, :customer_id, :customer_uuid, :id_employee, :label, :total, :narticles, :reference, :comment)');
 				
 				//$handle = $link->prepare( ' INSERT INTO ' .$table_prenote. ' ( [ID], [UUID], [LastUpdate], [CreationUserID], [LastUpdateUserID], [Type], [TypeDescription], [Dte], [Tme], [StoreID], [Workstation], [Code], [SalesPersonUserID], [Total], [Quantity] ) VALUES ( 0, :UUID, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, 2, :workstation, :code, :id_employee, :total, :narticles ) ' );
 
@@ -79,7 +95,8 @@
 
 			    $handle->bindValue(':type_description', 'Venta');
 			    $handle->bindParam(':workstation', $prenote->terminal);
-			 	$handle->bindParam(':customer_id', $prenote->customerUUID);
+			 	$handle->bindParam(':customer_uuid', $prenote->customerUUID);
+			 	$handle->bindParam(':customer_id', $prenote->customerID);
 			 	$handle->bindValue(':id', '0', PDO::PARAM_INT);
 			 	$handle->bindParam(':store_id', $prenote->store_id, PDO::PARAM_INT);
 			 	$handle->bindValue(':documentStatusID', '3'); // Nota Abierta (Para ver en espera)
@@ -106,6 +123,7 @@
 			
 			if($isPrinted == true){
 				unlink($prenote->folio.".png");
+				unlink($prenote->folio.".bmp");
 				unlink($prenote->folio.".pdf");
 				$printed = true;
 			}
@@ -117,5 +135,35 @@
 		error_log($ex->getMessage());
 	    //print($ex->getMessage());
 	    echo json_encode( array( $saved, $printed, $prenote) );
+	}
+
+	function getCustomer($link){
+		include('config.php');
+
+		$customer = null;
+
+		$handle = $link->prepare('SELECT ID id, UUID uuid FROM '.$table_customer.' WHERE ExternalID = :externalID');
+
+		$handle->bindParam(':externalID', $cfg_client);
+		$handle->execute();
+
+		$customer = $handle->fetch(PDO::FETCH_OBJ);
+
+		return $customer;
+	}
+
+	function getStore($link){
+		include('config.php');
+
+		$store = null;
+
+		$handle = $link->prepare('SELECT ID id, Name name FROM '.$table_store.' WHERE Number = :number');
+
+		$handle->bindParam(':number', $cfg_store);
+		$handle->execute();
+
+		$store = $handle->fetch(PDO::FETCH_OBJ);
+
+		return $store;
 	}
 ?>
