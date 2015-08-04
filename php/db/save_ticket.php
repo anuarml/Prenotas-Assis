@@ -4,6 +4,7 @@
 	require_once('../print_ticket/print_ticket.php');
 	include_once('../class.uuid.php');
 	require_once('generate_barcode.php');
+	require_once('get_register.php');
 
 	try{
 		if(isset($_POST['prenote']) && $_POST['prenote'] != ""){
@@ -62,18 +63,41 @@
 					$prenote->customerUUID = $customer->uuid;
 					$prenote->customerID = $customer->id;
 				}
+				else{
+					$prenote->customerUUID = null;
+					$prenote->customerID = null;
+				}
 
 				$store = getStore($link);
 
 				if($store){
 					$prenote->store_id = $store->id;
 					$prenote->store_name = $store->name;
+
+					$register = getRegister($link, $store->id);
+
+					if($register){
+						$prenote->register_id = $register->id;
+						$prenote->register_uuid = $register->uuid;
+						$prenote->register_workstation = $register->workstation;
+					} else {
+						$prenote->register_id = null;
+						$prenote->register_uuid = null;
+						$prenote->register_workstation = null;
+					}
+				} else {
+					$prenote->store_id = null;
+					$prenote->store_name = null;
+
+					$prenote->register_id = null;
+					$prenote->register_uuid = null;
+					$prenote->register_workstation = null;
 				}
 
 
 				$link->beginTransaction();
 
-				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, CreationUserID, LastUpdate, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, SalesPersonUserID, TargetStoreID, CustomerID, CustomerUUID, Code, GroupIdentifier, Label, Total, Quantity, Reference, Observation'/*, S2CreditQuoteNumber*/.', RecordStatusID) VALUES (:id, :UUID, :creationDate, :create_id, :lastUpdate, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :id_employee, :targetStoreID, :customer_id, :customer_uuid, NEWID(), :code, :label, :total, :narticles, :reference, :observation'/*, S2CreditQuoteNumber*/.', :recordStatusID)');
+				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, CreationUserID, LastUpdate, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, SalesPersonUserID, TargetStoreID, RegisterID, RegisterUUID, CustomerID, CustomerUUID, GroupIdentifier, Code,  Label, Total, Quantity, Observation'/*, S2CreditQuoteNumber*/.', RecordStatusID) VALUES (:id, :UUID, :creationDate, :create_id, :lastUpdate, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :id_employee, :targetStoreID, :registerID, :registerUUID, :customer_id, :customer_uuid, NEWID(), :code, :label, :total, :narticles, :observation'/*, S2CreditQuoteNumber*/.', :recordStatusID)');
 				
 				//$handle = $link->prepare( ' INSERT INTO ' .$table_prenote. ' ( [ID], [UUID], [LastUpdate], [CreationUserID], [LastUpdateUserID], [Type], [TypeDescription], [Dte], [Tme], [StoreID], [Workstation], [Code], [SalesPersonUserID], [Total], [Quantity] ) VALUES ( 0, :UUID, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, 2, :workstation, :code, :id_employee, :total, :narticles ) ' );
 
@@ -88,18 +112,19 @@
 				$handle->bindParam(':dte', $dte);
 				$handle->bindParam(':tme', $tme);
 				$handle->bindParam(':store_id', $prenote->store_id, PDO::PARAM_INT);
-				$handle->bindParam(':workstation', $prenote->terminal);
+				$handle->bindParam(':workstation', $prenote->register_workstation);
 				$handle->bindValue(':documentStatusID', '3'); // Nota Abierta (Para ver en espera)
 				$handle->bindParam(':id_employee', $prenote->id_employee, PDO::PARAM_INT);
 				$handle->bindParam(':customer_id', $prenote->customerID);
 				$handle->bindParam(':customer_uuid', $prenote->customerUUID);
+				$handle->bindParam(':registerID', $prenote->register_id);
+				$handle->bindParam(':registerUUID', $prenote->register_uuid);
 				
 				$handle->bindValue(':targetStoreID', '0');
 				$handle->bindParam(':code', $code);
 			    $handle->bindParam(':label', $prenote->clientName);
 			    $handle->bindParam(':total', $prenote->total);
 			    $handle->bindParam(':narticles', $prenote->narticles);
-			    $handle->bindParam(':reference', $prenote->clientName);
 			    $handle->bindParam(':observation', $prenote->cotizationNumber);
 			    $handle->bindValue(':recordStatusID', '1');
 			    

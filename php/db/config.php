@@ -53,6 +53,8 @@
 
     $table_customer = '[Customer]';
     $table_store = '[Store]';
+
+    $table_register = '[Register]';
 	// --------------------------------------
     
     $db_url = 'sqlsrv:server='.$host.';Database='.$database;
