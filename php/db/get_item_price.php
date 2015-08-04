@@ -154,7 +154,8 @@ function createResponse($status, $msg){
 
 	$responseEncoded = json_encode($response);
 	
-	error_log($responseEncoded);
+	if($status=='error')
+		error_log($responseEncoded);
 	return $responseEncoded;
 }
 
