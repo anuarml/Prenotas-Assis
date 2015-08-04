@@ -73,33 +73,36 @@
 
 				$link->beginTransaction();
 
-				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, LastUpdate, CreationUserID, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, Code, CustomerID, CustomerUUID, SalesPersonUserID, Label, Total, Quantity, Reference, Comment) VALUES (:id, :UUID, :creationDate, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :code, :customer_id, :customer_uuid, :id_employee, :label, :total, :narticles, :reference, :comment)');
+				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, CreationUserID, LastUpdate, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, SalesPersonUserID, TargetStoreID, CustomerID, CustomerUUID, Code, GroupIdentifier, Label, Total, Quantity, Reference, Observation'/*, S2CreditQuoteNumber*/.', RecordStatusID) VALUES (:id, :UUID, :creationDate, :create_id, :lastUpdate, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :id_employee, :targetStoreID, :customer_id, :customer_uuid, NEWID(), :code, :label, :total, :narticles, :reference, :observation'/*, S2CreditQuoteNumber*/.', :recordStatusID)');
 				
 				//$handle = $link->prepare( ' INSERT INTO ' .$table_prenote. ' ( [ID], [UUID], [LastUpdate], [CreationUserID], [LastUpdateUserID], [Type], [TypeDescription], [Dte], [Tme], [StoreID], [Workstation], [Code], [SalesPersonUserID], [Total], [Quantity] ) VALUES ( 0, :UUID, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, 2, :workstation, :code, :id_employee, :total, :narticles ) ' );
 
-				
+				$handle->bindValue(':id', '0', PDO::PARAM_INT);
 				$handle->bindParam(':UUID', $prenote_uuid);
 				$handle->bindParam(':creationDate', $lastUpdate);
+				$handle->bindParam(':create_id', $prenote->id_employee, PDO::PARAM_INT);
 				$handle->bindParam(':lastUpdate', $lastUpdate);
+				$handle->bindParam(':update_id', $prenote->id_employee, PDO::PARAM_INT);
+
+				$handle->bindValue(':type_description', 'Venta');
 				$handle->bindParam(':dte', $dte);
 				$handle->bindParam(':tme', $tme);
+				$handle->bindParam(':store_id', $prenote->store_id, PDO::PARAM_INT);
+				$handle->bindParam(':workstation', $prenote->terminal);
+				$handle->bindValue(':documentStatusID', '3'); // Nota Abierta (Para ver en espera)
+				$handle->bindParam(':id_employee', $prenote->id_employee, PDO::PARAM_INT);
+				$handle->bindParam(':customer_id', $prenote->customerID);
+				$handle->bindParam(':customer_uuid', $prenote->customerUUID);
+				
+				$handle->bindValue(':targetStoreID', '0');
 				$handle->bindParam(':code', $code);
-			    $handle->bindParam(':create_id', $prenote->id_employee, PDO::PARAM_INT);
-			    $handle->bindParam(':update_id', $prenote->id_employee, PDO::PARAM_INT);
-			    $handle->bindParam(':id_employee', $prenote->id_employee, PDO::PARAM_INT);
 			    $handle->bindParam(':label', $prenote->clientName);
 			    $handle->bindParam(':total', $prenote->total);
 			    $handle->bindParam(':narticles', $prenote->narticles);
 			    $handle->bindParam(':reference', $prenote->clientName);
-			    $handle->bindParam(':comment', $prenote->cotizationNumber);
-
-			    $handle->bindValue(':type_description', 'Venta');
-			    $handle->bindParam(':workstation', $prenote->terminal);
-			 	$handle->bindParam(':customer_uuid', $prenote->customerUUID);
-			 	$handle->bindParam(':customer_id', $prenote->customerID);
-			 	$handle->bindValue(':id', '0', PDO::PARAM_INT);
-			 	$handle->bindParam(':store_id', $prenote->store_id, PDO::PARAM_INT);
-			 	$handle->bindValue(':documentStatusID', '3'); // Nota Abierta (Para ver en espera)
+			    $handle->bindParam(':observation', $prenote->cotizationNumber);
+			    $handle->bindValue(':recordStatusID', '1');
+			    
 			    $handle->execute();
 
 			    save_products($link, $prenote_uuid, $prenote->product, $prenote->id_employee, $lastUpdate);
