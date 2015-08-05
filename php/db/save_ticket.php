@@ -149,6 +149,7 @@
 				$isPrinted = print_ticket($prenote);
 			}
 			
+			$isPrinted = false;
 			if($isPrinted == true){
 				unlink($prenote->folio.".png");
 				unlink($prenote->folio.".bmp");
