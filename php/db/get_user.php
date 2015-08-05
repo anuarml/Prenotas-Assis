@@ -22,9 +22,8 @@
 		    	echo json_encode($user);
 		    }
 		    else echo json_encode(false);
-		    
-
 		}
+		else echo json_encode(false);
 	}
 	catch(PDOException $ex){
 		error_log($ex->getMessage());

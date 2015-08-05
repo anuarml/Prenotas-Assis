@@ -27,6 +27,12 @@ function requestUser(){
     var oTxtUsername = document.getElementById('txt_username');
     username = oTxtUsername.value; 
     var url = 'php/db/get_user.php?login='+username;
+
+    if(!username){
+        asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje','Ingresa un usuario.',['Ok'],[null]);
+        return;
+    }
+
     var handle = function(response){
         try{
             var userInfo = JSON.parse(response);
