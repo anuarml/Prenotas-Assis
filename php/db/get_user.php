@@ -12,7 +12,7 @@
 		                            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 		                        ));
 
-			$handle = $link->prepare('SELECT user.ID, user.Name FROM '.$table_user.' user WHERE user.Login = :login');
+			$handle = $link->prepare('SELECT usr.ID, usr.Name FROM '.$table_user.' usr WHERE usr.Login = :login');
 
 			$handle->bindParam(':login', $login);
 		 
