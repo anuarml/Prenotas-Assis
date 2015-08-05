@@ -64,7 +64,7 @@
 				'left join '.$table_option.' option9 ON option9.ID = optionDetail9.OptionID '.
 				'left join '.$table_option.' option10 ON option10.ID = optionDetail0.OptionID '.
 
-				'left join '.$table_inventoryOnHand.' ih ON ih.ItemID = itemCombination.ItemID AND ih.ItemCombinationID = itemCombination.ID'.
+				'left join '.$table_inventoryOnHand.' inventoryOnHand ON inventoryOnHand.ItemID = itemCombination.ItemID AND inventoryOnHand.ItemCombinationID = itemCombination.ID'.
 
 				' WHERE itemCombination.ItemID = :ID'
 			);
