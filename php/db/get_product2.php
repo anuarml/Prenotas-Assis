@@ -215,15 +215,15 @@
 		include('config.php');
 
 		$handle = $link->prepare('SELECT'.
-			' option.name, itemOption.optionID, itemOption.mandatory, itemOption.OptionListID optionListID'.
+			' opt.name, itemOption.optionID, itemOption.mandatory, itemOption.OptionListID optionListID'.
 
 			' FROM '.$table_itemOption.' itemOption'.
 
-			' JOIN '.$table_option.' option ON itemOption.optionID=option.ID'.
+			' JOIN '.$table_option.' opt ON itemOption.optionID=opt.ID'.
 
 			' WHERE ItemID = :ID'.
 
-			' ORDER BY option.externalID'
+			' ORDER BY opt.externalID'
 		);
 
 		$handle->bindParam(':ID', $itemID);
