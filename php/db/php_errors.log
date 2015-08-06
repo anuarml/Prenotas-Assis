@@ -3,4 +3,3 @@
 [29-Jul-2015 17:26:02 America/Mexico_City] PHP Notice:  Undefined offset: 0 in C:\inetpub\scan_products\php\db\listar_impresoras.php on line 5
 [29-Jul-2015 17:53:04 America/Mexico_City] PHP Parse error:  syntax error, unexpected 'in' (T_STRING) in C:\inetpub\scan_products\php\db\listar_impresoras.php on line 6
 [30-Jul-2015 09:39:46 America/Mexico_City] PHP Warning:  unlink(1650000000068.pdf): No such file or directory in C:\inetpub\scan_products\php\db\save_ticket.php on line 106
-wailmu
