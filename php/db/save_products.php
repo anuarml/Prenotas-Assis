@@ -6,9 +6,9 @@
 		
 		
 		
-		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID) VALUES (0, :UUID, :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :ItemUUID, :combinationID, :combinationUUID, :serialID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID)');
+		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID) VALUES (0, NEWID(), :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :ItemUUID, :combinationID, :combinationUUID, :serialID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID)');
 				
-		$handle->bindParam(':UUID', $prenoteDetails_uuid);
+		//$handle->bindParam(':UUID', $prenoteDetails_uuid);
 		$handle->bindParam(':creationDate', $lastUpdate);
 		$handle->bindParam(':create_id', $id_employee, PDO::PARAM_INT);
 		$handle->bindParam(':last_update', $lastUpdate);
@@ -29,7 +29,8 @@
 	 	$lenght = count($product);
 
 		for($i=0;$i<$lenght;$i++){
-			$prenoteDetails_uuid = UUID::generate(UUID::UUID_RANDOM, UUID::FMT_STRING);
+			//$prenoteDetails_uuid = UUID::generate(UUID::UUID_RANDOM, UUID::FMT_STRING);
+
 
 			$UUID = $product[$i]->UUID;
 			$Quantity = $product[$i]->Quantity;

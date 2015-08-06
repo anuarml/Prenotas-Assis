@@ -31,8 +31,9 @@
 				$tme = $date->format('H:i:s.'.$ms);
 				//$code = $date->format('YmdHis'.$ms);
 
-				$prenote_uuid = UUID::generate(UUID::UUID_RANDOM, UUID::FMT_STRING);
+				//$prenote_uuid = UUID::generate(UUID::UUID_RANDOM, UUID::FMT_STRING);
 				
+
 				$link = new PDO(   $db_url, 
 			                        $user, 
 			                        $password,  
@@ -41,6 +42,13 @@
 			                        ));
 
 				
+				$st = $link->query ('SELECT NEWID() AS prenoteUUID');
+
+				if(!($result = $st->fetch())){
+					throw new PDOException('Error al generar el uuid de la prenota.');
+				}
+
+				$prenote_uuid = $result['prenoteUUID'];
 
 				$st = $link->query('SELECT Consecutivo FROM ThoConsecutivo WHERE Tipo = \'PRENOTA\'');
 
