@@ -36,7 +36,7 @@
 			var i = parseInt(window.localStorage.getItem('details'));
 			
 			document.getElementById('p_description').innerHTML = productos[i].Description;
-			document.getElementById('p_price').innerHTML = '$' + productos[i].Price;
+			document.getElementById('p_price').innerHTML = '$' + (productos[i].Price).toFixed(2);
 			document.getElementById('p_cant').innerHTML = productos[i].Quantity;
 			document.getElementById('p_serial').innerHTML = productos[i].serialBatch;
 			document.getElementById('p_unit').innerHTML = productos[i].unitName;
