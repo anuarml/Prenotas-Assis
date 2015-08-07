@@ -49,7 +49,7 @@ var Prenota = {
         
         for(var j = 0, length = t.length, i = length - 1 - (page * this.pagingInfo.perPage); (i >= 0) && (j < this.pagingInfo.perPage); i--, j++) {
 	            this.list.children[j].children[0].children[0].innerHTML = t[i].Description;          
-				this.list.children[j].children[0].children[1].innerHTML = '<div>$' + t[i].Price + '</div> <div>Cant: ' + t[i].Quantity + '</div>';
+				this.list.children[j].children[0].children[1].innerHTML = '<div>$' + (t[i].Price).toFixed(2) + '</div> <div>Cant: ' + t[i].Quantity + '</div>';
 				
                 this.list.children[j].children[1].id = i;
 				this.list.children[j].children[0].id = i;

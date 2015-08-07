@@ -32,6 +32,7 @@ function print_prenote2($prenote){
 			printer_draw_text($printerHandler, $product[$i]->unitName, 151, calculateNextLine($lineNumber));
 			printer_draw_text($printerHandler, $product[$i]->Quantity, 351, calculateNextLine($lineNumber));
 			$precio_cantidad = ($product[$i]->Quantity) * ($product[$i]->Price);
+			$precio_cantidad = round($precio_cantidad, 2);
 			printer_draw_text($printerHandler, '$' . $precio_cantidad, 451, calculateNextLine($lineNumber++));
 			printer_draw_text($printerHandler, $product[$i]->serialBatch, 1, calculateNextLine($lineNumber++));	
 		}
