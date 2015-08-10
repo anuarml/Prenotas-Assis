@@ -41,7 +41,7 @@ function requestUser(){
                 throw 'No hubo respuesta del servidor.';
             }
 
-            if(response.status = 'success'){
+            if(response.status == 'success'){
 
                 newUser = new User(response.data);
 
