@@ -5,6 +5,7 @@
 	include_once('../class.uuid.php');
 	require_once('generate_barcode.php');
 	require_once('get_register.php');
+	require_once('get_store.php');
 
 	try{
 		if(isset($_POST['prenote']) && $_POST['prenote'] != ""){
@@ -190,7 +191,7 @@
 		return $customer;
 	}
 
-	function getStore($link){
+	/*function getStore($link){
 		include('config.php');
 
 		$store = null;
@@ -203,5 +204,5 @@
 		$store = $handle->fetch(PDO::FETCH_OBJ);
 
 		return $store;
-	}
+	}*/
 ?>

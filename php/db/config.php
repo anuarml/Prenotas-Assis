@@ -23,6 +23,7 @@
     $cfg_currency = 'Pesos';            // Moneda
     $cfg_client = '5';                  // Cliente
     $cfg_store = '1';                   // Sucursal
+    $cfg_workstation = 'A';             // Estación principal, debe estar abierta.
 
     // ----------  Nombre de tablas  -----------------
 	$table_prenote = 'OperationOnHold';

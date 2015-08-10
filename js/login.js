@@ -33,12 +33,17 @@ function requestUser(){
         return;
     }
 
-    var handle = function(response){
+    var handle = function(data){
         try{
-            var userInfo = JSON.parse(response);
+            var response = JSON.parse(data);
 
-            if(userInfo){
-                newUser = new User(userInfo);
+            if(!response){
+                throw 'No hubo respuesta del servidor.';
+            }
+
+            if(response.status = 'success'){
+
+                newUser = new User(response.data);
 
                 if(productos.length > 0 && user && user.ID != newUser.ID){
                     asl.notify(asl.notifications.application,asl.priority.normal,'Existe una prenota del usuario '+user.Name,'Si inicias sesión se borrará la prenota.',['Iniciar sesión','Cancelar'],[deleteLastPrenote,null]);
@@ -46,16 +51,14 @@ function requestUser(){
                 else {
                     login();
                 }
-                //asl.badge('http://192.168.96.3/LeeWs/scan_products/badge.html');
-                //asl.badge('http://192.168.96.3/LeeWs/DesarrolloPrenotas/scan_products/badge.html');
-
-            }else{
+            }
+            else{
                 //keyboardIsShowed = false;
-                asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Usuario no registrado.',['OK'],[null]);
+                asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:',response.data,['OK'],[null]);
             }
         }
         catch(e){
-            asl.notify(asl.notifications.application,asl.priority.normal,'Error en el servidor:',response,['OK'],[null]);
+            asl.notify(asl.notifications.application,asl.priority.normal,'Error en el servidor:',data,['OK'],[null]);
         }
     };
     ajaxRequest('GET', url, handle);

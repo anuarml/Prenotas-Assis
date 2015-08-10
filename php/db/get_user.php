@@ -1,32 +1,51 @@
 <?php
 	include_once('config.php');
+	include_once('get_register.php');
+	include_once('get_store.php');
 
 	try{
+		$link = new PDO(	
+			$db_url, 
+            $user, 
+            $password, 
+            array(
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ));
+
+		// Se valida que la caja principal que fue configurada este abierta.
+		$store = getStore($link);
+
+		if(!$store){
+			throw new PDOException('No se encontró la tienda configurada');
+		}
+
+		$register = getRegister($link, $store->id);
+
+		if(!$register){
+			throw new PDOException('No se encuentra abierta la caja principal.');
+		}
+
+		// Validación del usuario.
 		if(isset($_GET['login']) && $_GET['login'] != ""){
 			$login = $_GET['login'];
 			
-			$link = new PDO(   $db_url, 
-		                        $user, 
-		                        $password,  
-		                        array(
-		                            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-		                        ));
-
 			$handle = $link->prepare('SELECT usr.ID, usr.Name FROM '.$table_user.' usr WHERE usr.Login = :login');
 
 			$handle->bindParam(':login', $login);
-		 
+		
 		    $handle->execute();
 
 		    if($user = $handle->fetchObject()){
-		    	echo json_encode($user);
+		    	echo json_encode( array('status' => 'success', 'data' => $user) );
 		    }
-		    else echo json_encode(false);
+		    else
+		    	throw new PDOException('Usuario no registrado.');
 		}
-		else echo json_encode(false);
+		else
+			throw new PDOException('Ingresa un usuario.');
 	}
 	catch(PDOException $ex){
 		error_log($ex->getMessage());
-	    print($ex->getMessage());
+	    print( json_encode( array('status' => 'error', 'data' => $ex->getMessage())));
 	}
 ?>
