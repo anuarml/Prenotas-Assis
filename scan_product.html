@@ -596,7 +596,7 @@
 							product.optionID = itemCombination.ID;
 							product.QuantityOnHand = parseFloat(itemCombination.QuantityOnHand);
 
-							requestItemPrice(product.ID, null, product.optionID);
+							requestItemPrice(product.ID, product.UnitID, product.optionID);
 
 							if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
 								unlockSerialInput();
