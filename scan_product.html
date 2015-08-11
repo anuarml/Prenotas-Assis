@@ -31,6 +31,17 @@
 	        		}
 	        	},
 	        	{
+	        		title : 'Descripción de opciones',
+	        		callback: function(){
+	        			if(product && product.optionID){
+	        				requestCombinationDesc(product.optionID);
+	        			}
+	        			else{
+	        				asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje' ,'El artículo no tiene opciones asignadas.',['OK'],[null]);
+	        			}
+	        		}
+	        	},
+	        	{
 	        		title: 'Salir',
 	        		callback: function(){
 	        			asl.exit();
@@ -881,6 +892,45 @@
 	                    }
 	                    else{
 	                    	asl.notify(asl.notifications.application, asl.priority.normal,'Error', oResponse.msg,['OK'],[null]);
+	                    }
+	                }
+	                catch(e){
+	                    alert(response);
+	                }
+	            };
+
+	            ajaxRequest('GET', url, handle);
+			}
+
+			function requestCombinationDesc(itemCombinationID){
+				var url = 'php/db/get_combination_desc.php?itemCombinationID='+itemCombinationID;
+
+	            var handle = function(response){
+	                try{
+	                    var oResponse = JSON.parse(response);
+	                    
+	                    if(oResponse.status == 'success'){
+
+	                    	var optionsDescList = oResponse.data;
+
+	                    	if(optionsDescList && optionsDescList.length){
+
+	                    		var optionsDesc = '';
+
+	                    		for (var i = 0; i < optionsDescList.length; i++) {
+	                    			if(i > 0)
+	                    				optionsDesc += ', ';
+	                    			optionsDesc += optionsDescList[i].optionType +': '+ optionsDescList[i].optionName;
+	                    		};
+
+								asl.notify(asl.notifications.application, asl.priority.normal,'Opciones:', optionsDesc,['OK'],[null]);
+							}
+							else {
+								asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:', 'El artículo no tiene opciones',['OK'],[null]);
+							}
+	                    }
+	                    else{
+	                    	asl.notify(asl.notifications.application, asl.priority.normal,'Error', oResponse.data,['OK'],[null]);
 	                    }
 	                }
 	                catch(e){
