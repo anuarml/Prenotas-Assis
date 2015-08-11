@@ -297,9 +297,18 @@
 					if(product.UseCombination == 1){
 						p_opcion.style.visibility = 'visible';
 						i_opcion.style.visibility = 'visible';
+
+						var txtOption = document.getElementById('txt_opcion');
 						
 						if(product.optionEID){
-							document.getElementById('txt_opcion').value = product.optionEID;
+							txtOption.value = product.optionEID;
+						}
+
+						if(product.options && product.options.length){
+							txtOption.disabled = false;
+						}
+						else {
+							txtOption.disabled = true;
 						}
 					}
 					else{
