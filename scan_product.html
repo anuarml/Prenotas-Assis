@@ -27,6 +27,8 @@
 	        	{
 	        		title : 'Ver prenota',
 	        		callback: function(){
+	        			window.localStorage.setItem('aItemUnits', JSON.stringify(aItemUnits));
+						window.localStorage.setItem('product', JSON.stringify(product));
 	        			window.location = 'prenota.html';
 	        		}
 	        	},
@@ -297,7 +299,7 @@
 					
 					document.getElementById('p_description').innerHTML = product.Description;
 					//document.getElementById('p_price').innerHTML = '$' + product.Price;
-					document.getElementById('txt_cant').value = 1;
+					document.getElementById('txt_cant').value = product.Quantity;
 
 					if ( (product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE) &&
 					    product.UseCombination == 1 && !product.optionID) {
@@ -716,8 +718,9 @@
 				var txt = document.getElementById('txt_cant');
 
 				if(!txt.disabled){
-					var cant = parseFloat(txt.value);
+					var cant = parseFloat(txt.value) || 0;
 					cant += 1;
+					product.Quantity = cant;
 					txt.value = cant;
 				}
 			}
@@ -726,10 +729,12 @@
 				var txt = document.getElementById('txt_cant');
 
 				if(!txt.disabled){
-					var cant = parseFloat(txt.value);
+					var cant = parseFloat(txt.value) || 0;
 					cant -= 1;
-					if(cant > 0)
+					if(cant > 0){
+						product.Quantity = cant;
 						txt.value = cant;
+					}
 				}
 			}
 
@@ -857,12 +862,14 @@
 						if (!isValidNumber) {
 							asl.notify(asl.notifications.application, asl.priority.normal,'Cantidad \''+oTxtCant.value+'\' inválida:', 'La unidad solo permite '+product.unitDecimals+' decimales.',['OK'],[null]);
 							oTxtCant.value = 1;
+							product.Quantity = 1;
 						}
 					}
 
 					if(parseFloat(oTxtCant.value) <= 0) {
 						asl.notify(asl.notifications.application, asl.priority.normal,'Cantidad \''+oTxtCant.value+'\' inválida:', 'La cantidad debe ser positiva.',['OK'],[null]);
 						oTxtCant.value = 1;
+						product.Quantity = 1;
 					}
 				}
 			}
