@@ -1,11 +1,15 @@
 <?php
+include_once('db/config.php');
 $printers = array();
 if (function_exists('printer_list')) {
     
     $printerList = printer_list(PRINTER_ENUM_LOCAL,"",5);
     foreach($printerList as $printer){
 	//echo $printer['PRINTERNAME'].'<br>';
-        $printers[] = array('name' => $printer['PRINTERNAME'],'ip'=>'');
+    	$printerName = $printer['PRINTERNAME'];
+
+    	if(in_array($printerName,$cfg_printers))
+        	$printers[] = array('name' => $printer['PRINTERNAME'],'ip'=>'');
     }
 
     

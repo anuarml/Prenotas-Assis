@@ -25,6 +25,11 @@
     $cfg_store = '1';                   // Sucursal
     $cfg_workstation = 'A';             // Estación principal, debe estar abierta.
 
+    //------------ Impresoras ---------------
+    $cfg_printers = [
+        'Piso1',
+    ];
+
     // ----------  Nombre de tablas  -----------------
 	$table_prenote = 'OperationOnHold';
 	$table_prenoteDetails = 'OperationOnHoldDetail';
