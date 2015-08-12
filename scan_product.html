@@ -845,6 +845,8 @@
 							product.optionID = oItemCombination.ID;
 							product.QuantityOnHand = parseFloat(oItemCombination.QuantityOnHand);
 							
+							requestItemPrice(product.ID, product.UnitID, product.optionID);
+							
 							document.getElementById('txt_opcion').value = product.optionEID;
 
 							if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
