@@ -268,10 +268,26 @@
 
 				var handle = function(response){
 					try{
-						var productInfo = JSON.parse(response);
-						show_product_info(productInfo);
+						var oResponse = JSON.parse(response);
+
+						var productInfo = null;
+
+						if(!oResponse){
+							clear_product();
+							throw 'No hubo respuesta del servidor';
+						}
+
+						if(oResponse.status == true){
+							productInfo = oResponse.data;
+							show_product_info(productInfo);
+						}
+						else {
+							asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , oResponse.data,['OK'],[null]);
+							clear_product();
+						}
 					}
 					catch(e){
+						clear_product();
 						asl.notify(asl.notifications.application, asl.priority.normal,'Error en el servidor:' ,response,['OK'],[null]);
 					}
 				};
@@ -360,10 +376,7 @@
 						i_serie.style.visibility = 'hidden';
 					}
 
-
 					requestUnitList();
-
-
 				}
 				else{
 					asl.title("Producto no registrado.");

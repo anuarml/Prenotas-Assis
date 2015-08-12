@@ -21,8 +21,23 @@
 				$item = getItemByID($link, $itemBarcode->ItemID);
 
 				if ($item) {
+					// Si está activado en la configuración, se valida que el artículo tenga rama.
+					if($cfg_validate_branch && !$item->CategoryBranchID){
+						throw new PDOException('El artículo no tiene rama.');
+					}
+
+					// Se valida que el estatus del artículo no sea 'BAJA'.
+					if($item->itemStatus == $CONST_ITEM_STATUS_INACTIVE){
+						throw new PDOException('Artículo dado de baja.');
+					}
+
+					// Se valida que el artículo no sea de tipo 'Juego'.
+					if($item->itemType == $CONST_ITEM_TYPE_KIT){
+						throw new PDOException('No se permiten artículos tipo: Juego.');
+					}
+
 					$item->basePrice = $item->Price;
-					$item->barcode = $code;
+					$item->barcode = $itemBarcode->Barcode;
 
 					if ($itemBarcode->unitID) {
 						$item->UnitID = $itemBarcode->unitID;
@@ -62,17 +77,33 @@
 					}*/
 
 					//error_log(json_encode($item));
-
-					echo json_encode($item);
+					//json_encode($item);
+					echo createResponse(true, $item);
 
 				} else {
-					echo json_encode(false);
+					echo createResponse(false, 'Artículo no registrado.');
 				}
 
 			} else { // Se busca el código en la tabla de items.
 				$item = getItemByCode($link, $code);
 
 				if ($item) {
+
+					// Si está activado en la configuración, se valida que el artículo tenga rama.
+					if($cfg_validate_branch && !$item->CategoryBranchID){
+						throw new PDOException('El artículo no tiene rama.');
+					}
+
+					// Se valida que el estatus del artículo no sea 'BAJA'.
+					if($item->itemStatus == $CONST_ITEM_STATUS_INACTIVE){
+						throw new PDOException('Artículo dado de baja.');
+					}
+
+					// Se valida que el artículo no sea de tipo 'Juego'.
+					if($item->itemType == $CONST_ITEM_TYPE_KIT){
+						throw new PDOException('No se permiten artículos tipo: Juego.');
+					}
+
 					$item->basePrice = $item->Price;
 					$unitInfo = getUnitInfo($link, $item->UnitID);
 
@@ -97,25 +128,25 @@
 
 					//error_log(json_encode($item));
 
-					echo json_encode($item);
+					echo createResponse(true, $item);
 
 				} else {
-					echo json_encode(false);
+					echo createResponse(false, 'Artículo no registrado.');
 				}
 			}
 		} else {
-			echo json_encode(false);
+			echo createResponse(false, 'Artículo no registrado.');
 		}
 	}
 	catch(PDOException $ex){
 		error_log($ex->getMessage());
-	    echo $ex->getMessage();
+	    echo createResponse(false, $ex->getMessage());
 	}
 
 	function getItemBarcode($link, $code){
 		include('config.php');
 
-		$handle = $link->prepare('SELECT ItemID, itemCombinationID, unitID FROM '.$table_itembarcode.' WHERE Barcode = :code');
+		$handle = $link->prepare('SELECT Barcode, ItemID, itemCombinationID, unitID FROM '.$table_itembarcode.' WHERE Barcode = :code');
 		$handle->bindParam(':code', $code);
 	    $handle->execute();
 
@@ -127,16 +158,29 @@
 	function getItemByID($link, $id){
 		include('config.php');
 
+		$query =
+			'SELECT TOP 1 Item.ID, Item.UUID, Item.Code, '.
+			'Item.Description, Item.ItemTypeID, Item.Price, '.
+			'Item.UnitID, Item.UseCombination, Item.SerialInfoOptional isSerialInformative, '.
+			'Item.CategoryBranchID, '.
+			'ItemType.Name itemType, ItemStatus.Name itemStatus '.
+			'FROM '.$table_item.' Item '.
+			'JOIN '.$table_itemType.' ItemType '.
+			'ON ItemType.ID = Item.ItemTypeID '.
+			'JOIN '.$table_itemStatus.' ItemStatus '.
+			'ON ItemStatus.ID = Item.ItemStatusID '.
+			'WHERE Item.ID = :ID';
+
 		//$handle = $link->prepare('SELECT '.$table_item.'.ID, '.$table_item.'.UUID, '.$table_item.'.Code, Description, ItemTypeID, Price, UnitID, QuantityOnHand, UseCombination FROM '.$table_item.' LEFT JOIN '.$table_inventoryOnHand.' ON '.$table_inventoryOnHand.'.ItemID = '.$table_item.'.ID WHERE '.$table_item.'.ID = :ID');
-		$handle = $link->prepare('SELECT ID, UUID, Code, Description, ItemTypeID, Price, UnitID, UseCombination, serialInfoOptional isSerialInformative FROM '.$table_item.' WHERE '.$table_item.'.ID = :ID');
+		$handle = $link->prepare($query);
 		$handle->bindParam(':ID', $id);
 		$handle->execute();
 
-		$aItem = $handle->fetchAll(PDO::FETCH_OBJ);
+		//$aItem = $handle->fetchAll(PDO::FETCH_OBJ);
 		//error_log(json_encode($aItem));
 		
-		$item = $aItem[0];
-		//$item = $handle->fetchObject();
+		//$item = $aItem[0];
+		$item = $handle->fetchObject();
 
 		return $item;
 	}
@@ -144,8 +188,20 @@
 	function getItemByCode($link, $code){
 		include('config.php');
 
+		$query =
+			'SELECT TOP 1 Item.ID, Item.UUID, Item.Code, '.
+			'Item.Description, Item.ItemTypeID, Item.Price, '.
+			'Item.UnitID, Item.UseCombination, Item.SerialInfoOptional isSerialInformative, '.
+			'Item.CategoryBranchID, '.
+			'ItemType.Name itemType, ItemStatus.Name itemStatus '.
+			'FROM '.$table_item.' Item '.
+			'JOIN '.$table_itemType.' ItemType '.
+			'ON ItemType.ID = Item.ItemTypeID '.
+			'JOIN '.$table_itemStatus.' ItemStatus '.
+			'ON ItemStatus.ID = Item.ItemStatusID '.
+			'WHERE Item.Code = :code';
 		//$handle = $link->prepare('SELECT '.$table_item.'.ID, '.$table_item.'.UUID, '.$table_item.'.Code, Description, ItemTypeID, Price, UnitID, QuantityOnHand, UseCombination FROM '.$table_item.' LEFT JOIN '.$table_inventoryOnHand.' ON '.$table_inventoryOnHand.'.ItemID = '.$table_item.'.ID WHERE code = :code');
-		$handle = $link->prepare('SELECT ID, UUID, Code, Description, ItemTypeID, Price, UnitID, UseCombination, serialInfoOptional isSerialInformative FROM '.$table_item.' WHERE code = :code');
+		$handle = $link->prepare($query);
 		$handle->bindParam(':code', $code);
 		$handle->execute();
 
@@ -235,5 +291,12 @@
 	    }
 
 	    return $itemOptions;
+	}
+
+	function createResponse($status, $data){
+
+		$response = array('status' => $status, 'data' => $data);
+
+		return json_encode($response);
 	}
 ?>

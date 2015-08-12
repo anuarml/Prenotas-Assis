@@ -12,6 +12,9 @@ var Product = function(attr) {
 	this.ItemTypeID = parseInt(attr.ItemTypeID) || 0;
 	this.UseCombination = parseInt(attr.UseCombination) || 0;
 	this.options = attr.options || [];
+	this.itemType = attr.itemType || '';
+	this.itemStatus = attr.itemStatus || '';
+	this.CategoryBranchID = parseInt(attr.CategoryBranchID) || 0;
 
 	this.SerialID = attr.SerialID || 0;
 	this.serialQuantity = parseFloat(attr.serialQuantity) || 0;

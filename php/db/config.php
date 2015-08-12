@@ -25,10 +25,19 @@
     $cfg_store = '1';                   // Sucursal
     $cfg_workstation = 'A';             // Estación principal, debe estar abierta.
 
+    $cfg_validate_branch = true;        // Indica si se debe validar que todos los artículos que se escanean tengan rama.
+
     //------------ Impresoras ---------------
     $cfg_printers = [
         'Piso1',
     ];
+
+    //----------- Constantes Globales ------------
+
+    $CONST_ITEM_STATUS_ACTIVE = 'ALTA';
+    $CONST_ITEM_STATUS_INACTIVE = 'BAJA';
+
+    $CONST_ITEM_TYPE_KIT = 'Juego';
 
     // ----------  Nombre de tablas  -----------------
 	$table_prenote = 'OperationOnHold';
@@ -39,6 +48,9 @@
     $table_itemSerial = 'ItemSerial';
 	$table_itemCombination = 'ItemCombination';
     $table_itemOption = '[ItemOption]';
+    $table_itemType = '[ItemType]';
+    $table_itemStatus = '[ItemStatus]';
+
 	$table_optionDetail = 'OptionDetail';
 	$table_option = '[Option]';
 
