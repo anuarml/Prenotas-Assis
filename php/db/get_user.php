@@ -29,13 +29,22 @@
 		if(isset($_GET['login']) && $_GET['login'] != ""){
 			$login = $_GET['login'];
 			
-			$handle = $link->prepare('SELECT usr.ID, usr.Name FROM '.$table_user.' usr WHERE usr.Login = :login');
+			$handle = $link->prepare('SELECT usr.ID, usr.Name, usr.Active, usr.SalesPersonExternalID salesPersonID FROM '.$table_user.' usr WHERE usr.Login = :login');
 
 			$handle->bindParam(':login', $login);
 		
 		    $handle->execute();
 
 		    if($user = $handle->fetchObject()){
+
+		    	/*if($user->Active != 1){
+		    		throw new PDOException('Usuario inactivo.');
+		    	}*/
+
+		    	if(!$user->salesPersonID){
+		    		throw new PDOException('El usuario no tiene configurado un ID de vendedor.');
+		    	}
+
 		    	echo json_encode( array('status' => 'success', 'data' => $user) );
 		    }
 		    else
