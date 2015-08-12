@@ -873,17 +873,28 @@
 						var isValidNumber = decimalRegExp.test(oTxtCant.value);
 
 						if (!isValidNumber) {
-							asl.notify(asl.notifications.application, asl.priority.normal,'Cantidad \''+oTxtCant.value+'\' inválida:', 'La unidad solo permite '+product.unitDecimals+' decimales.',['OK'],[null]);
-							oTxtCant.value = 1;
-							product.Quantity = 1;
+							var msg = null;
+
+							if(product.unitDecimals){
+								msg = 'La unidad solo permite '+product.unitDecimals+' decimales.';
+							}
+							else{
+								msg = 'La unidad no permite decimales.';
+							}
+
+							asl.notify(asl.notifications.application, asl.priority.normal,'Cantidad \''+oTxtCant.value+'\' inválida:', msg,['OK'],[null]);
+							oTxtCant.value = product.Quantity;
+							return;
 						}
 					}
 
 					if(parseFloat(oTxtCant.value) <= 0) {
 						asl.notify(asl.notifications.application, asl.priority.normal,'Cantidad \''+oTxtCant.value+'\' inválida:', 'La cantidad debe ser positiva.',['OK'],[null]);
-						oTxtCant.value = 1;
-						product.Quantity = 1;
+						oTxtCant.value = product.Quantity;
+						return;
 					}
+
+					product.Quantity = oTxtCant.value;
 				}
 			}
 
