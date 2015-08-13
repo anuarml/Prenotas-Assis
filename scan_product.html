@@ -32,7 +32,7 @@
 	        			window.location = 'prenota.html';
 	        		}
 	        	},
-	        	{
+	        	/*{
 	        		title : 'Descripción de opciones',
 	        		callback: function(){
 	        			if(product && product.optionID){
@@ -42,7 +42,7 @@
 	        				asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje' ,'El artículo no tiene opciones asignadas.',['OK'],[null]);
 	        			}
 	        		}
-	        	},
+	        	},*/
 	        	{
 	        		title: 'Salir',
 	        		callback: function(){
@@ -74,6 +74,15 @@
 				document.getElementById('p_serie').onclick = function(){
 					showSerialList();
 				};
+
+				document.getElementById('txt_opcion').onclick =  function(){
+        			if(product && product.optionID){
+        				requestCombinationDesc(product.optionID);
+        			}
+        			else{
+        				asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje' ,'El artículo no tiene opciones asignadas.',['OK'],[null]);
+        			}
+        		};
 
 				document.getElementById('txt_cant').onchange = function(){
 					checkNumberOfDecimals();
@@ -339,7 +348,8 @@
 						var txtOption = document.getElementById('txt_opcion');
 						
 						if(product.optionEID){
-							txtOption.value = product.optionEID;
+							//txtOption.value = product.optionEID;
+							txtOption.innerHTML = product.optionEID;
 						}
 
 						/*if(product.options && product.options.length){
@@ -400,7 +410,7 @@
 				dv_unit.innerHTML = '';
 				txt_cant.value = '';
 				txt_serie.value = '';
-				txt_opcion.value = '';
+				txt_opcion.innerHTML = '';
 
 				p_serie.style.visibility = 'hidden';
 				i_serie.style.visibility = 'hidden';
@@ -863,7 +873,7 @@
 								
 								requestItemPrice(product.ID, product.UnitID, product.optionID);
 
-								document.getElementById('txt_opcion').value = product.optionEID;
+								document.getElementById('txt_opcion').innerHTML = product.optionEID;
 
 								if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
 									document.getElementById('txt_serie').disabled = false;
@@ -1006,7 +1016,7 @@
 				<div id="product_info">
 					<div id="div_desc"><span id="p_description"></span><div id="dv_unitl">Unidad: </div><div id="dv_unit"></div></div>
 					<div class="row"><span>Precio: </span><span id="p_price"></span><span>Cant: </span><span><input type="number" id="txt_cant" title="Cantidad" value=""></span></div>
-					<div class="row"><span id="p_serie">Serie: </span><span id="i_serie"><input type="text" id="txt_serie" title="Serie" value=""></span><span id="p_opcion">Opt: </span><span id="i_opcion"><input type="text" id="txt_opcion" title="Opción" value="" disabled></span></div>
+					<div class="row"><span id="p_serie">Serie: </span><span id="i_serie"><input type="text" id="txt_serie" title="Serie" value=""></span><span id="p_opcion">Opt: </span><span id="i_opcion"><span id="txt_opcion"></span></span></div>
 				</div>
 				
 				<div class="clear"></div>
