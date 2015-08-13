@@ -39,6 +39,8 @@
 
     $CONST_ITEM_TYPE_KIT = 'Juego';
 
+    $MAX_ITEM_COMBINATION_OPTIONS = 10;
+
     // ----------  Nombre de tablas  -----------------
 	$table_prenote = 'OperationOnHold';
 	$table_prenoteDetails = 'OperationOnHoldDetail';
@@ -73,6 +75,8 @@
     $table_store = '[Store]';
 
     $table_register = '[Register]';
+
+    $table_sync = '[Sync]';
 	// --------------------------------------
     
     $db_url = 'sqlsrv:server='.$host.';Database='.$database;

@@ -1,12 +1,19 @@
 <?php
 	include_once('config.php');
+	include_once('get_item_combination2.php');
 
 	try{
-		if(isset($_GET['ID']) && $_GET['ID'] != "" && isset($_GET['Detail0']) && $_GET['Detail0'] != ""){
+		if( isset($_GET['ID']) && $_GET['ID'] != "" && 
+			isset($_GET['Detail0']) && $_GET['Detail0'] != "" &&
+			isset($_GET['combExternalID']) && $_GET['combExternalID'] != ""
+		){
+
+			$lastOption = 0;
 			$details = array();
 
-			$id = $_GET['ID'];
+			$itemID = $_GET['ID'];
 			$details[] = $_GET['Detail0'];
+			$combExternalID = $_GET['combExternalID'];
 
 			$query = 'SELECT ID, UUID, ExternalID FROM '.$table_itemCombination.' WHERE ItemID = :ID AND optionDetail01ID = :detail0';
 
@@ -19,6 +26,18 @@
 				}
 
 				$query .= ' AND optionDetail'.$sDetailNum.'ID = :detail'.$i;
+
+				$lastOption = $i;
+			}
+
+			// Se agrega el siguiente optionDetailID en 0 para que no tome una opción parecida. ej: C1 y C1T2
+			if( $lastOption >= 0 && $lastOption < $MAX_ITEM_COMBINATION_OPTIONS - 1 ){
+				$nextOption = $lastOption + 1;
+
+				$detailNum = $nextOption + 1;
+				$sDetailNum = ($detailNum<10?'0':'').$detailNum;
+
+				$query .= ' AND optionDetail'.$sDetailNum.'ID = 0';
 			}
 
 
@@ -31,7 +50,7 @@
 
 			$handle = $link->prepare($query);
 
-			$handle->bindParam(':ID', $id);
+			$handle->bindParam(':ID', $itemID);
 			$handle->bindParam(':detail0', $details[0]);
 
 			$detailsLen = count($details);
@@ -41,13 +60,17 @@
 		 
 		    $handle->execute();
 
-		    if($result = $handle->fetchObject()){
+		    if($combination = $handle->fetchObject()){
 
-		    	$result->QuantityOnHand = getQuantityOnHand($link, $id, $result->ID);
+		    	$combination->QuantityOnHand = getQuantityOnHand($link, $itemID, $combination->ID);
 
-		    	echo json_encode($result);
+		    	echo json_encode($combination);
 		    }
-		    else echo json_encode(false);
+		    else{ //echo json_encode(false);
+		    	$combination = createItemCombination($link, $userID, $itemID, $details, $combExternalID);
+
+		    	echo json_encode($combination);
+		    }
 		}
 		else echo json_encode(false);
 	}

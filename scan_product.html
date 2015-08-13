@@ -127,7 +127,12 @@
 
 							var sParams = aParams.join('&');
 
-							requestItemCombination(sParams, jProduct.ID);
+							var combExternalID = JSON.parse( window.localStorage.getItem('combExternalID'));
+							
+							if (combExternalID != null) {
+			        			window.localStorage.removeItem('combExternalID');
+
+							requestItemCombination(sParams, jProduct.ID, combExternalID);
 
 							//show_product_info(jProduct);
 						}
@@ -832,8 +837,8 @@
 				window.location = 'unit_list.html';
 			}
 
-			function requestItemCombination(sParams, productID){
-				var url = 'php/db/get_item_combination2.php?ID='+productID+'&'+sParams;
+			function requestItemCombination(sParams, productID, combExternalID){
+				var url = 'php/db/get_item_combination2.php?ID='+productID+'&combExternalID='+combExternalID+'&'+sParams;
 
 	            var handle = function(response){
 	                try{
@@ -846,7 +851,7 @@
 							product.QuantityOnHand = parseFloat(oItemCombination.QuantityOnHand);
 							
 							requestItemPrice(product.ID, product.UnitID, product.optionID);
-							
+
 							document.getElementById('txt_opcion').value = product.optionEID;
 
 							if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){

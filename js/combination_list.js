@@ -89,6 +89,7 @@ var CombinationList = {
 			this.list.children[j].children[0].children[1].innerHTML = '<div>' + t[i].externalID + '</div> <div></div>';
 			
             this.list.children[j].id = t[i].id;
+            this.list.children[j].externalID = t[i].externalID;
             if (t[i].id) {
                 this.list.children[j].children[1].innerHTML = parseInt(t[i].quantity) || 0;
             } else {
@@ -124,6 +125,7 @@ var CombinationList = {
     selectCombination : function(e){
 
         var optionID = parseInt(e.currentTarget.id);
+        var externalID = e.currentTarget.externalID;
         var optionListNum = JSON.parse(window.localStorage.getItem('optionListNum'));
         var product = JSON.parse(window.localStorage.getItem('product'));
 		
@@ -138,6 +140,12 @@ var CombinationList = {
             aOptionDetail.push(optionID);
 
             window.localStorage.setItem('aOptionDetail',JSON.stringify(aOptionDetail));
+
+            var combExternalID = JSON.parse( window.localStorage.getItem('combExternalID'));
+
+            combExternalID += externalID;
+
+            window.localStorage.setItem('combExternalID',JSON.stringify(combExternalID));
         }
 
         if ( optionListNum+1 < product.options.length ) {
