@@ -8,6 +8,10 @@ function createItemCombination($link, $userID, $itemID, $details, $combExternalI
 	$lastUpdate = null;
 	$itemPrice = 0;
 
+	if(!$combExternalID){
+		throw new PDOException('No se pudo crear la combinación, falta el ExternalID.');
+	}
+
 	$statement = $link->query('SELECT NEWID() AS uuid, GETDATE() AS lastDate');
 
 	$result = $statement->fetchObject();
@@ -59,19 +63,17 @@ function createItemCombination($link, $userID, $itemID, $details, $combExternalI
 		}
 	}
 
-	/*$handle->bindParam(':optionDetail01ID', $optionDetail01ID);
-	$handle->bindParam(':optionDetail02ID', $optionDetail02ID);
-	$handle->bindParam(':optionDetail03ID', $optionDetail03ID);
-	$handle->bindParam(':optionDetail04ID', $optionDetail04ID);
-	$handle->bindParam(':optionDetail05ID', $optionDetail05ID);
-	$handle->bindParam(':optionDetail06ID', $optionDetail06ID);
-	$handle->bindParam(':optionDetail07ID', $optionDetail07ID);
-	$handle->bindParam(':optionDetail08ID', $optionDetail08ID);
-	$handle->bindParam(':optionDetail09ID', $optionDetail09ID);
-	$handle->bindParam(':optionDetail10ID', $optionDetail10ID);*/
-
 	$handle->execute();
 
+	$itemCombination = new stdClass();
+
+	$itemCombination->ID = 0;
+	$itemCombination->UUID = $uuid;
+	$itemCombination->ExternalID = $combExternalID;
+	$itemCombination->QuantityOnHand = 0;
+
 	// Indica a la base de datos que tiene que sincronizar la tabla con la BD central.
-	createSync($link, $uuid, $lastUpdate, strtoupper($table_itemCombination), 'F');
+	createSync($link, $uuid, $lastUpdate, $table_itemCombination, 'F');
+
+	return $itemCombination;
 }

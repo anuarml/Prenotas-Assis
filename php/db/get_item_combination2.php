@@ -1,6 +1,6 @@
 <?php
 	include_once('config.php');
-	include_once('get_item_combination2.php');
+	include_once('create_item_combination.php');
 
 	try{
 		if( isset($_GET['ID']) && $_GET['ID'] != "" && 
@@ -14,6 +14,7 @@
 			$itemID = $_GET['ID'];
 			$details[] = $_GET['Detail0'];
 			$combExternalID = $_GET['combExternalID'];
+			$userID = isset($_GET['userID'])?$_GET['userID']:0;
 
 			$query = 'SELECT ID, UUID, ExternalID FROM '.$table_itemCombination.' WHERE ItemID = :ID AND optionDetail01ID = :detail0';
 
@@ -41,12 +42,14 @@
 			}
 
 
-			$link = new PDO(   $db_url, 
-		                        $user, 
-		                        $password,  
-		                        array(
-		                            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-		                        ));	
+			$link = new PDO( 
+				$db_url, 
+                $user, 
+                $password,  
+                array(
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                )
+            );	
 
 			$handle = $link->prepare($query);
 
@@ -61,22 +64,22 @@
 		    $handle->execute();
 
 		    if($combination = $handle->fetchObject()){
+		    	// Se desactivó la verificación de inventario.
+		    	//$combination->QuantityOnHand = getQuantityOnHand($link, $itemID, $combination->ID);
 
-		    	$combination->QuantityOnHand = getQuantityOnHand($link, $itemID, $combination->ID);
-
-		    	echo json_encode($combination);
+		    	echo createResponse(true, $combination);
 		    }
 		    else{ //echo json_encode(false);
 		    	$combination = createItemCombination($link, $userID, $itemID, $details, $combExternalID);
 
-		    	echo json_encode($combination);
+		    	echo createResponse(true, $combination);
 		    }
 		}
-		else echo json_encode(false);
+		else throw new PDOException('No se especificó un artículo y/o combinación de opciones.');
 	}
 	catch(PDOException $ex){
-		error_log($ex->getMessage());
-	    print($ex->getMessage());
+		error_log('[get_item_combination2.php] '.$ex->getMessage());
+	    echo createResponse(false, $ex->getMessage());
 	}
 
 	function getQuantityOnHand($link, $itemID, $combinationID){
@@ -98,5 +101,12 @@
 		}
 
 		return $quantityOnHand;
+	}
+
+	function createResponse($status, $data){
+
+		$response = array('status' => $status, 'data' => $data);
+
+		return json_encode($response);
 	}
 ?>

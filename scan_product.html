@@ -131,6 +131,10 @@
 							
 							if (combExternalID != null) {
 			        			window.localStorage.removeItem('combExternalID');
+			        		}
+			        		else{
+			        			combExternalID = '';
+			        		}
 
 							requestItemCombination(sParams, jProduct.ID, combExternalID);
 
@@ -838,30 +842,44 @@
 			}
 
 			function requestItemCombination(sParams, productID, combExternalID){
-				var url = 'php/db/get_item_combination2.php?ID='+productID+'&combExternalID='+combExternalID+'&'+sParams;
+				var url = 'php/db/get_item_combination2.php?ID='+productID+'&combExternalID='+combExternalID+'&userID='+user.ID+'&'+sParams;
 
 	            var handle = function(response){
 	                try{
-	                    var oItemCombination = JSON.parse(response);
-	                    
-	                    if(oItemCombination){
-							product.optionEID = oItemCombination.ExternalID;
-							product.optionUUID = oItemCombination.UUID;
-							product.optionID = oItemCombination.ID;
-							product.QuantityOnHand = parseFloat(oItemCombination.QuantityOnHand);
-							
-							requestItemPrice(product.ID, product.UnitID, product.optionID);
+	                	var oResponse = JSON.parse(response);
 
-							document.getElementById('txt_opcion').value = product.optionEID;
+	                	if(!oResponse){
+							asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:' , 'No hubo respuesta del servidor',['OK'],[null]);
+						}
 
-							if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
-								document.getElementById('txt_serie').disabled = false;
-								document.getElementById('txt_serie').onclick = null;
-							}
-	                    }
+						if(oResponse.status == true){
+							var oItemCombination = oResponse.data;
+
+							if(oItemCombination){
+								product.optionEID = oItemCombination.ExternalID;
+								product.optionUUID = oItemCombination.UUID;
+								product.optionID = oItemCombination.ID;
+								//product.QuantityOnHand = parseFloat(oItemCombination.QuantityOnHand) || 0;
+								
+								requestItemPrice(product.ID, product.UnitID, product.optionID);
+
+								document.getElementById('txt_opcion').value = product.optionEID;
+
+								if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
+									document.getElementById('txt_serie').disabled = false;
+									document.getElementById('txt_serie').onclick = null;
+								}
+		                    }
+		                    else{
+		                    	asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , 'No se pudo obtener la combinación de opciones.',['OK'],[null]);
+		                    }
+						}
+						else {
+							asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , oResponse.data,['OK'],[null]);
+						}
 	                }
 	                catch(e){
-	                    alert(response);
+	                    asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , response,['OK'],[null]);
 	                }
 	            };
 

@@ -143,6 +143,10 @@ var CombinationList = {
 
             var combExternalID = JSON.parse( window.localStorage.getItem('combExternalID'));
 
+            if(combExternalID==null){
+                combExternalID = '';
+            }
+
             combExternalID += externalID;
 
             window.localStorage.setItem('combExternalID',JSON.stringify(combExternalID));
