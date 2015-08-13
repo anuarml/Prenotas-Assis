@@ -52,9 +52,9 @@
         	]);
 			
 			asl.events.subscribe(asl.events.types.loaded, function() {
-				document.getElementById('txt_opcion').onfocus = function(){
+				/*document.getElementById('txt_opcion').onfocus = function(){
 					scanner.enable();
-				};
+				};*/
 				document.getElementById('txt_serie').onfocus = function(){
 					scanner.enable();
 				};
@@ -63,9 +63,9 @@
 					serial_assign(txt_serie.value);				
 				};
 
-				txt_opcion.onchange = function(){
+				/*txt_opcion.onchange = function(){
 					combination_assign(txt_opcion.value);				
-				};
+				};*/
 
 				document.getElementById('p_opcion').onclick = function(){
 					showCombinationList();
@@ -342,12 +342,12 @@
 							txtOption.value = product.optionEID;
 						}
 
-						if(product.options && product.options.length){
+						/*if(product.options && product.options.length){
 							txtOption.disabled = false;
 						}
 						else {
 							txtOption.disabled = true;
-						}
+						}*/
 					}
 					else{
 						p_opcion.style.visibility = 'hidden';
@@ -1006,7 +1006,7 @@
 				<div id="product_info">
 					<div id="div_desc"><span id="p_description"></span><div id="dv_unitl">Unidad: </div><div id="dv_unit"></div></div>
 					<div class="row"><span>Precio: </span><span id="p_price"></span><span>Cant: </span><span><input type="number" id="txt_cant" title="Cantidad" value=""></span></div>
-					<div class="row"><span id="p_serie">Serie: </span><span id="i_serie"><input type="text" id="txt_serie" title="Serie" value=""></span><span id="p_opcion">Opt: </span><span id="i_opcion"><input type="text" id="txt_opcion" title="Opción" value=""></span></div>
+					<div class="row"><span id="p_serie">Serie: </span><span id="i_serie"><input type="text" id="txt_serie" title="Serie" value=""></span><span id="p_opcion">Opt: </span><span id="i_opcion"><input type="text" id="txt_opcion" title="Opción" value="" disabled></span></div>
 				</div>
 				
 				<div class="clear"></div>
