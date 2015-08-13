@@ -76,8 +76,8 @@
 				};
 
 				document.getElementById('txt_opcion').onclick =  function(){
-        			if(product && product.optionID){
-        				requestCombinationDesc(product.optionID);
+        			if(product && product.optionUUID){
+        				requestCombinationDesc(product.optionUUID);
         			}
         			else{
         				asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje' ,'El artículo no tiene opciones asignadas.',['OK'],[null]);
@@ -336,7 +336,7 @@
 					document.getElementById('txt_cant').value = product.Quantity;
 
 					if ( (product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE) &&
-					    product.UseCombination == 1 && !product.optionID) {
+					    product.UseCombination == 1 && !product.optionUUID) {
 
 						lockSerialInput();
 					}
@@ -735,7 +735,7 @@
 			function showSerialList(){
 				if (product && (product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE)) {
 
-					if(product.UseCombination == 0 || product.UseCombination == 1 && product.optionID){
+					if(product.UseCombination == 0 || product.UseCombination == 1 && product.optionUUID){
 
 						window.localStorage.setItem('aItemUnits', JSON.stringify(aItemUnits));
 						window.localStorage.setItem('product', JSON.stringify(product));
@@ -968,8 +968,8 @@
 	            ajaxRequest('GET', url, handle);
 			}
 
-			function requestCombinationDesc(itemCombinationID){
-				var url = 'php/db/get_combination_desc.php?itemCombinationID='+itemCombinationID;
+			function requestCombinationDesc(itemCombinationUUID){
+				var url = 'php/db/get_combination_desc.php?itemCombinationUUID='+itemCombinationUUID;
 
 	            var handle = function(response){
 	                try{

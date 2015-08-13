@@ -2,9 +2,9 @@
 	include('config.php');
 
 	try{
-		if(isset($_GET['itemCombinationID']) && $_GET['itemCombinationID'] != ""){
+		if(isset($_GET['itemCombinationUUID']) && $_GET['itemCombinationUUID'] != ""){
 
-			$itemCombinationID = $_GET['itemCombinationID'];
+			$itemCombinationUUID = $_GET['itemCombinationUUID'];
 
 			$link = new PDO(
 				$db_url, 
@@ -31,7 +31,7 @@
 							   'OptionDetail09ID,'.
 							   'OptionDetail10ID '.
 						'FROM ItemCombination '.
-						'WHERE ID = :itemCombinationID '.
+						'WHERE UUID = :itemCombinationUUID '.
 					') AS SourceTable '.
 					'UNPIVOT ('.
 						'OptionDetailID FOR ID IN ('.
@@ -51,7 +51,7 @@
 			
 			$handle = $link->prepare($query);
 
-			$handle->bindParam(':itemCombinationID', $itemCombinationID);
+			$handle->bindParam(':itemCombinationUUID', $itemCombinationUUID);
 
 			$handle->execute();
 
