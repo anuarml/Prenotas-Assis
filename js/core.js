@@ -43,6 +43,7 @@ if(!productos){
 }
 
 var oPrenote = function(attr) {
+	this.uuid = attr.uuid || '';
 	this.folio = attr.folio || 0;
 	this.total = attr.total || 0;
 	this.narticles = attr.narticles || 0;
@@ -51,13 +52,21 @@ var oPrenote = function(attr) {
 	this.product = attr.product || [];
     this.terminal = attr.terminal || '00';
     this.employeeName = attr.employeeName || '';
-	//this.store_id = cfg.store.id || 0;
-	//this.store_name = cfg.store.name || '';
+	this.store_id = attr.store.id || null;
+	this.store_name = attr.store.name || null;
     this.printer = attr.printer || '';
-    //this.customerUUID = cfg.customerUUID || '';
+    this.customerUUID = attr.customerUUID || null;
 	this.cotizationNumber = attr.cotizationNumber || '';
 	this.clientName = attr.clientName || '';
+	this.changeClient = attr.changeClient || false;
 };
+
+var prenote = null;
+/*var jsPrenote = window.localStorage.getItem('prenote');
+
+if(jsPrenote!=null){
+	prenote = new oPrenote(JSON.parse(jsPrenote));
+}*/
 
 
 var User = function(attr) {

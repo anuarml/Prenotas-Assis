@@ -6,7 +6,7 @@
 		
 		
 		
-		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID, ItemSerialBatch) VALUES (0, NEWID(), :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :ItemUUID, :combinationID, :combinationUUID, :serialID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID, :itemSerialBatch)');
+		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, Line, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID, ItemSerialBatch) VALUES (0, NEWID(), :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :line, :ItemUUID, :combinationID, :combinationUUID, :serialID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID, :itemSerialBatch)');
 				
 		//$handle->bindParam(':UUID', $prenoteDetails_uuid);
 		$handle->bindParam(':creationDate', $lastUpdate);
@@ -24,6 +24,7 @@
 		$handle->bindParam(':Price', $Price);
 		$handle->bindParam(':id_employee', $id_employee, PDO::PARAM_INT);
 		$handle->bindParam(':itemSerialBatch', $itemSerialBatch);
+		$handle->bindParam(':line', $line);
 
 		$handle->bindValue(':recordStatusID', '1');
 		
@@ -31,7 +32,6 @@
 
 		for($i=0;$i<$lenght;$i++){
 			//$prenoteDetails_uuid = UUID::generate(UUID::UUID_RANDOM, UUID::FMT_STRING);
-
 
 			$UUID = $product[$i]->UUID;
 			$Quantity = $product[$i]->Quantity;
@@ -42,6 +42,7 @@
 			$combinationID = $product[$i]->optionID;
 			$combinationUUID = $product[$i]->optionUUID;
 			$itemSerialBatch = $product[$i]->serialBatch;
+			$line = $i + 1;
 
 			if($product[$i]->isSerialInformative == 0 || $itemSerialBatch == '')
 				$itemSerialBatch = null;

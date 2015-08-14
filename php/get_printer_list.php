@@ -1,5 +1,5 @@
 <?php
-include_once('db/config.php');
+include('db/config.php');
 $printers = array();
 if (function_exists('printer_list')) {
     
@@ -8,6 +8,7 @@ if (function_exists('printer_list')) {
 	//echo $printer['PRINTERNAME'].'<br>';
     	$printerName = $printer['PRINTERNAME'];
 
+	//error_log(json_encode($cfg_printers));
     	if(in_array($printerName,$cfg_printers))
         	$printers[] = array('name' => $printer['PRINTERNAME'],'ip'=>'');
     }

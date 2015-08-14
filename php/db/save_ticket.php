@@ -15,6 +15,18 @@
 			
 			$saved = false;
 			$printed = false;
+			$validClient = false;
+
+			if(!$prenote) {
+				throw new PDOException('El servidor no recibió ninguna prenota.');
+			}
+			
+			$link = new PDO(   $db_url, 
+			                        $user, 
+			                        $password,  
+			                        array(
+			                            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+			                        ));
 
 			if(!$prenote->folio){
 				$date = new DateTime();
@@ -35,13 +47,6 @@
 				//$prenote_uuid = UUID::generate(UUID::UUID_RANDOM, UUID::FMT_STRING);
 				
 
-				$link = new PDO(   $db_url, 
-			                        $user, 
-			                        $password,  
-			                        array(
-			                            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-			                        ));
-
 				
 				$st = $link->query ('SELECT NEWID() AS prenoteUUID');
 
@@ -61,7 +66,11 @@
 
 				$link->query('UPDATE ThoConsecutivo SET Consecutivo = Consecutivo + 1 WHERE Tipo = \'PRENOTA\'');
 
-				$terminalCode = ord($prenote->terminal);
+				if(!$cfg_workstation){
+					throw new PDOException('No hay una caja principal configurada.');
+				}
+
+				$terminalCode = ord($cfg_workstation);
 
 				$code = generate_barcode(true, $code, $terminalCode);
 
@@ -75,6 +84,8 @@
 				else{
 					$prenote->customerUUID = null;
 					$prenote->customerID = null;
+					
+					error_log('[save_ticket.php] No se encontró el cliente configurado.');
 				}
 
 				$store = getStore($link);
@@ -93,6 +104,8 @@
 						$prenote->register_id = null;
 						$prenote->register_uuid = null;
 						$prenote->register_workstation = null;
+
+						error_log('[save_ticket.php] No se encontró el registro.');
 					}
 				} else {
 					$prenote->store_id = null;
@@ -101,12 +114,14 @@
 					$prenote->register_id = null;
 					$prenote->register_uuid = null;
 					$prenote->register_workstation = null;
+
+					error_log('[save_ticket.php] No se encontró la tienda configurada.');
 				}
 
 
 				$link->beginTransaction();
 
-				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, CreationUserID, LastUpdate, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, SalesPersonUserID, TargetStoreID, RegisterID, RegisterUUID, CustomerID, CustomerUUID, GroupIdentifier, Code,  Label, Total, Quantity, Observation, CustomData, RecordStatusID) VALUES (:id, :UUID, :creationDate, :create_id, :lastUpdate, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :id_employee, :targetStoreID, :registerID, :registerUUID, :customer_id, :customer_uuid, NEWID(), :code, :label, :total, :narticles, :observation, :customData, :recordStatusID)');
+				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, CreationUserID, LastUpdate, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, SalesPersonUserID, TargetStoreID, RegisterID, RegisterUUID, CustomerID, CustomerUUID, GroupIdentifier, Code, Total, Quantity, Observation, CustomData, RecordStatusID) VALUES (:id, :UUID, :creationDate, :create_id, :lastUpdate, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :id_employee, :targetStoreID, :registerID, :registerUUID, :customer_id, :customer_uuid, NEWID(), :code, :total, :narticles, :observation, :customData, :recordStatusID)');
 				
 				//$handle = $link->prepare( ' INSERT INTO ' .$table_prenote. ' ( [ID], [UUID], [LastUpdate], [CreationUserID], [LastUpdateUserID], [Type], [TypeDescription], [Dte], [Tme], [StoreID], [Workstation], [Code], [SalesPersonUserID], [Total], [Quantity] ) VALUES ( 0, :UUID, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, 2, :workstation, :code, :id_employee, :total, :narticles ) ' );
 
@@ -131,7 +146,7 @@
 				
 				$handle->bindValue(':targetStoreID', '0');
 				$handle->bindParam(':code', $code);
-			    $handle->bindParam(':label', $prenote->clientName);
+			    //$handle->bindParam(':label', $prenote->clientName);
 			    $handle->bindParam(':total', $prenote->total);
 			    $handle->bindParam(':narticles', $prenote->narticles);
 			    $handle->bindParam(':observation', $prenote->cotizationNumber);
@@ -145,13 +160,40 @@
 				$link->commit();
 
 				$prenote->folio = $code;
+				$prenote->uuid = $prenote_uuid;
 
 				$saved = true;
+
+				// Validación del nombre de cliente.
+				$clientName = $prenote->clientName;
+				//$prenoteCode = $prenote->folio;
+
+				if( numberOfClients($link, $clientName) <= 0 ){
+					updateClient($link, $prenote_uuid, $clientName);
+					$validClient = true;
+				}
+				else{
+					throw new PDOException('Nombre de cliente duplicado.');
+				}
 			}
 			else{
-				$terminalCode = ord($prenote->terminal);
+				$terminalCode = ord($cfg_workstation);
 				generate_barcode(false , $prenote->folio, $terminalCode);
 				$saved = true;
+
+				if($prenote->changeClient){
+					// Validación del nombre de cliente.
+					$clientName = $prenote->clientName;
+					$prenote_uuid = $prenote->uuid;
+
+					if( numberOfClients($link, $clientName) <= 0 ){
+						updateClient($link, $prenote_uuid, $clientName);
+						$validClient = true;
+					}
+					else{
+						throw new PDOException('Nombre de cliente duplicado.');
+					}
+				}
 			}
 			
 			
@@ -159,21 +201,16 @@
 				$isPrinted = print_ticket($prenote);
 			}
 			
-			$isPrinted = false;
-			if($isPrinted == true){
-				unlink($prenote->folio.".png");
-				unlink($prenote->folio.".bmp");
-				unlink($prenote->folio.".pdf");
-				$printed = true;
-			}
+			$printed = $isPrinted;
+			unlink($prenote->folio.".png");
 			
-			echo json_encode( array( $saved, $printed, $prenote) );
+			echo createResponse($saved, $printed, $prenote, $validClient, '');
 		}
 	}
 	catch(PDOException $ex){
-		error_log($ex->getMessage());
-	    //print($ex->getMessage());
-	    echo json_encode( array( $saved, $printed, $prenote) );
+		error_log('[save_ticket.php] '.$ex->getMessage());
+	    //echo json_encode( array( $saved, $printed, $prenote)  );
+	    echo createResponse( $saved, $printed, $prenote, $validClient, $ex->getMessage());
 	}
 
 	function getCustomer($link){
@@ -191,18 +228,48 @@
 		return $customer;
 	}
 
-	/*function getStore($link){
+	function numberOfClients($link, $clientName){
 		include('config.php');
-
-		$store = null;
-
-		$handle = $link->prepare('SELECT ID id, Name name FROM '.$table_store.' WHERE Number = :number');
-
-		$handle->bindParam(':number', $cfg_store);
+		$numberOfClients = 0;
+		$query =
+			'SELECT COUNT(prenote.ID) AS clientExists FROM '.$table_prenote.' prenote '.
+			'WHERE prenote.Label = :label';
+		
+		$handle = $link->prepare($query);
+		$handle->bindParam(':label', $clientName);
 		$handle->execute();
 
-		$store = $handle->fetch(PDO::FETCH_OBJ);
+		if($result = $handle->fetchObject()){
+			$numberOfClients = $result->clientExists;
+		}
 
-		return $store;
-	}*/
+		return $numberOfClients;
+	}
+
+	function updateClient($link, $prenote_uuid, $clientName){
+		include('config.php');
+		$query =
+			'UPDATE '.$table_prenote.' '.
+			'SET Label = :label '.
+			'WHERE UUID = :uuid';
+		
+		$handle = $link->prepare($query);
+		$handle->bindParam(':label', $clientName);
+		$handle->bindParam(':uuid', $prenote_uuid);
+		$handle->execute();
+	}
+
+	function createResponse($saved, $printed, $prenote, $validClient, $message){
+		$status = array(
+	    	'saved'=>$saved,
+	    	'printed'=>$printed,
+	    	'prenote'=>$prenote,
+	    	'validClient'=>$validClient
+	    );
+
+		$response = array('status' => $status, 'message' => $message);
+
+		return json_encode($response);
+	}
+
 ?>

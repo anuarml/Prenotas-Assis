@@ -182,6 +182,15 @@ function delete_prenote(){
 }
 
 function save(){
+
+    var jPrenote = window.localStorage.getItem('prenote');
+
+    if(jPrenote != null){
+        window.localStorage.removeItem('prenote');
+        json_prenote = jPrenote;
+        save_prenote();
+        return;
+    }
     
 	if(window.localStorage.getItem('nueva_prenota')){
 		var nTotal = Prenota.calcularTotal();
@@ -241,19 +250,43 @@ function save_prenote() {
             var response = xmlhttp.responseText.trim();
 			//asl.notify(asl.notifications.application,asl.priority.normal,'Error:',response,['OK'],[null]);
             try{
-                var aResponse = JSON.parse(response);
+                var oResponse = JSON.parse(response);
 
-                var saved = aResponse[0];
-                var printed = aResponse[1];
-                var prenote = aResponse[2];
+                if(!oResponse){
+                    asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','No se obtuvo respuesta del servidor.',['OK'],[null]);
+                    return;
+                }
+
+                //var aResponse = JSON.parse(response);
+                var status = oResponse.status;
+                var message = oResponse.message || '';
+
+                var saved = status.saved;
+                var printed = status.printed;
+                var validClient = status.validClient;
+                //var serverPrenote = status.prenote;
 					
                 if(!saved){
-                    asl.notify(asl.notifications.application,asl.priority.normal,'Error:','No se pudo guardar el ticket.',['OK'],[null]);
+                    asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo guardar el ticket',message,['OK'],[null]);
+                    return;
                 }
-                else if(!printed){
-                    asl.notify(asl.notifications.application,asl.priority.normal,'Error:','No se pudo imprimir el ticket.',['OK'],[null]);
+
+                prenote = new oPrenote(status.prenote || {});
+
+                if(!validClient){
+                    window.localStorage.setItem('prenote', JSON.stringify(prenote));
+                    asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje','Ya existe una prenota con el cliente: \''+prenote.clientName+'\'.',['Cambiar'],[askClientName]);
+                    return;
                 }
-                else if(typeof(prenote) == 'object'){
+                
+                if(!printed){
+                    window.localStorage.setItem('prenote', JSON.stringify(prenote));
+
+                    asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo imprimir el ticket.','',['OK'],[null]);
+                    return;
+                }
+                
+                if(typeof(prenote) == 'object'){
                     asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Ticket impreso con folio: '+ prenote.folio,['OK'],[null]);
                     
                     if(window.localStorage.getItem('nueva_prenota')){
@@ -273,4 +306,34 @@ function save_prenote() {
     xmlhttp.open("POST","php/db/save_ticket.php",true);
     xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded charset=utf-8");
     xmlhttp.send("prenote=" +json_prenote);
+}
+
+function saveName(inputId, value){
+    var clientName;
+    clientName = value;
+    hasName = true;
+    var jclientName = JSON.stringify(clientName);
+    var jhasName = JSON.stringify(hasName);
+    //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Client guardado.',['OK'],[null]);
+    window.localStorage.setItem('sclientName', jclientName);
+    window.localStorage.setItem('bhasName', jhasName);
+    
+    prenote.clientName = clientName;
+    prenote.changeClient = true;
+
+    json_prenote = JSON.stringify(prenote);
+
+    //window.localStorage.setItem('prenote', json_prenote);
+
+    save_prenote();
+}
+
+function askClientName(){
+    asl.showKeyboard({
+        inputId: 'askClientName',
+        title : "Ingresa el cliente.",
+        type : 'text',
+        scanner: true,
+        back: false
+    }, saveName );
 }

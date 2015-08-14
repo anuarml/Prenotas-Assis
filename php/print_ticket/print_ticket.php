@@ -19,11 +19,15 @@
 				$flag=false;
 			}
 
+			unlink($prenote->folio.".pdf");
+
 		} else {
 			// Imprimir prenota en una impresora conectada al servidor.
 			convertPngToBmp($prenote->folio);
 
 			$flag = print_prenote2($prenote);
+
+			unlink($prenote->folio.".bmp");
 		}
 
 		return $flag;

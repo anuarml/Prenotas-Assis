@@ -29,7 +29,7 @@
 
     //------------ Impresoras ---------------
     $cfg_printers = [
-        'Piso1',
+        'Piso1'
     ];
 
     //----------- Constantes Globales ------------

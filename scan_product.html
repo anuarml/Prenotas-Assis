@@ -459,7 +459,7 @@
 						if(product.ItemTypeID == ItemType.SERIE){
 							if(product.isSerialInformative){
 								if(!product.serialBatch){
-									asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', 'No tiene serial', ['OK'], [null]);
+									asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', 'No tiene serie', ['OK'], [null]);
 									return;
 								}
 							}
@@ -860,6 +860,7 @@
 
 	                	if(!oResponse){
 							asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:' , 'No hubo respuesta del servidor',['OK'],[null]);
+							return;
 						}
 
 						if(oResponse.status == true){
