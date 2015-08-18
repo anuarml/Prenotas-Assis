@@ -86,10 +86,10 @@ var SerialList = {
         
         for(var j = 0, length = t.length, i = length - 1 - (page * this.pagingInfo.perPage); (i >= 0) && (j < this.pagingInfo.perPage); i--, j++) {
 	        this.list.children[j].children[0].children[0].innerHTML = t[i].SerialBatch;          
-			this.list.children[j].children[0].children[1].innerHTML = '<div></div> <div></div>';
+			//this.list.children[j].children[0].children[1].innerHTML = '<div></div> <div></div>';
 			
             this.list.children[j].id = i;
-            this.list.children[j].children[1].innerHTML = parseFloat(t[i].Quantity) || 0;
+            this.list.children[j].children[0].children[1].children[1].innerHTML = parseFloat(t[i].Quantity) || 0;
 
             this.list.children[j].style.setProperty('visibility', 'visible');
         }
@@ -121,10 +121,10 @@ var SerialList = {
 
         var aSerialsOffset = parseInt(e.currentTarget.id);
 		
-		if(parseInt(e.currentTarget.children[1].innerHTML) == 0){
+		/*if(parseInt(e.currentTarget.children[1].innerHTML) == 0){
 			asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:' ,'No hay artículos disponibles.',['OK'],[null]);
 			return;
-		}
+		}*/
 
         window.localStorage.setItem('oSelectedSerial',JSON.stringify(SerialList.aSerial[aSerialsOffset]));
 

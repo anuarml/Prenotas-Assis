@@ -86,14 +86,14 @@ var CombinationList = {
         
         for(var j = 0, length = t.length, i = length - 1 - (page * this.pagingInfo.perPage); (i >= 0) && (j < this.pagingInfo.perPage); i--, j++) {
 	        this.list.children[j].children[0].children[0].innerHTML = t[i].name;          
-			this.list.children[j].children[0].children[1].innerHTML = '<div>' + t[i].externalID + '</div> <div></div>';
+			this.list.children[j].children[0].children[1].children[0].innerHTML = t[i].externalID;
 			
             this.list.children[j].id = t[i].id;
             this.list.children[j].externalID = t[i].externalID;
             if (t[i].id) {
-                this.list.children[j].children[1].innerHTML = parseInt(t[i].quantity) || 0;
+                this.list.children[j].children[0].children[1].children[1].innerHTML = parseInt(t[i].quantity) || 0;
             } else {
-                this.list.children[j].children[1].innerHTML = '';
+                this.list.children[j].children[0].children[1].children[1].innerHTML = '';
             }
 
             this.list.children[j].style.setProperty('visibility', 'visible');
