@@ -6,19 +6,21 @@
         <link href="css/asl.css" rel="stylesheet" type="text/css" media="screen, projection" />
         <link href="css/reset.css" rel="stylesheet" type="text/css" media="screen, projection" />
         <link href="css/styles.css" rel="stylesheet" type="text/css" media="screen, projection" />
-        <script type="text/javascript" src="js/core.js"></script>
     </head>
     <body class="badge">
         <div class="container">
             <img src="img/kalin.png" />
             <div class="user_info">
                 <div>Hola, soy</div>
-                <div class="name" id="b_name"><strong></strong></div>
+                <div class="name" id="b_name"></div>
                 <!--<div><strong>Empleado</strong></div>-->
             </div>
         </div>
          <script type="text/javascript">
-		 	document.getElementById('b_name').innerHTML = '<strong>' + user.Name + '</strong>';
+            window.onload = function(){
+                var user = JSON.parse(window.localStorage.getItem('user'));
+                document.getElementById('b_name').innerHTML = '<strong>' + user.Name + '</strong>';
+            };
          </script>
     </body>
 </html>

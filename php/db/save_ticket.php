@@ -189,6 +189,7 @@
 					if( numberOfClients($link, $clientName) <= 0 ){
 						updateClient($link, $prenote_uuid, $clientName);
 						$validClient = true;
+						$prenote->changeClient = false;
 					}
 					else{
 						throw new PDOException('Nombre de cliente duplicado.');

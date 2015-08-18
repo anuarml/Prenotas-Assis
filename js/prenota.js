@@ -1,3 +1,4 @@
+var json_prenote = null;
 var Prenota = {
     list: null,
     pagingTop: null,
@@ -182,7 +183,7 @@ function delete_prenote(){
 }
 
 function save(){
-
+try{
     var jPrenote = window.localStorage.getItem('prenote');
 
     if(jPrenote != null){
@@ -199,19 +200,20 @@ function save(){
 		var sclientName = JSON.parse(window.localStorage.getItem('sclientName'));
 		window.localStorage.removeItem('answerOfCotization');
 		window.localStorage.removeItem('nCotizationNumber');
+
 		var gprenota = new oPrenote({
 				total: nTotal,
 				id_employee: user.ID,
 				product: productos,
 				narticles: nCant,
-				terminal : terminal.number,
+				//terminal : terminal.number,
 				employeeName : user.Name,
 				printer : selectedPrinter,
 				cotizationNumber : ncotizationNumber,
 				clientName : sclientName
 				
 		});
-		
+
 		json_prenote = JSON.stringify(gprenota);
 		//window.localStorage.setItem('lastPrenote', json_prenote);
 	}else{
@@ -219,6 +221,10 @@ function save(){
 	}
 	
 	 save_prenote();
+    }
+    catch(e){
+        asl.notify(asl.notifications.application,asl.priority.normal,e.message,JSON.stringify(e),['OK'],[null]);
+    }
 }
 
 function exit(){
@@ -287,6 +293,8 @@ function save_prenote() {
                 }
                 
                 if(typeof(prenote) == 'object'){
+
+                    window.localStorage.removeItem('prenote');
                     asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Ticket impreso con folio: '+ prenote.folio,['OK'],[null]);
                     
                     if(window.localStorage.getItem('nueva_prenota')){
