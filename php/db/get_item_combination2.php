@@ -1,6 +1,7 @@
 <?php
 	include_once('config.php');
 	include_once('create_item_combination.php');
+	include_once('get_combination_desc.php');
 
 	try{
 		if( isset($_GET['ID']) && $_GET['ID'] != "" && 
@@ -63,17 +64,16 @@
 		 
 		    $handle->execute();
 
-		    if($combination = $handle->fetchObject()){
-		    	// Se desactivó la verificación de inventario.
-		    	//$combination->QuantityOnHand = getQuantityOnHand($link, $itemID, $combination->ID);
-
-		    	echo createResponse(true, $combination);
-		    }
-		    else{ //echo json_encode(false);
+		    if( !($combination = $handle->fetchObject()) ){
 		    	$combination = createItemCombination($link, $userID, $itemID, $details, $combExternalID);
-
-		    	echo createResponse(true, $combination);
 		    }
+
+		    // Se desactivó la verificación de inventario.
+	    	//$combination->QuantityOnHand = getQuantityOnHand($link, $itemID, $combination->ID);
+
+		    $combination->description = get_combination_desc($link, $combination->UUID);
+
+	    	echo createResponse(true, $combination);
 		}
 		else throw new PDOException('No se especificó un artículo y/o combinación de opciones.');
 	}

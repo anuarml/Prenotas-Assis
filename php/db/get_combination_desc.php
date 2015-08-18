@@ -1,18 +1,23 @@
 <?php
+
+function get_combination_desc($link, $itemCombinationUUID){
 	include('config.php');
 
-	try{
-		if(isset($_GET['itemCombinationUUID']) && $_GET['itemCombinationUUID'] != ""){
+	//try{
+		//if(isset($_GET['itemCombinationUUID']) && $_GET['itemCombinationUUID'] != ""){
+		$optionsDesc = '';
 
-			$itemCombinationUUID = $_GET['itemCombinationUUID'];
+		if($itemCombinationUUID){
 
-			$link = new PDO(
-				$db_url, 
-		        $user, 
-		        $password,  
-		        array(
-		            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-		    ));
+			//$itemCombinationUUID = $_GET['itemCombinationUUID'];
+
+			//$link = new PDO(
+			//	$db_url, 
+		    //    $user, 
+		    //    $password,  
+		    //    array(
+		    //        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+		    //));
 
 			$query = 		    
 				'SELECT o.Name optionType, OptionDetail.Name optionName '.
@@ -55,14 +60,28 @@
 
 			$handle->execute();
 
-			$optionDescList = $handle->fetchAll(PDO::FETCH_OBJ);
+			if( $optionDescList = $handle->fetchAll(PDO::FETCH_OBJ) ){
 
-			echo json_encode(array('status'=>'success','data'=>$optionDescList));
+				$optionListLen = count($optionDescList);
+
+				for($i = 0; $i < $optionListLen; $i++){
+	    			
+	    			if($i > 0){
+	    				$optionsDesc .= ' | ';
+	    			}
+	    			$optionsDesc .= $optionDescList[$i]->optionName;
+				}
+			}
+
+			//echo json_encode(array('status'=>'success','data'=>$optionDescList));
 		}
 		else throw new PDOException('No se tienen opciones');
+
+		return $optionsDesc;
 		
-	}
-	catch(PDOException $ex){
-		error_log($ex->getMessage());
-		echo json_encode(array('status'=>'error','data'=>$ex->getMessage()));
-	}
+	//}
+	//catch(PDOException $ex){
+	//	error_log($ex->getMessage());
+	//	echo json_encode(array('status'=>'error','data'=>$ex->getMessage()));
+	//}
+}

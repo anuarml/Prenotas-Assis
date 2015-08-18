@@ -76,8 +76,9 @@
 				};
 
 				document.getElementById('txt_opcion').onclick =  function(){
-        			if(product && product.optionUUID){
-        				requestCombinationDesc(product.optionUUID);
+        			if(product && product.optionUUID && product.optionDesc){
+        				//requestCombinationDesc(product.optionUUID);
+        				asl.notify(asl.notifications.application, asl.priority.normal,'Opciones' ,product.optionDesc,['OK'],[null]);
         			}
         			else{
         				asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje' ,'El artículo no tiene opciones asignadas.',['OK'],[null]);
@@ -653,6 +654,7 @@
 				product.optionEID = '';
 				product.optionName = '';
 				product.optionUUID = '';
+				product.optionDesc = '';
 				product.optionID = 0;
 				product.QuantityOnHand = 0;
 
@@ -870,6 +872,7 @@
 								product.optionEID = oItemCombination.ExternalID;
 								product.optionUUID = oItemCombination.UUID;
 								product.optionID = oItemCombination.ID;
+								product.optionDesc = oItemCombination.description;
 								//product.QuantityOnHand = parseFloat(oItemCombination.QuantityOnHand) || 0;
 								
 								requestItemPrice(product.ID, product.UnitID, product.optionID);

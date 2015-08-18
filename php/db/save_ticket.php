@@ -194,6 +194,8 @@
 					else{
 						throw new PDOException('Nombre de cliente duplicado.');
 					}
+				}else{
+					$validClient = true;
 				}
 			}
 			

@@ -24,6 +24,7 @@ var Product = function(attr) {
 	this.optionUUID = attr.optionUUID || '';
 	this.optionName = attr.optionName || '';
 	this.optionEID = attr.optionEID || '';
+	this.optionDesc = attr.optionDesc || '';
 
     this.UnitID = parseInt(attr.UnitID) || 0;
     this.unitName = attr.unitName || '';
