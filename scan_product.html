@@ -884,8 +884,16 @@
 								document.getElementById('txt_opcion').innerHTML = product.optionEID;
 
 								if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
-									document.getElementById('txt_serie').disabled = false;
-									document.getElementById('txt_serie').onclick = null;
+									var oTxtSerie = document.getElementById('txt_serie');
+									
+									oTxtSerie.value = null;
+									oTxtSerie.disabled = false;
+									oTxtSerie.onclick = null;
+
+									// Se borra la serie, ya que depende de la combinación.
+									product.SerialID = 0;
+									product.serialQuantity = 0;
+									product.serialBatch = '';
 								}
 		                    }
 		                    else{
