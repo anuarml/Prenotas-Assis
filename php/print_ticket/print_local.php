@@ -12,7 +12,7 @@ function print_prenote2($prenote){
 
 		$fontHeight = 21;
 		$fontWidth = 10;
-		$fontWeight = 250;
+		$fontWeight = 300;
 		$firstLine = 80;
 		$lineNumber = 0;
 		$image = $prenote->folio.'.bmp';
@@ -21,7 +21,7 @@ function print_prenote2($prenote){
 
 		$fontHeight = 20;
 		$fontWidth = 9;
-		$fontWeight = 130;
+		$fontWeight = 100;
 		$lightfont = printer_create_font("Arial", $fontHeight, $fontWidth, $fontWeight, false, false, false, 0);
 
 		printer_select_font($printerHandler, $font);
@@ -30,7 +30,7 @@ function print_prenote2($prenote){
 		printer_draw_bmp($printerHandler, $filename, 150, 1);
 		printer_draw_text($printerHandler, $prenote->folio, 168, calculateNextLine($lineNumber++));
 
-		printer_draw_text($printerHandler, $prenote->clientName, 1, calculateNextLine($lineNumber++));
+		printer_draw_text($printerHandler, 'Cliente: '.$prenote->clientName, 1, calculateNextLine($lineNumber++));
 		printer_draw_text($printerHandler, "----------------------------------------------------------------------------------------------------------", 1, calculateNextLine($lineNumber++));
 		
 		$product = $prenote->product;
@@ -42,12 +42,14 @@ function print_prenote2($prenote){
 
 			printer_select_font($printerHandler, $lightfont);
 
-			printer_draw_text($printerHandler, $product[$i]->optionDesc, 1, calculateNextLine($lineNumber));
-			printer_draw_text($printerHandler, $product[$i]->serialBatch, 350, calculateNextLine($lineNumber++));
+			if($product[$i]->optionDesc || $product[$i]->serialBatch){
+				printer_draw_text($printerHandler, $product[$i]->optionDesc, 1, calculateNextLine($lineNumber));
+				printer_draw_text($printerHandler, $product[$i]->serialBatch, 321, calculateNextLine($lineNumber++));
+			}
 
 			printer_draw_text($printerHandler, $product[$i]->scanCode, 1, calculateNextLine($lineNumber));
-			printer_draw_text($printerHandler, $product[$i]->unitName, 151, calculateNextLine($lineNumber));
-			printer_draw_text($printerHandler, $product[$i]->Quantity, 351, calculateNextLine($lineNumber));
+			printer_draw_text($printerHandler, $product[$i]->unitName, 171, calculateNextLine($lineNumber));
+			printer_draw_text($printerHandler, $product[$i]->Quantity, 321, calculateNextLine($lineNumber));
 			$precio_cantidad = ($product[$i]->Quantity) * ($product[$i]->Price);
 			$precio_cantidad = round($precio_cantidad, 2);
 			$precio_cantidad = number_format($precio_cantidad, 2, '.', ',');
@@ -55,18 +57,24 @@ function print_prenote2($prenote){
 			printer_draw_text($printerHandler, formatText('$' . $precio_cantidad ,'right', 11), 451, calculateNextLine($lineNumber++));
 		}
 
+		printer_select_font($printerHandler, $font);
 		printer_draw_text($printerHandler, "----------------------------------------------------------------------------------------------------------", 1, calculateNextLine($lineNumber++));
 		
-		printer_draw_text($printerHandler, formatText( $prenote->narticles, 'right', 11 ), 151, calculateNextLine($lineNumber));
+		//printer_draw_text($printerHandler, formatText( $prenote->narticles, 'right', 11 ), 321, calculateNextLine($lineNumber));
+		printer_draw_text($printerHandler, $prenote->narticles, 321, calculateNextLine($lineNumber));
 
 		$totalAmount = number_format( $prenote->total, 2, '.', ',');
 
-		printer_draw_text($printerHandler, formatText('$' . $totalAmount,'right', 15), 351, calculateNextLine($lineNumber++));
+		printer_draw_text($printerHandler, formatText('$' . $totalAmount,'right', 15), 401, calculateNextLine($lineNumber++));
 		printer_draw_text($printerHandler, $prenote->employeeLogin, 1, calculateNextLine($lineNumber));
-		printer_draw_text($printerHandler, $prenote->employeeName, 101, calculateNextLine($lineNumber++));
+		printer_draw_text($printerHandler, $prenote->employeeName, 201, calculateNextLine($lineNumber++));
 		printer_draw_text($printerHandler, $prenote->store_num, 1, calculateNextLine($lineNumber));
-		printer_draw_text($printerHandler, $prenote->store_name, 101, calculateNextLine($lineNumber++));
-		printer_draw_text($printerHandler, $prenote->cotizationNumber, 1, calculateNextLine($lineNumber++));
+		printer_draw_text($printerHandler, $prenote->store_name, 51, calculateNextLine($lineNumber++));
+		
+		if($prenote->cotizationNumber){
+			printer_draw_text($printerHandler, utf8_decode('No. cotización: '). $prenote->cotizationNumber, 1, calculateNextLine($lineNumber++));
+		}
+
 		printer_draw_text($printerHandler, $prenote->date, 1, calculateNextLine($lineNumber));
 		
 		printer_end_page($printerHandler);
@@ -83,7 +91,7 @@ function print_prenote2($prenote){
 	
 function calculateNextLine($lineNumber){
 	$fontHeight = 20;
-	$firstLine = 85;
+	$firstLine = 82;
 
 	return $firstLine + $fontHeight * $lineNumber;
 }

@@ -92,23 +92,33 @@ var Prenota = {
     },
 
     calcularTotal: function(){
-        var total = 0;
+        var total = new Decimal(0);
 
         for (var i = 0; i < productos.length; i++) {
-            total += productos[i].Price * productos[i].Quantity;
+            //total += productos[i].Price * productos[i].Quantity;
+            var dPrice = new Decimal(productos[i].Price);
+            var dAmount = dPrice.times(productos[i].Quantity);
+
+            total = total.plus(dAmount);
         }
 
-        return total.toFixed(2);
+        return total.toNumber().toFixed(2);
     },
 	
 	cantidadTotal: function(){
-		var total = 0;
+		var total = new Decimal(0);
+        var maxUnitDecimals = 0;
 		
 		for (var i = 0; i < productos.length; i++) {
-			total += productos[i].Quantity;	
+			//total += productos[i].Quantity;	
+            total = total.plus(productos[i].Quantity);
+
+            if(productos[i].unitDecimals > maxUnitDecimals){
+                maxUnitDecimals = productos[i].unitDecimals;
+            }
 		}
 		
-		return total.toFixed(2);
+		return total.toNumber().toFixed(maxUnitDecimals);
 	},
 
 	productDetails: function(e){
@@ -211,8 +221,7 @@ try{
 				employeeName : user.Name,
 				printer : selectedPrinter,
 				cotizationNumber : ncotizationNumber,
-				clientName : sclientName
-				
+				clientName : sclientName,
 		});
 
 		json_prenote = JSON.stringify(gprenota);
