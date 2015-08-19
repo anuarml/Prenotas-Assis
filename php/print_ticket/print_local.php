@@ -38,16 +38,16 @@ function print_prenote2($prenote){
 		for($i=0;$i<$length;$i++){
 			printer_select_font($printerHandler, $font);
 
-			printer_draw_text($printerHandler, utf8_decode($product[$i]->Description), 1, calculateNextLine($lineNumber++));
+			printer_draw_text($printerHandler, '-'.utf8_decode($product[$i]->Description), 1, calculateNextLine($lineNumber++));
 
 			printer_select_font($printerHandler, $lightfont);
 
 			if($product[$i]->optionDesc || $product[$i]->serialBatch){
-				printer_draw_text($printerHandler, $product[$i]->optionDesc, 1, calculateNextLine($lineNumber));
+				printer_draw_text($printerHandler, ' '.$product[$i]->optionDesc, 1, calculateNextLine($lineNumber));
 				printer_draw_text($printerHandler, $product[$i]->serialBatch, 321, calculateNextLine($lineNumber++));
 			}
 
-			printer_draw_text($printerHandler, $product[$i]->scanCode, 1, calculateNextLine($lineNumber));
+			printer_draw_text($printerHandler, ' '.$product[$i]->scanCode, 1, calculateNextLine($lineNumber));
 			printer_draw_text($printerHandler, $product[$i]->unitName, 171, calculateNextLine($lineNumber));
 			printer_draw_text($printerHandler, $product[$i]->Quantity, 321, calculateNextLine($lineNumber));
 			$precio_cantidad = ($product[$i]->Quantity) * ($product[$i]->Price);
@@ -66,10 +66,10 @@ function print_prenote2($prenote){
 		$totalAmount = number_format( $prenote->total, 2, '.', ',');
 
 		printer_draw_text($printerHandler, formatText('$' . $totalAmount,'right', 15), 401, calculateNextLine($lineNumber++));
-		printer_draw_text($printerHandler, $prenote->employeeLogin, 1, calculateNextLine($lineNumber));
-		printer_draw_text($printerHandler, $prenote->employeeName, 201, calculateNextLine($lineNumber++));
-		printer_draw_text($printerHandler, $prenote->store_num, 1, calculateNextLine($lineNumber));
-		printer_draw_text($printerHandler, $prenote->store_name, 51, calculateNextLine($lineNumber++));
+		printer_draw_text($printerHandler, $prenote->employeeName.' ('.$prenote->employeeLogin.')', 1, calculateNextLine($lineNumber++));
+		//printer_draw_text($printerHandler, $prenote->employeeName, 201, calculateNextLine($lineNumber++));
+		printer_draw_text($printerHandler, $prenote->store_name.' ('.$prenote->store_num.')', 1, calculateNextLine($lineNumber++));
+		//printer_draw_text($printerHandler, $prenote->store_name, 51, calculateNextLine($lineNumber++));
 		
 		if($prenote->cotizationNumber){
 			printer_draw_text($printerHandler, utf8_decode('No. cotización: '). $prenote->cotizationNumber, 1, calculateNextLine($lineNumber++));
