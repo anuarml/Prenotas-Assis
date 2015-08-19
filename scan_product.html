@@ -183,6 +183,7 @@
 						jProduct.UnitID = oUnit.unitID;
 						jProduct.unitName = oUnit.name;
 						jProduct.unitFactor = oUnit.factor;
+						jProduct.unitDecimals = oUnit.decimals;
 						//jProduct.Price = productPrice.times(oUnit.factor).toNumber();
 						//jProduct.Price = oUnit.factor * jProduct.basePrice;
 						//show_product_info(jProduct);
@@ -447,7 +448,8 @@
 		            		quantityOnPrenote = productFound.Quantity;
 		            	}
 
-						var totalQuantity = quantity + quantityOnPrenote;
+						//var totalQuantity = quantity + quantityOnPrenote;
+						var totalQuantity = new Decimal(quantity || 0).plus(quantityOnPrenote || 0).toNumber();
 
 						if(product.UseCombination){
 							if(!product.optionEID){
