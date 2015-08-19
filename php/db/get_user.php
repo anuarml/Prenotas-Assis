@@ -29,7 +29,7 @@
 		if(isset($_GET['login']) && $_GET['login'] != ""){
 			$login = $_GET['login'];
 			
-			$handle = $link->prepare('SELECT usr.ID, usr.Name, usr.Active, usr.SalesPersonExternalID salesPersonID FROM '.$table_user.' usr WHERE usr.Login = :login');
+			$handle = $link->prepare('SELECT usr.ID, usr.Login, usr.Name, usr.Active, usr.SalesPersonExternalID salesPersonID FROM '.$table_user.' usr WHERE usr.Login = :login');
 
 			$handle->bindParam(':login', $login);
 		

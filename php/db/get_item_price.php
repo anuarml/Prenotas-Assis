@@ -23,7 +23,7 @@
 				$price = getPriceListPrice($link, $itemID, $unitID, $itemCombinationID);
 
 				if($price != 0){
-					echo createResponse('success', $price);
+					echo createResponse('success', round($price,2));
 					exit(0);
 				}
 			}
@@ -33,7 +33,7 @@
 				$price = getPriceListPrice($link, $itemID, $unitID, null);
 
 				if($price != 0){
-					echo createResponse('success', $price);
+					echo createResponse('success', round($price,2));
 					exit(0);
 				}
 			}
@@ -43,7 +43,7 @@
 				$price = getPriceListPrice($link, $itemID, null, $itemCombinationID);
 
 				if($price != 0){
-					echo createResponse('success', $price);
+					echo createResponse('success', round($price,2));
 					exit(0);
 				}
 			}
@@ -52,14 +52,14 @@
 			$price = getPriceListPrice($link, $itemID, null, null);
 
 			if($price != 0){
-				echo createResponse('success', $price);
+				echo createResponse('success', round($price,2));
 				exit(0);
 			}
 
 			//Articulo
 			$price = getItemPrice($link, $itemID);
 
-			echo createResponse('success', $price);
+			echo createResponse('success', round($price,2));
 
 		}
 		else {

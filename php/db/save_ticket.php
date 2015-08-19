@@ -93,6 +93,7 @@
 				if($store){
 					$prenote->store_id = $store->id;
 					$prenote->store_name = $store->name;
+					$prenote->store_num = $store->num;
 
 					$register = getRegister($link, $store->id);
 
@@ -110,6 +111,7 @@
 				} else {
 					$prenote->store_id = null;
 					$prenote->store_name = null;
+					$prenote->store_num = null;
 
 					$prenote->register_id = null;
 					$prenote->register_uuid = null;

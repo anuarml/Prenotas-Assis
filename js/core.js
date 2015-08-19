@@ -55,11 +55,13 @@ var oPrenote = function(attr) {
     this.employeeName = attr.employeeName || '';
 	this.store_id = attr.store_id || null;
 	this.store_name = attr.store_name || null;
+	this.store_num = attr.store_num || null;
     this.printer = attr.printer || '';
     this.customerUUID = attr.customerUUID || null;
 	this.cotizationNumber = attr.cotizationNumber || '';
 	this.clientName = attr.clientName || '';
 	this.changeClient = attr.changeClient || false;
+	this.employeeLogin = attr.employeeLogin || '';
 };
 
 var prenote = null;
@@ -75,6 +77,7 @@ var User = function(attr) {
 	
     this.ID = parseInt(attr.ID) || 0;
     this.Name = attr.Name || '';
+    this.Login = attr.Login || '';
 };
 
 var user = new User(JSON.parse(window.localStorage.getItem('user')));

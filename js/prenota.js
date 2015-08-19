@@ -98,7 +98,7 @@ var Prenota = {
             total += productos[i].Price * productos[i].Quantity;
         }
 
-        return total;
+        return total.toFixed(2);
     },
 	
 	cantidadTotal: function(){
@@ -108,7 +108,7 @@ var Prenota = {
 			total += productos[i].Quantity;	
 		}
 		
-		return total;
+		return total.toFixed(2);
 	},
 
 	productDetails: function(e){
@@ -204,6 +204,7 @@ try{
 		var gprenota = new oPrenote({
 				total: nTotal,
 				id_employee: user.ID,
+                employeeLogin: user.Login,
 				product: productos,
 				narticles: nCant,
 				//terminal : terminal.number,
