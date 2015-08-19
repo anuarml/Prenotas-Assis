@@ -20,10 +20,7 @@
         	var aItemUnits = null;
 			var hasName = null;
 			var keyboardIsShowed = false;
-			
-        	asl.title(' ');
-        	asl.back(scan_product);
-        	asl.options([
+			var aslOptionList = [
 	        	{
 	        		title : 'Ver prenota',
 	        		callback: function(){
@@ -44,12 +41,26 @@
 	        		}
 	        	},*/
 	        	{
+	        		title:'Detalles',
+	        		callback: function(){
+	        			if(product){
+		        			window.localStorage.setItem('aItemUnits', JSON.stringify(aItemUnits));
+							window.localStorage.setItem('product', JSON.stringify(product));
+		        			window.location = 'scan_product_detail.html';
+		        		}
+	        		}
+	        	},
+	        	{
 	        		title: 'Salir',
 	        		callback: function(){
 	        			asl.exit();
 	        		}
 	        	}
-        	]);
+        	];
+			
+        	asl.title(' ');
+        	asl.back(scan_product);
+        	asl.options(aslOptionList);
 			
 			asl.events.subscribe(asl.events.types.loaded, function() {
 				/*document.getElementById('txt_opcion').onfocus = function(){
