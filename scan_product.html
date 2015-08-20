@@ -284,7 +284,8 @@
                     title : "Escanea un producto.",
                     type : 'text',
                     scanner: true,
-                    back: true
+                    back: true,
+                    options: true
                 }, request_product );
             }
 
@@ -315,7 +316,7 @@
 							show_product_info(productInfo);
 						}
 						else {
-							asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , oResponse.data,['OK'],[null]);
+							asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , oResponse.data,['OK'],[scan_product]);
 							clear_product();
 						}
 					}
