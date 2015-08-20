@@ -1,7 +1,8 @@
 <?php
 
 function get_combination_desc($link, $itemCombinationUUID){
-	include('config.php');
+	include('../../config/config.php');
+	include('global_variables.php');
 
 	//try{
 		//if(isset($_GET['itemCombinationUUID']) && $_GET['itemCombinationUUID'] != ""){

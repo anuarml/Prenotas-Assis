@@ -1,5 +1,6 @@
 <?php
-	include_once('config.php');
+	include('../../config/config.php');
+	include('global_variables.php');
 	include_once('get_register.php');
 	include_once('get_store.php');
 

@@ -1,7 +1,7 @@
 <?php
 
 function createItemCombination($link, $userID, $itemID, $details, $combExternalID){
-	include('config.php');
+	include('global_variables.php');
 	require('create_sync.php');
 
 	$uuid = null;

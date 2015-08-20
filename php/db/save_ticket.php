@@ -1,8 +1,8 @@
 <?php
-	include_once('config.php');
+	include('../../config/config.php');
+	include('global_variables.php');
 	include_once('save_products.php');
 	require_once('../print_ticket/print_ticket.php');
-	include_once('../class.uuid.php');
 	require_once('generate_barcode.php');
 	require_once('get_register.php');
 	require_once('get_store.php');
@@ -219,7 +219,8 @@
 	}
 
 	function getCustomer($link){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$customer = null;
 
@@ -234,7 +235,8 @@
 	}
 
 	function numberOfClients($link, $clientName){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 		$numberOfClients = 0;
 		$query =
 			'SELECT COUNT(prenote.ID) AS clientExists FROM '.$table_prenote.' prenote '.
@@ -252,7 +254,8 @@
 	}
 
 	function updateClient($link, $prenote_uuid, $clientName){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 		$query =
 			'UPDATE '.$table_prenote.' '.
 			'SET Label = :label '.

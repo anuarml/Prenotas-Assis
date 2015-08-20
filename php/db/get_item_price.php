@@ -1,5 +1,6 @@
 <?php
-	include('config.php');
+	include('../../config/config.php');
+	include('global_variables.php');
 	try{
 		if(isset($_GET['ItemID']) && $_GET['ItemID'] != ""){
 
@@ -72,7 +73,8 @@
 
 
 function getPriceListPrice($link, $itemID, $unitID, $itemCombinationID){
-	include('config.php');
+	include('../../config/config.php');
+	include('global_variables.php');
 
     $query = 'SELECT'.
 		' PriceListDetail.Price price'.
@@ -126,7 +128,8 @@ function getPriceListPrice($link, $itemID, $unitID, $itemCombinationID){
 
 
 function getItemPrice($link, $itemID){
-	include('config.php');
+	include('../../config/config.php');
+	include('global_variables.php');
 
     $query = 'SELECT'.
 		' Price price'.

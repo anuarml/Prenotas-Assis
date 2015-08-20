@@ -1,5 +1,6 @@
 <?php
-	include_once('config.php');
+	include_once('../../config/config.php');
+	include('global_variables.php');
 
 	try{
 		if(isset($_GET['optionID']) && $_GET['optionID'] != ""){
@@ -68,7 +69,8 @@
 	}
 	
 	function getQuantityOnHand($aOptionDetails, $itemId, $optionDetailId, $link){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 		
 		$query = 'SELECT SUM(QuantityOnHand) quantity FROM '.$table_inventoryOnHand.' ih JOIN 
 		'.$table_itemCombination.' itemCombination ON ItemCombinationID = itemCombination.ID where ih.ItemID = :itemId';

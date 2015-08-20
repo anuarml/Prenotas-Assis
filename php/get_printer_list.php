@@ -1,5 +1,5 @@
 <?php
-include('db/config.php');
+include('../config/config.php');
 $printers = array();
 if (function_exists('printer_list')) {
     

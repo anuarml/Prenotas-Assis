@@ -1,6 +1,7 @@
 <?php
 	function getStore($link){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$store = null;
 

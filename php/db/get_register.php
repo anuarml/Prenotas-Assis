@@ -2,7 +2,8 @@
 
 function getRegister($link, $storeID){
 
-	include('config.php');
+	include('../../config/config.php');
+	include('global_variables.php');
 
 	$query = 'SELECT TOP 1 ID id, UUID uuid, Workstation workstation '.
 			 'FROM '.$table_register.' Register '.

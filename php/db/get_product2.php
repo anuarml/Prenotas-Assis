@@ -1,5 +1,6 @@
 ﻿<?php
-	include_once('config.php');
+	include('../../config/config.php');
+	include('global_variables.php');
 
 	try{
 		if(isset($_GET['code']) && $_GET['code'] != ""){
@@ -144,7 +145,8 @@
 	}
 
 	function getItemBarcode($link, $code){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT Barcode, ItemID, itemCombinationID, unitID FROM '.$table_itembarcode.' WHERE Barcode = :code');
 		$handle->bindParam(':code', $code);
@@ -156,7 +158,8 @@
 	}
 
 	function getItemByID($link, $id){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$query =
 			'SELECT TOP 1 Item.ID, Item.UUID, Item.Code, '.
@@ -186,7 +189,8 @@
 	}
 
 	function getItemByCode($link, $code){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$query =
 			'SELECT TOP 1 Item.ID, Item.UUID, Item.Code, '.
@@ -211,7 +215,8 @@
 	}
 
 	function getUnitInfo($link, $unitID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT name, decimals FROM '.$table_unit.' WHERE ID = :unitID');
 		$handle->bindParam(':unitID', $unitID);
@@ -223,7 +228,8 @@
 	}
 
 	function getCombinationInfo($link, $itemID, $combinationID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT itemCombination.ID, itemCombination.UUID, itemCombination.ExternalID, Name FROM '.$table_itemCombination.' itemCombination LEFT JOIN '.$table_optionDetail.' optD ON optD.ExternalID = itemCombination.ExternalID WHERE ItemID = :ID AND itemCombination.ID = :combination');
 
@@ -238,7 +244,8 @@
 	}
 
 	function getQuantityOnHand($link, $itemID, $combinationID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$query = 'SELECT QuantityOnHand FROM '.$table_inventoryOnHand.' WHERE ItemID = :itemID';
 
@@ -268,7 +275,8 @@
 	}
 
 	function getItemOptions($link, $itemID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT'.
 			' opt.name, itemOption.optionID, itemOption.mandatory, itemOption.OptionListID optionListID'.

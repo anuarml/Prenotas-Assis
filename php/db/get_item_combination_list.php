@@ -1,5 +1,6 @@
 <?php
-	include_once('config.php');
+	include_once('../../config/config.php');
+	include('global_variables.php');
 
 	try{
 		if(isset($_GET['ID']) && $_GET['ID'] != ""){
@@ -134,7 +135,8 @@
 	}
 
 	/*function getQuantityOnHand($link, $result, $itemID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT QuantityOnHand FROM '.$table_inventoryOnHand.' WHERE ItemID = :itemID AND ItemCombinationID = :combinationID');
 

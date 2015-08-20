@@ -1,5 +1,6 @@
 <?php
-	include_once('config.php');
+	include_once('../../config/config.php');
+	include('global_variables.php');
 	include_once('create_item_combination.php');
 	include_once('get_combination_desc.php');
 
@@ -83,7 +84,8 @@
 	}
 
 	function getQuantityOnHand($link, $itemID, $combinationID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT QuantityOnHand FROM '.$table_inventoryOnHand.' WHERE ItemID = :itemID AND ItemCombinationID = :combinationID');
 

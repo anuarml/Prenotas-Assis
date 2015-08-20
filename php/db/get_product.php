@@ -1,5 +1,6 @@
 <?php
-	include_once('config.php');
+	include('../../config/config.php');
+	include('global_variables.php');
 
 	try{
 		if(isset($_GET['code']) && $_GET['code'] != ""){
@@ -102,7 +103,8 @@
 	}
 
 	function getItemBarcode($link, $code){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT ItemID, itemCombinationID, unitID FROM '.$table_itembarcode.' WHERE Barcode = :code');
 		$handle->bindParam(':code', $code);
@@ -114,7 +116,8 @@
 	}
 
 	function getItemByID($link, $id){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		//$handle = $link->prepare('SELECT '.$table_item.'.ID, '.$table_item.'.UUID, '.$table_item.'.Code, Description, ItemTypeID, Price, UnitID, QuantityOnHand, UseCombination FROM '.$table_item.' LEFT JOIN '.$table_inventoryOnHand.' ON '.$table_inventoryOnHand.'.ItemID = '.$table_item.'.ID WHERE '.$table_item.'.ID = :ID');
 		$handle = $link->prepare('SELECT ID, UUID, Code, Description, ItemTypeID, Price, UnitID, UseCombination FROM '.$table_item.' WHERE '.$table_item.'.ID = :ID');
@@ -131,7 +134,8 @@
 	}
 
 	function getItemByCode($link, $code){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		//$handle = $link->prepare('SELECT '.$table_item.'.ID, '.$table_item.'.UUID, '.$table_item.'.Code, Description, ItemTypeID, Price, UnitID, QuantityOnHand, UseCombination FROM '.$table_item.' LEFT JOIN '.$table_inventoryOnHand.' ON '.$table_inventoryOnHand.'.ItemID = '.$table_item.'.ID WHERE code = :code');
 		$handle = $link->prepare('SELECT ID, UUID, Code, Description, ItemTypeID, Price, UnitID, UseCombination FROM '.$table_item.' WHERE code = :code');
@@ -144,7 +148,8 @@
 	}
 
 	function getUnitInfo($link, $unitID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT name FROM '.$table_unit.' WHERE ID = :unitID');
 		$handle->bindParam(':unitID', $unitID);
@@ -156,7 +161,8 @@
 	}
 
 	function getCombinationInfo($link, $itemID, $combinationID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT itmC.ID, itmC.UUID, itmC.ExternalID, Name FROM '.$table_itemCombination.' itmC LEFT JOIN '.$table_optionDetail.' optD ON optD.ExternalID = itmC.ExternalID WHERE ItemID = :ID AND itmC.ID = :combination');
 
@@ -171,7 +177,8 @@
 	}
 
 	function getQuantityOnHand($link, $itemID, $combinationID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT QuantityOnHand FROM '.$table_inventoryOnHand.' WHERE ItemID = :itemID AND ItemCombinationID = :combinationID');
 
@@ -192,7 +199,8 @@
 	}
 
 	function getItemOptions($link, $itemID){
-		include('config.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 
 		$handle = $link->prepare('SELECT'.
 			' o.name, optionID'.

@@ -1,8 +1,8 @@
 <?php
 	
 	function save_products($link, $prenote_uuid, $product, $id_employee, $lastUpdate){
-		include('config.php');
-		include_once('../class.uuid.php');
+		include('../../config/config.php');
+		include('global_variables.php');
 		
 		
 		

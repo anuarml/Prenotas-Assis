@@ -1,7 +1,7 @@
 <?php
 
 function createSync($link, $uuid, $lastUpdate, $tableName, $deleted){
-	include('config.php');
+	include('global_variables.php');
 
 	$tableName = strtoupper($tableName);
 

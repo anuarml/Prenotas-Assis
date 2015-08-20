@@ -1,7 +1,7 @@
 <?php
 
 function print_prenote2($prenote){
-	include('../db/config.php');
+	include('../../config/config.php');
 	//$printerList = printer_list(PRINTER_ENUM_LOCAL);
 
 	if($printerHandler = printer_open($prenote->printer->name)){
