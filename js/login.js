@@ -20,6 +20,13 @@ asl.options(null);
 asl.title('Login');
 asl.back(null);
 
+asl.events.subscribe(asl.events.types.exit, function() {
+    asl.badge(null);
+    if (typeof asl.lock == 'function'){
+        asl.lock(null);
+    }
+});
+
 var username = null;
 var newUser;
 
@@ -67,6 +74,9 @@ function requestUser(){
 
 function login(){
     asl.badge(cfg.badge);
+    if (typeof asl.lock == 'function'){
+        asl.lock(cfg.badge);
+    }
     window.localStorage.setItem('user', JSON.stringify(newUser));
     window.location = 'scan_product.html';
 }

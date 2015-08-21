@@ -46,6 +46,13 @@
 
         	asl.back('scan_product.html');
 	        asl.options(null);
+
+	        asl.events.subscribe(asl.events.types.exit, function() {
+			    asl.badge(null);
+			    if (typeof asl.lock == 'function'){
+			        asl.lock(null);
+			    }
+			});
 	        
         	if(jsonProduct != null){
 	        	var product = JSON.parse(jsonProduct);

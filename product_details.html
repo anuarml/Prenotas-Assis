@@ -16,6 +16,9 @@
         	asl.title('Detalles');
         	asl.back('prenota.html');
         	asl.options(null);
+        	if (typeof asl.lock == 'function'){
+        		asl.lock(null);
+    		}
         </script>
         
     </head>

@@ -94,6 +94,9 @@ asl.back(null);
 
 asl.events.subscribe(asl.events.types.exit, function() {
     asl.badge(null);
+    if (typeof asl.lock == 'function'){
+        asl.lock(null);
+    }
 });
 
 asl.events.subscribe(asl.events.types.loaded, function() {
