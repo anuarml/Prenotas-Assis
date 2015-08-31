@@ -1,6 +1,7 @@
 ﻿<?php
 	include('../../config/config.php');
 	include('global_variables.php');
+	include_once('get_combination_desc.php');
 
 	try{
 		if(isset($_GET['code']) && $_GET['code'] != ""){
@@ -56,6 +57,8 @@
 							$item->optionEID = $combinationInfo->ExternalID;
 							$item->optionName = $combinationInfo->Name;
 							$item->QuantityOnHand = $quantityOnHand;
+
+							$item->optionDesc = get_combination_desc($link, $item->optionUUID);
 						}
 					} else {
 						$quantityOnHand = getQuantityOnHand($link, $item->ID, null);
