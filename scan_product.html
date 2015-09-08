@@ -89,10 +89,12 @@
 				document.getElementById('txt_opcion').onclick =  function(){
         			if(product && product.optionUUID && product.optionDesc){
         				//requestCombinationDesc(product.optionUUID);
-        				asl.notify(asl.notifications.application, asl.priority.normal,'Opciones' ,product.optionDesc,['OK'],[null]);
+        				//asl.notify(asl.notifications.application, asl.priority.normal,'Opciones' ,product.optionDesc,['OK'],[null]);
+        				alert('Opciones: '+product.optionDesc);
         			}
         			else{
-        				asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje' ,'El artículo no tiene opciones asignadas.',['OK'],[null]);
+        				//asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje' ,'El artículo no tiene opciones asignadas.',['OK'],[null]);
+        				alert('El artículo no tiene opciones asignadas.');
         			}
         		};
 
@@ -287,8 +289,7 @@
                     title : "Escanea un producto.",
                     type : 'text',
                     scanner: true,
-                    back: true,
-                    options: true
+                    back: true
                 }, request_product );
             }
 
@@ -319,13 +320,17 @@
 							show_product_info(productInfo);
 						}
 						else {
-							asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , oResponse.data,['OK'],[scan_product]);
-							clear_product();
+							//asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , oResponse.data,['OK'],[scan_product]);
+							confirm(oResponse.data,function(){
+								clear_product();
+								scan_product();
+							});
 						}
 					}
 					catch(e){
 						clear_product();
-						asl.notify(asl.notifications.application, asl.priority.normal,'Error en el servidor:' ,response,['OK'],[null]);
+						//asl.notify(asl.no tifications.application, asl.priority.normal,'Error en el servidor:' ,response,['OK'],[null]);
+						alert('Error: '+response);
 					}
 				};
 
@@ -368,7 +373,7 @@
 						
 						if(product.optionEID){
 							//txtOption.value = product.optionEID;
-							txtOption.innerHTML = product.optionEID;
+							txtOption.innerHTML = product.optionDesc;
 						}
 
 						/*if(product.options && product.options.length){
@@ -452,7 +457,8 @@
 
 							clear_product();
 							window.localStorage.setItem('products', JSON.stringify(productos));
-							asl.notify(asl.notifications.application, asl.priority.normal, 'Mensaje:', 'Producto agregado.', ['OK'], [scan_product]);
+							//asl.notify(asl.notifications.application, asl.priority.normal, 'Mensaje:', 'Producto agregado.', ['OK'], [scan_product]);
+							scan_product();
 							return;
 			        	}
 
@@ -471,7 +477,8 @@
 						if(product.UseCombination){
 							if(!product.optionEID){
 								//addProduct = false;
-								asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Opción no registrada.',['OK'],[null]);
+								//asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Opción no registrada.',['OK'],[null]);
+								alert('No se agregó el producto: Opción inválida.');
 								return;
 							}
 						}
@@ -479,7 +486,8 @@
 						if(product.ItemTypeID == ItemType.SERIE){
 							if(product.isSerialInformative){
 								if(!product.serialBatch){
-									asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', 'No tiene serie', ['OK'], [null]);
+									//asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', 'No tiene serie', ['OK'], [null]);
+									alert('No se agregó el producto: No tiene serie.');
 									return;
 								}
 							}
@@ -499,8 +507,9 @@
 									}*/
 								}
 								else{
-									asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Serial no registrado.',['OK'],[null]);
+									//asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Serial no registrado.',['OK'],[null]);
 									//addProduct = false;
+									alert('No se agregó el producto: Serie no registrada.');
 									return;
 								}
 							}
@@ -521,8 +530,9 @@
 								}*/
 							}
 							else{
-								asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Lote no registrado.',['OK'],[null]);
+								//asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Lote no registrado.',['OK'],[null]);
 								//addProduct = false;
+								alert('No se agregó el producto: Lote no registrado.');
 								return;
 							}
 						}
@@ -553,12 +563,17 @@
 
 							clear_product();
 							window.localStorage.setItem('products', JSON.stringify(productos));
-							asl.notify(asl.notifications.application, asl.priority.normal, 'Mensaje:', 'Producto agregado.', ['OK'], [scan_product]);
+							//asl.notify(asl.notifications.application, asl.priority.normal, 'Mensaje:', 'Producto agregado.', ['OK'], [scan_product]);
+							scan_product();
 						//}
 		            }
-		            else{ asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Introduce una cantidad válida.',['OK'],[null]); }
+		            else{ //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Introduce una cantidad válida.',['OK'],[null]); 
+		            	alert('Introduce una cantidad válida.');
+		        	}
 		        }
-		        else{ asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Escanee un producto.',['OK'],[scan_product]); }
+		        else{ //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Escanee un producto.',['OK'],[scan_product]); 
+		        	scan_product();
+		        }
 		    }
 
 		    function getQuantiyOnPrenote(){
@@ -623,7 +638,8 @@
 						}
 					}
 					catch(e){
-						asl.notify(asl.notifications.application, asl.priority.normal,'Error en el servidor: ',response,['OK'],[null]);
+						//asl.notify(asl.notifications.application, asl.priority.normal,'Error en el servidor: ',response,['OK'],[null]);
+						alert('Error: '+response);
 					}
 				};
 
@@ -658,11 +674,13 @@
 						}
 						else{
 							clearCombination();
-							asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:','La clave de opciones es inválida.',['OK'],[null]);
+							//asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:','La clave de opciones es inválida.',['OK'],[null]);
+							alert('Clave de opción incorrecta.');
 						}
 					}
 					catch(e){
-						asl.notify(asl.notifications.application, asl.priority.normal,'Error en el servidor:',response,['OK'],[null]);
+						//asl.notify(asl.notifications.application, asl.priority.normal,'Error en el servidor:',response,['OK'],[null]);
+						alert('Error: '+ response);
 					}
 				};
 
@@ -762,7 +780,8 @@
 						window.localStorage.setItem('product', JSON.stringify(product));
 						window.location = 'serial_list.html';
 					} else {
-						asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:', 'Debes seleccionar primero las opciones del producto.',['OK'],[null]);
+						//asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:', 'Debes seleccionar primero las opciones del producto.',['OK'],[null]);
+						alert('Debes seleccionar primero las opciones del producto.');
 					}
 				}
 			}
@@ -806,7 +825,8 @@
 			function lockSerialInput(){
 				document.getElementById('txt_serie').disabled = true;
 				document.getElementById('i_serie').onclick = function(){
-					asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:', 'Debes seleccionar primero las opciones del producto.',['OK'],[null]);
+					//asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:', 'Debes seleccionar primero las opciones del producto.',['OK'],[null]);
+					alert('Debes seleccionar primero las opciones del producto.');
 				};
 			}
 
@@ -849,7 +869,8 @@
                 		oDivUnit.innerHTML = product.unitName;
                 	}
                 	else{
-                    	asl.notify(asl.notifications.application, asl.priority.normal,'Error:', 'El producto no tiene configurado ninguna unidad.',['OK'],[null]);
+                    	//asl.notify(asl.notifications.application, asl.priority.normal,'Error:', 'El producto no tiene configurado ninguna unidad.',['OK'],[null]);
+                    	alert('Error: El producto no tiene configurado ninguna unidad.')
                 	}
                 }
                 else if(nItmUnitsLen === 1){
@@ -880,7 +901,8 @@
 	                	var oResponse = JSON.parse(response);
 
 	                	if(!oResponse){
-							asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:' , 'No hubo respuesta del servidor',['OK'],[null]);
+							//asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:' , 'No hubo respuesta del servidor',['OK'],[null]);
+							alert('Mensaje: No hubo respuesta del servidor');
 							return;
 						}
 
@@ -896,7 +918,8 @@
 								
 								requestItemPrice(product.ID, product.UnitID, product.optionID);
 
-								document.getElementById('txt_opcion').innerHTML = product.optionEID;
+								//document.getElementById('txt_opcion').innerHTML = product.optionEID;
+								document.getElementById('txt_opcion').innerHTML = product.optionDesc;
 
 								if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
 									var oTxtSerie = document.getElementById('txt_serie');
@@ -912,15 +935,18 @@
 								}
 		                    }
 		                    else{
-		                    	asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , 'No se pudo obtener la combinación de opciones.',['OK'],[null]);
+		                    	//asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , 'No se pudo obtener la combinación de opciones.',['OK'],[null]);
+		                    	alert('No se pudo obtener la combinación de opciones.');
 		                    }
 						}
 						else {
-							asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , oResponse.data,['OK'],[null]);
+							//asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , oResponse.data,['OK'],[null]);
+							alert('Error: '+oResponse.data);
 						}
 	                }
 	                catch(e){
-	                    asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , response,['OK'],[null]);
+	                    //asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , response,['OK'],[null]);
+	                    alert('Error: '+response);
 	                }
 	            };
 
@@ -948,14 +974,16 @@
 								msg = 'La unidad no permite decimales.';
 							}
 
-							asl.notify(asl.notifications.application, asl.priority.normal,'Cantidad \''+oTxtCant.value+'\' inválida:', msg,['OK'],[null]);
+							//asl.notify(asl.notifications.application, asl.priority.normal,'Cantidad \''+oTxtCant.value+'\' inválida:', msg,['OK'],[null]);
+							alert('Cantidad \''+oTxtCant.value+'\' inválida: '+msg);
 							oTxtCant.value = product.Quantity;
 							return;
 						}
 					}
 
 					if(parseFloat(oTxtCant.value) <= 0) {
-						asl.notify(asl.notifications.application, asl.priority.normal,'Cantidad \''+oTxtCant.value+'\' inválida:', 'La cantidad debe ser positiva.',['OK'],[null]);
+						//asl.notify(asl.notifications.application, asl.priority.normal,'Cantidad \''+oTxtCant.value+'\' inválida:', 'La cantidad debe ser positiva.',['OK'],[null]);
+						alert('Cantidad \''+oTxtCant.value+'\' inválida: La cantidad debe ser positiva.');
 						oTxtCant.value = product.Quantity;
 						return;
 					}
@@ -988,7 +1016,8 @@
 							document.getElementById('p_price').innerHTML = '$' + product.Price.toFixed(2);
 	                    }
 	                    else{
-	                    	asl.notify(asl.notifications.application, asl.priority.normal,'Error', oResponse.msg,['OK'],[null]);
+	                    	//asl.notify(asl.notifications.application, asl.priority.normal,'Error', oResponse.msg,['OK'],[null]);
+	                    	alert('Error: '+ oResponse.msg);
 	                    }
 	                }
 	                catch(e){
@@ -1020,14 +1049,17 @@
 	                    			optionsDesc += optionsDescList[i].optionType +': '+ optionsDescList[i].optionName;
 	                    		};
 
-								asl.notify(asl.notifications.application, asl.priority.normal,'Opciones:', optionsDesc,['OK'],[null]);
+								//asl.notify(asl.notifications.application, asl.priority.normal,'Opciones:', optionsDesc,['OK'],[null]);
+								alert('Opciones: '+ optionsDesc);
 							}
 							else {
-								asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:', 'El artículo no tiene opciones',['OK'],[null]);
+								//asl.notify(asl.notifications.application, asl.priority.normal,'Mensaje:', 'El artículo no tiene opciones',['OK'],[null]);
+								alert('El artículo no tiene opciones');
 							}
 	                    }
 	                    else{
-	                    	asl.notify(asl.notifications.application, asl.priority.normal,'Error', oResponse.data,['OK'],[null]);
+	                    	//asl.notify(asl.notifications.application, asl.priority.normal,'Error', oResponse.data,['OK'],[null]);
+	                    	alert('Error'+ oResponse.data);
 	                    }
 	                }
 	                catch(e){

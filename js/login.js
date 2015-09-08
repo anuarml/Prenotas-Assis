@@ -1,20 +1,3 @@
-//asl.events.subscribe('onloaded', authorize_user);
-//asl.events.subscribe(asl.events.types.focus, showKBonFocus);
-//var keyboardIsShowed = false;
-
-			
-/*function authorize_user() {
-    if(!keyboardIsShowed) {
-        keyboardIsShowed = true;
-        asl.showKeyboard({
-            inputId: 'user_login',
-            title : "Ingresa usuario",
-            type : 'text',
-            scanner: true,
-            back: false
-        }, request_user);
-    }
-}*/
 "use strict"
 asl.options(null);
 asl.title('Login');
@@ -30,13 +13,19 @@ asl.events.subscribe(asl.events.types.exit, function() {
 var username = null;
 var newUser;
 
-function requestUser(){ 
-    var oTxtUsername = document.getElementById('txt_username');
-    username = oTxtUsername.value; 
+document.getElementById('txt_username').onchange = function(e){
+    requestUser(this.value);
+};
+
+function requestUser(txtUserVal){ 
+    //var oTxtUsername = document.getElementById('txt_username');
+    //username = oTxtUsername.value; 
+    username = txtUserVal;
     var url = 'php/db/get_user.php?login='+username;
 
     if(!username){
-        asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje','Ingresa un usuario.',['Ok'],[null]);
+        //asl.notify(asl.notifications.application,asl.priority.low,'Mensaje','Ingresa un usuario.',['Ok'],[null]);
+        alert('Ingresa un usuario.');
         return;
     }
 
@@ -53,7 +42,12 @@ function requestUser(){
                 newUser = new User(response.data);
 
                 if(productos.length > 0 && user && user.ID != newUser.ID){
-                    asl.notify(asl.notifications.application,asl.priority.normal,'Existe una prenota del usuario '+user.Name,'Si inicias sesión se borrará la prenota.',['Iniciar sesión','Cancelar'],[deleteLastPrenote,null]);
+                    //asl.notify(asl.notifications.application,asl.priority.low,'Existe una prenota del usuario '+user.Name,'Si inicias sesión se borrará la prenota.',['Iniciar sesión','Cancelar'],[deleteLastPrenote,null]);
+                    confirm('Existe una prenota del usuario '+user.Name+', si inicias sesión se borrará la prenota. ¿Continuar?',function(answer){
+                        if(answer){
+                            deleteLastPrenote();
+                        }
+                    });
                 }
                 else {
                     login();
@@ -61,11 +55,13 @@ function requestUser(){
             }
             else{
                 //keyboardIsShowed = false;
-                asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:',response.data,['OK'],[null]);
+                //asl.notify(asl.notifications.application,asl.priority.low,'Mensaje:',response.data,['OK'],[null]);
+                alert(response.data);
             }
         }
         catch(e){
-            asl.notify(asl.notifications.application,asl.priority.normal,'Error en el servidor:',data,['OK'],[null]);
+            //asl.notify(asl.notifications.application,asl.priority.low,'Error en el servidor:',data,['OK'],[null]);
+            alert(data);
         }
     };
     ajaxRequest('GET', url, handle);
@@ -88,44 +84,3 @@ function deleteLastPrenote() {
     productos.length = 0;
     login();
 }
-
-/*function request_user(inputId, userID){
-
-    if (!userID) {
-        keyboardIsShowed = false;
-        authorize_user();
-        return;
-    } 
-    var url = 'php/db/get_user.php?login='+userID;
-
-    var handle = function(response){
-        try{
-            var userInfo = JSON.parse(response);
-
-            if(userInfo){
-                user = new User(userInfo);
-
-                //asl.badge('http://192.168.96.3/LeeWs/scan_products/badge.html');
-				//asl.badge('http://192.168.96.3/LeeWs/DesarrolloPrenotas/scan_products/badge.html');
-                asl.badge(cfg.badge);
-                window.localStorage.setItem('user', JSON.stringify(user));
-                window.location = 'scan_product.html';
-            }else{
-                keyboardIsShowed = false;
-                asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Usuario no registrado.',['OK'],[authorize_user]);
-            }
-        }
-        catch(e){
-            asl.notify(asl.notifications.application,asl.priority.normal,'Error en el servidor:',response,['OK'],[authorize_user]);
-        }
-    };
-
-    ajaxRequest('GET', url, handle);
-}*/
-
-/*function showKBonFocus(){
-	if(keyboardIsShowed){
-		keyboardIsShowed = false;
-		authorize_user();
-	}
-}*/

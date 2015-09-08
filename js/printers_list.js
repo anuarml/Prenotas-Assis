@@ -103,12 +103,15 @@ var PrintersList = {
     }
 };
 
-function answerCotization(){
-	window.location = "cotization_number.html";
+function answerCotization(confirmed){
+	if(confirmed){
+        window.location = "cotization_number.html";
+    }
 }
 
 function cotization_verification(){
-	asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','¿Venta Pagos Fijos?:', ['SI','NO'], [answerCotization,null]);
+	//asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','¿Venta Pagos Fijos?:', ['SI','NO'], [answerCotization,null]);
+    confirm('¿Venta Pagos Fijos?',answerCotization);
 }
 
 asl.title('Impresoras');

@@ -33,7 +33,7 @@ var Product = function(attr) {
 	this.isSerialInformative = parseInt(attr.isSerialInformative) || 0;
 	
 	this.equals = function(obj){
-		return (this.ID == obj.ID && this.serialBatch == obj.serialBatch && this.optionEID == obj.optionEID && this.UnitID == obj.UnitID);
+		return (this.ID == obj.ID && this.barcode == obj.barcode && this.serialBatch == obj.serialBatch && this.optionEID == obj.optionEID && this.UnitID == obj.UnitID);
 	};
 };
 

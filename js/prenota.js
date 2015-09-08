@@ -148,7 +148,8 @@ asl.events.subscribe(asl.events.types.loaded, function() {
 
     if(selectedPrinter !== null){
         window.localStorage.removeItem('selectedPrinter');
-        asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','¿Seguro que desea imprimir la prenota?',['SI','NO'],[save,null]);
+        //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','¿Seguro que desea imprimir la prenota?',['SI','NO'],[save,null]);
+        save();
     }
 
 });
@@ -177,7 +178,12 @@ asl.options([
     {
         title: 'Eliminar prenota',
         callback: function(){
-            asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','¿Seguro que desea eliminar la prenota?',['SI','NO'],[delete_prenote,null]);
+            //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','¿Seguro que desea eliminar la prenota?',['SI','NO'],[delete_prenote,null]);
+            confirm('¿Seguro que desea eliminar la prenota?',function(confirmed){
+                if(confirmed){
+                    delete_prenote();
+                }
+            });
         }
     },
     {
@@ -236,7 +242,8 @@ try{
 	 save_prenote();
     }
     catch(e){
-        asl.notify(asl.notifications.application,asl.priority.normal,e.message,JSON.stringify(e),['OK'],[null]);
+        //asl.notify(asl.notifications.application,asl.priority.normal,e.message,JSON.stringify(e),['OK'],[null]);
+        alert(e.message);
     }
 }
 
@@ -272,7 +279,8 @@ function save_prenote() {
                 var oResponse = JSON.parse(response);
 
                 if(!oResponse){
-                    asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','No se obtuvo respuesta del servidor.',['OK'],[null]);
+                    //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','No se obtuvo respuesta del servidor.',['OK'],[null]);
+                    alert('No se obtuvo respuesta del servidor.');
                     return;
                 }
 
@@ -286,7 +294,8 @@ function save_prenote() {
                 //var serverPrenote = status.prenote;
 					
                 if(!saved){
-                    asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo guardar el ticket',message,['OK'],[null]);
+                    //asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo guardar el ticket',message,['OK'],[null]);
+                    alert('No se pudo guardar el ticket: '+message);
                     return;
                 }
 
@@ -294,21 +303,28 @@ function save_prenote() {
 
                 if(!validClient){
                     window.localStorage.setItem('prenote', JSON.stringify(prenote));
-                    asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje','Ya existe una prenota con el cliente: \''+prenote.clientName+'\'.',['Cambiar'],[askClientName]);
+                    //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje','Ya existe una prenota con el cliente: \''+prenote.clientName+'\'.',['Cambiar'],[askClientName]);
+                    confirm('Ya existe una prenota con el cliente: \''+prenote.clientName+'\'. ¿Cambiar?', function(confirmed){
+                        if(confirmed){
+                            askClientName();
+                        }
+                    });
                     return;
                 }
                 
                 if(!printed){
                     window.localStorage.setItem('prenote', JSON.stringify(prenote));
 
-                    asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo imprimir el ticket.','',['OK'],[null]);
+                    //asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo imprimir el ticket.','',['OK'],[null]);
+                    alert('No se pudo imprimir el ticket.');
                     return;
                 }
                 
                 if(typeof(prenote) == 'object'){
 
                     window.localStorage.removeItem('prenote');
-                    asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Ticket impreso con folio: '+ prenote.folio,['OK'],[null]);
+                    //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Ticket impreso con folio: '+ prenote.folio,['OK'],[null]);
+                    alert('Ticket impreso con folio: '+ prenote.folio);
                     
                     if(window.localStorage.getItem('nueva_prenota')){
                         var jPrenote = JSON.stringify(prenote);
@@ -318,7 +334,8 @@ function save_prenote() {
                 }
             }
             catch(e){
-                asl.notify(asl.notifications.application,asl.priority.normal,'Error en el servidor: ',response,['OK'],[null]);
+                //asl.notify(asl.notifications.application,asl.priority.normal,'Error en el servidor: ',response,['OK'],[null]);
+                alert('Error: '+ response);
             }
         }
     }
