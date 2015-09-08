@@ -47,6 +47,8 @@
 		        			window.localStorage.setItem('aItemUnits', JSON.stringify(aItemUnits));
 							window.localStorage.setItem('product', JSON.stringify(product));
 		        			window.location = 'scan_product_detail.html';
+		        		}else{
+		        			alert('Escanea un producto.');
 		        		}
 	        		}
 	        	},
@@ -505,6 +507,10 @@
 										asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', msg, ['OK'], [null]);
 										return;
 									}*/
+									if(productFound){
+										alert('No se agregó el producto: Ya hay un producto con la misma serie en la prenota.');
+										return;
+									}
 								}
 								else{
 									//asl.notify(asl.notifications.application,asl.priority.normal,'No se agrego el producto:','Serial no registrado.',['OK'],[null]);
