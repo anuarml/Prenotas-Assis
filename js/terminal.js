@@ -1,3 +1,0 @@
-var terminal = {
-	number : 'A'
-};
