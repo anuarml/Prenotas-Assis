@@ -5,9 +5,24 @@
         <title>Escanear producto</title>
 		
         <link href="css/asl.css" rel="stylesheet" type="text/css" media="screen, projection" />
-		<link href="css/reset.css" rel="stylesheet" type="text/css" media="screen, projection" />
-		<link href="css/styles.css" rel="stylesheet" type="text/css" media="screen, projection" />
-	
+        
+    </head>
+    <body>
+	    <div id="wrap">
+			<div id="content">
+				<div id="product_info">
+					<div><span>Numero de Cotización: </span><span><input type="text" id="txt_cotization" title="Cantidad" value=""></span></div>		
+				</div>
+                
+				<div class="clear"></div>
+				
+				<div id="buttons">
+					<a href="javascript:backToPrinters();" id="btn_close" class="btn"></a>
+					<a href="javascript:addCotizacionNumber();" id="boton_agregar" class="btn"></a>
+				</div>
+			</div>
+		</div>
+
         <script type="text/javascript" src="config/cfg.js"></script>
 		<script type="text/javascript" src="js/asl.js"></script>
         <script type="text/javascript" src="js/core.js"></script>
@@ -53,22 +68,5 @@
 			}
 			
         </script>
-        
-    </head>
-    <body>
-	    <div id="wrap">
-			<div id="content">
-				<div id="product_info">
-					<div><span>Numero de Cotización: </span><span><input type="text" id="txt_cotization" title="Cantidad" value=""></span></div>		
-				</div>
-                
-				<div class="clear"></div>
-				
-				<div id="buttons">
-					<a href="javascript:backToPrinters();" id="btn_close" class="btn"></a>
-					<a href="javascript:addCotizacionNumber();" id="boton_agregar" class="btn"></a>
-				</div>
-			</div>
-		</div>
     </body>
 </html>
