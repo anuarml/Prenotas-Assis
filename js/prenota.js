@@ -230,7 +230,7 @@ try{
 				employeeName : user.Name,
 				printer : selectedPrinter,
 				cotizationNumber : ncotizationNumber,
-				clientName : sclientName,
+				clientName : sclientName
 		});
 
 		json_prenote = JSON.stringify(gprenota);
