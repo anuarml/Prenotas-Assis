@@ -43,12 +43,12 @@ window.hasClick = function(elem){
 var res = [];
 res["en-US"] = {};
 res["en-US"] = {
-	AlertTitle : "Alert",
-	ConfirmTitle : "Confirm",
-	ConfirmCancel : "Cancel",
-	ConfirmOK : "OK",
-	AlertOK : "OK",
-	Options : "Options"
+	AlertTitle : "Información",
+	ConfirmTitle : "Confirmación",
+	ConfirmCancel : "Cancelar",
+	ConfirmOK : "Aceptar",
+	AlertOK : "Aceptar",
+	Options : "Opciones"
 };
 
 var _paramsTranslator = {
