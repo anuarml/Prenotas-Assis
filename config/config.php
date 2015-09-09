@@ -44,6 +44,9 @@
     // Indica si se debe validar que todos los artículos que se escanean tengan rama.
     $cfg_validate_branch = true;
 
+    // Indica si el nombre de cliente es opcional(true) u obligatorio (false).
+    $cfg_client_name_optional = true;
+
     //------------ Impresoras ---------------
     // Nombre de las impresoras que se van a mostrar en la aplicación de prenotas.
     // Las impresoras deben estar instaladas en el servidor y se debe utilizar el

@@ -302,9 +302,10 @@ function save_prenote() {
                 prenote = new oPrenote(status.prenote || {});
 
                 if(!validClient){
+                    prenote.changeClient = true;
                     window.localStorage.setItem('prenote', JSON.stringify(prenote));
                     //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje','Ya existe una prenota con el cliente: \''+prenote.clientName+'\'.',['Cambiar'],[askClientName]);
-                    confirm('Ya existe una prenota con el cliente: \''+prenote.clientName+'\'. ¿Cambiar?', function(confirmed){
+                    confirm(message, function(confirmed){
                         if(confirmed){
                             askClientName();
                         }

@@ -170,12 +170,22 @@
 				$clientName = $prenote->clientName;
 				//$prenoteCode = $prenote->folio;
 
-				if( numberOfClients($link, $clientName) <= 0 ){
-					updateClient($link, $prenote_uuid, $clientName);
-					$validClient = true;
-				}
-				else{
-					throw new PDOException('Nombre de cliente duplicado.');
+				if($clientName){
+					if( numberOfClients($link, $clientName) <= 0 ){
+						updateClient($link, $prenote_uuid, $clientName);
+						$validClient = true;
+					}
+					else{
+						throw new PDOException('Ya existe una prenota con el cliente: \''.$clientName.'\'. ¿Cambiar?');
+					}
+				}else{
+					if($cfg_client_name_optional){
+						$validClient = true;
+					}
+					else{
+						$validClient = false;
+						throw new PDOException('Ingresa el nombre del cliente.');
+					}
 				}
 			}
 			else{
@@ -188,13 +198,24 @@
 					$clientName = $prenote->clientName;
 					$prenote_uuid = $prenote->uuid;
 
-					if( numberOfClients($link, $clientName) <= 0 ){
-						updateClient($link, $prenote_uuid, $clientName);
-						$validClient = true;
-						$prenote->changeClient = false;
+					if($clientName){
+						if( numberOfClients($link, $clientName) <= 0 ){
+							updateClient($link, $prenote_uuid, $clientName);
+							$validClient = true;
+							$prenote->changeClient = false;
+						}
+						else{
+							throw new PDOException('Ya existe una prenota con el cliente: \''.$clientName.'\'. ¿Cambiar?');
+						}
 					}
 					else{
-						throw new PDOException('Nombre de cliente duplicado.');
+						if($cfg_client_name_optional){
+							$validClient = true;
+						}
+						else{
+							$validClient = false;
+							throw new PDOException('Ingresa el nombre del cliente.');
+						}
 					}
 				}else{
 					$validClient = true;

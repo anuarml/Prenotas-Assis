@@ -931,8 +931,7 @@
 									var oTxtSerie = document.getElementById('txt_serie');
 									
 									oTxtSerie.value = null;
-									oTxtSerie.disabled = false;
-									oTxtSerie.onclick = null;
+									unlockSerialInput();
 
 									// Se borra la serie, ya que depende de la combinación.
 									product.SerialID = 0;

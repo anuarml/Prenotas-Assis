@@ -691,3 +691,9 @@ body.badge {
 .cmb_desc{
     width: 100%;
 }
+
+span#txt_opcion {
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 20px;
+}
