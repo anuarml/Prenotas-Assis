@@ -228,7 +228,7 @@ asl.events.subscribe(asl.events.types.exit, function() {
 
 function verifyWhichKeyboard(){
 	hasName = JSON.parse(window.localStorage.getItem('bhasName'));
-	if(!hasName){
+	if(cfg.askClientName && !hasName){
 		askClientName();
 	}else{
 		if(!product){
