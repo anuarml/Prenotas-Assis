@@ -3,6 +3,7 @@ var product = null;
 var aItemUnits = null;
 var hasName = null;
 var keyboardIsShowed = false;
+var scanAProductMsg = 'Escanea un producto';
 var aslOptionList = [
 	{
 		title : 'Ver prenota',
@@ -43,9 +44,19 @@ var aslOptionList = [
 	}
 ];
 
-asl.title(' ');
+asl.title(scanAProductMsg);
 asl.back(scan_product);
 asl.options(aslOptionList);
+
+scanner.enable();
+scanner.decodeEvent = 'doRequestProduct(%json)';
+
+function doRequestProduct(jsonScaned){
+
+	if(jsonScaned){
+		request_product(jsonScaned.source, jsonScaned.data);
+	}
+}
 
 asl.events.subscribe(asl.events.types.loaded, function() {
 	/*document.getElementById('txt_opcion').onfocus = function(){
@@ -215,9 +226,9 @@ asl.events.subscribe(asl.events.types.loaded, function() {
 	verifyWhichKeyboard();
 });
 
-asl.events.subscribe(asl.events.types.focus, function() {
+/*asl.events.subscribe(asl.events.types.focus, function() {
 	scanner.disable();
-});
+});*/
 
 asl.events.subscribe(asl.events.types.exit, function() {
 	asl.badge(null);
@@ -232,7 +243,7 @@ function verifyWhichKeyboard(){
 		askClientName();
 	}else{
 		if(!product){
-    		scan_product();
+    		//scan_product();
     	}
 	}
 }
@@ -254,7 +265,7 @@ function saveName(inputId, value){
 	window.localStorage.setItem('sclientName', jclientName);
 	window.localStorage.setItem('bhasName', jhasName);
 	if(!product){
-    	scan_product();
+    	//scan_product();
     }
 }
 
@@ -263,19 +274,21 @@ function askClientName(){
         inputId: 'askClientName',
         title : "Ingresa el cliente.",
         type : 'text',
-        scanner: true,
+        scanner: false,
         back: true
     }, saveName );
 }
 
 function scan_product() {
-    asl.showKeyboard({
-        inputId: 'scan_product',
-        title : "Escanea un producto.",
-        type : 'text',
-        scanner: true,
-        back: true
-    }, request_product );
+	window.setTimeout(function(){
+		asl.showKeyboard({
+	        inputId: 'scan_product',
+	        title : "Escanea un producto.",
+	        type : 'text',
+	        scanner: false,
+	        back: true
+	    }, request_product );
+	}, 500);
 }
 
 // Pide la información de un producto a la base de datos, si encuentra el producto lo muestra.
@@ -283,7 +296,7 @@ function scan_product() {
 function request_product(inputId, value) {
 	
 	if (!value) {
-		scan_product();
+		//scan_product();
 		return;
 	} 
 	
@@ -308,7 +321,7 @@ function request_product(inputId, value) {
 				//asl.notify(asl.notifications.application, asl.priority.normal,'Error:' , oResponse.data,['OK'],[scan_product]);
 				confirm(oResponse.data,function(){
 					clear_product();
-					scan_product();
+					//scan_product();
 				});
 			}
 		}
@@ -413,7 +426,7 @@ function show_product_info(productInfo){
 
 function clear_product(){
 	product = null;
-	asl.title(' ');
+	asl.title(scanAProductMsg);
 	p_description.innerHTML = '';
 	p_price.innerHTML = '';
 	dv_unit.innerHTML = '';
@@ -443,7 +456,7 @@ function add_product(){
 				clear_product();
 				window.localStorage.setItem('products', JSON.stringify(productos));
 				//asl.notify(asl.notifications.application, asl.priority.normal, 'Mensaje:', 'Producto agregado.', ['OK'], [scan_product]);
-				scan_product();
+				//scan_product();
 				return;
         	}
 
@@ -553,7 +566,7 @@ function add_product(){
 				clear_product();
 				window.localStorage.setItem('products', JSON.stringify(productos));
 				//asl.notify(asl.notifications.application, asl.priority.normal, 'Mensaje:', 'Producto agregado.', ['OK'], [scan_product]);
-				scan_product();
+				//scan_product();
 			//}
         }
         else{ //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Introduce una cantidad válida.',['OK'],[null]); 
@@ -561,7 +574,7 @@ function add_product(){
     	}
     }
     else{ //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Escanee un producto.',['OK'],[scan_product]); 
-    	scan_product();
+    	//scan_product();
     }
 }
 

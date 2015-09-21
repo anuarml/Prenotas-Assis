@@ -95,6 +95,19 @@ function arrayFindEq( obj, array){
 	return false;
 }
 
+function showLoadingScreen(enabled){
+	var divLoading = document.getElementById('loading');
+
+	if(divLoading){
+		if(enabled === true){
+			divLoading.style.visibility = 'visible';
+		}
+		else{
+			divLoading.style.visibility = 'hidden';
+		}
+	}
+}
+
 function ajaxRequest(method, url, handle, data){
 	var xmlhttp;
 
@@ -104,11 +117,14 @@ function ajaxRequest(method, url, handle, data){
 	} else { // code for IE6, IE5
 		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
+
+	showLoadingScreen(true);
 	
 	xmlhttp.onreadystatechange = function (){
 		if (xmlhttp.readyState==4 && xmlhttp.status==200){
 			handle(xmlhttp.responseText.trim());
 		}
+	    showLoadingScreen(false);
 	};
 	// Llamar al web service del lado del servidor.
 	xmlhttp.open( method, url, true);

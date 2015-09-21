@@ -5300,6 +5300,19 @@ asl.keyboard = function(type, callback, text, title, maxlength){
 		params.maxlength = type instanceof HTMLInputElement ? type.getAttribute('maxlength') : maxlength;
 		params.returnOnMax = type instanceof HTMLInputElement ? type.getAttribute('data-autoReturn') : false;
 	}
+
+    params.scannerEnabled = true;
+    try {
+        params.scannerEnabled = type.getAttribute("scanner-enabled");
+    } catch (e) {}
+
+    if (typeof params.scannerEnabled != "undefined" && params.scannerEnabled == "true") {
+        params.scanner = true;
+    } else {
+        if (typeof params.scannerEnabled != "undefined" && params.scannerEnabled == "false") {
+            params.scanner = false;
+        }
+    }
 	
     params.title = type instanceof HTMLInputElement && type.getAttribute('title') ? type.getAttribute('title') : title ? title : params.type+" keyboard";
 	var val = '';
