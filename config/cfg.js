@@ -14,3 +14,9 @@ cfg.askClientName = false;
 cfg.badge = cfg.uri+'badge.html';
 
 cfg.itemsPerPage = 4;
+
+scanner.allDecoders  = 'disabled';
+scanner.code93 = 'enabled';
+scanner.ean13 = 'enabled';
+//scanner.code128 = 'enabled';
+//scanner.code39 = 'enabled';
