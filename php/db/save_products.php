@@ -45,6 +45,9 @@
 			$itemSerialBatch = $product[$i]->serialBatch;
 			$line = $i + 1;
 
+			if($product[$i]->isSerialInformative == 1)
+				$serialID = -1;
+
 			if($itemSerialBatch == '')
 				$itemSerialBatch = null;
 
