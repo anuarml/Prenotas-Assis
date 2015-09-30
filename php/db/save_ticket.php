@@ -123,7 +123,7 @@
 
 				$link->beginTransaction();
 
-				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, CreationUserID, LastUpdate, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, SalesPersonUserID, TargetStoreID, RegisterID, RegisterUUID, CustomerID, CustomerUUID, GroupIdentifier, Code, Total, Quantity, Observation, CustomData, RecordStatusID) VALUES (:id, :UUID, :creationDate, :create_id, :lastUpdate, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :id_employee, :targetStoreID, :registerID, :registerUUID, :customer_id, :customer_uuid, NEWID(), :code, :total, :narticles, :observation, :customData, :recordStatusID)');
+				$handle = $link->prepare('INSERT INTO '.$table_prenote.' (ID, UUID, CreationDate, CreationUserID, LastUpdate, LastUpdateUserID, Type, TypeDescription, Dte, Tme, StoreID, Workstation, DocumentStatusID, SalesPersonUserID, TargetStoreID, RegisterID, RegisterUUID, CustomerID, CustomerUUID, GroupIdentifier, Code, Total, Quantity, Observation, S2CreditQuoteNumber, RecordStatusID) VALUES (:id, :UUID, :creationDate, :create_id, :lastUpdate, :update_id, 1, :type_description, :dte, :tme, :store_id, :workstation, :documentStatusID, :id_employee, :targetStoreID, :registerID, :registerUUID, :customer_id, :customer_uuid, NEWID(), :code, :total, :narticles, :observation, :S2CreditQuoteNumber, :recordStatusID)');
 				
 				//$handle = $link->prepare( ' INSERT INTO ' .$table_prenote. ' ( [ID], [UUID], [LastUpdate], [CreationUserID], [LastUpdateUserID], [Type], [TypeDescription], [Dte], [Tme], [StoreID], [Workstation], [Code], [SalesPersonUserID], [Total], [Quantity] ) VALUES ( 0, :UUID, :lastUpdate, :create_id, :update_id, 1, :type_description, :dte, :tme, 2, :workstation, :code, :id_employee, :total, :narticles ) ' );
 
@@ -152,7 +152,7 @@
 			    $handle->bindParam(':total', $prenote->total);
 			    $handle->bindParam(':narticles', $prenote->narticles);
 			    $handle->bindParam(':observation', $prenote->cotizationNumber);
-			    $handle->bindParam(':customData', $prenote->cotizationNumber);
+			    $handle->bindParam(':S2CreditQuoteNumber', $prenote->cotizationNumber);
 			    $handle->bindValue(':recordStatusID', '1');
 			    
 			    $handle->execute();
