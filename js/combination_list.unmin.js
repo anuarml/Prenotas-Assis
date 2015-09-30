@@ -163,6 +163,7 @@ var CombinationList = {
 
 function backToProducts(){
 	window.localStorage.removeItem('aOptionDetail');
+    window.localStorage.removeItem('combExternalID');
 	window.location = "scan_product.html";
 }
 

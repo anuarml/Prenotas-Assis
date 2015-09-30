@@ -771,6 +771,7 @@ function showCombinationList(){
 	if (product && product.options && product.options.length) {
 		window.localStorage.setItem('optionListNum',JSON.stringify(0));
 		window.localStorage.setItem('aOptionDetail',JSON.stringify([]));
+    	window.localStorage.removeItem('combExternalID');
 		window.localStorage.setItem('aItemUnits', JSON.stringify(aItemUnits));
 		window.localStorage.setItem('product', JSON.stringify(product));
 		window.location = 'combination_list.html';
