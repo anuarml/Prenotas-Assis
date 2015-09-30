@@ -7,7 +7,7 @@
 			$id = $_GET['ItemID'];
 			$combinationID = $_GET['combinationID'];
 
-			$query = 'SELECT ID, Quantity, SerialBatch FROM '.$table_itemSerial.' WHERE ItemID = :ItemID';
+			$query = 'SELECT ID, UUID, Quantity, SerialBatch FROM '.$table_itemSerial.' WHERE ItemID = :ItemID ORDER BY SerialBatch DESC';
 
 			if( !empty($combinationID) ){
 				$query .= ' AND ItemCombinationID = :combinationID';

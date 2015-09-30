@@ -211,6 +211,7 @@ asl.events.subscribe(asl.events.types.loaded, function() {
 			jProduct.serialBatch = oSelectedSerial.SerialBatch;
 			jProduct.serialQuantity = oSelectedSerial.Quantity;
 			jProduct.SerialID = oSelectedSerial.ID;
+			jProduct.SerialUUID = oSelectedSerial.UUID;
 		}
     }
 
@@ -594,12 +595,14 @@ function serial_assign(serial){
 	
 	if (!serial) {
 		product.SerialID = 0;
+		product.SerialUUID = null;
 		product.serialQuantity = 0;
 		product.serialBatch = '';
 		return;
 	}
 	if(product.isSerialInformative){
 		product.SerialID = 0;
+		product.SerialUUID = null;
 		product.serialQuantity = 1;
 		product.serialBatch = serial;
 	}else{
@@ -635,6 +638,7 @@ function request_serial(serial){
 
 			if(itemSerial !== false){
 				product.SerialID = itemSerial.ID;
+				product.SerialUUID = itemSerial.UUID;
 				product.serialQuantity = parseFloat(itemSerial.Quantity);
 				product.serialBatch = itemSerial.SerialBatch;
 			}
@@ -931,6 +935,7 @@ function requestItemCombination(sParams, productID, combExternalID){
 
 						// Se borra la serie, ya que depende de la combinación.
 						product.SerialID = 0;
+						product.SerialUUID = null;
 						product.serialQuantity = 0;
 						product.serialBatch = '';
 					}

@@ -5,8 +5,7 @@
 		include('global_variables.php');
 		
 		
-		
-		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, Line, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID, ItemSerialBatch) VALUES (0, NEWID(), :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :line, :ItemUUID, :combinationID, :combinationUUID, :serialID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID, :itemSerialBatch)');
+		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, Line, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemSerialUUID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID, ItemSerialBatch) VALUES (0, NEWID(), :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :line, :ItemUUID, :combinationID, :combinationUUID, :serialID, :serialUUID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID, :itemSerialBatch)');
 				
 		//$handle->bindParam(':UUID', $prenoteDetails_uuid);
 		$handle->bindParam(':creationDate', $lastUpdate);
@@ -18,6 +17,7 @@
 		$handle->bindParam(':combinationID', $combinationID);
 		$handle->bindParam(':combinationUUID', $combinationUUID);
 		$handle->bindParam(':serialID', $serialID);
+		$handle->bindParam(':serialUUID', $serialUUID);
 		$handle->bindParam(':barcode', $barcode);
 		$handle->bindParam(':unitID', $UnitID, PDO::PARAM_INT);
 		$handle->bindParam(':Quantity', $Quantity);
@@ -38,13 +38,14 @@
 			$Price = $product[$i]->Price;
 			$UnitID = $product[$i]->UnitID;
 			$serialID = $product[$i]->SerialID;
+			$serialUUID = $product[$i]->SerialUUID;
 			$barcode = $product[$i]->barcode;
 			$combinationID = $product[$i]->optionID;
 			$combinationUUID = $product[$i]->optionUUID;
 			$itemSerialBatch = $product[$i]->serialBatch;
 			$line = $i + 1;
 
-			if($product[$i]->isSerialInformative == 0 || $itemSerialBatch == '')
+			if($itemSerialBatch == '')
 				$itemSerialBatch = null;
 
 			$handle->execute();

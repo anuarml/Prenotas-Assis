@@ -14,7 +14,7 @@
 		                            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 		                        ));
 
-			$handle = $link->prepare('SELECT ID, Quantity, SerialBatch FROM '.$table_itemSerial.' WHERE ItemID = :ID AND SerialBatch = :serial');
+			$handle = $link->prepare('SELECT ID, UUID, Quantity, SerialBatch FROM '.$table_itemSerial.' WHERE ItemID = :ID AND SerialBatch = :serial');
 
 			$handle->bindParam(':ID', $id);
 			$handle->bindParam(':serial', $serial);

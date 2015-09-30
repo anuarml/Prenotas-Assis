@@ -17,6 +17,7 @@ var Product = function(attr) {
 	this.CategoryBranchID = parseInt(attr.CategoryBranchID) || 0;
 
 	this.SerialID = attr.SerialID || 0;
+	this.SerialUUID = attr.SerialUUID || null;
 	this.serialQuantity = parseFloat(attr.serialQuantity) || 0;
 	this.serialBatch = attr.serialBatch || '';
 
