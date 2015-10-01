@@ -181,6 +181,7 @@
 				}else{
 					if($cfg_client_name_optional){
 						$validClient = true;
+						updateClient($link, $prenote_uuid, $code);
 					}
 					else{
 						$validClient = false;

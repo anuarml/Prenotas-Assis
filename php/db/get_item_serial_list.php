@@ -7,11 +7,13 @@
 			$id = $_GET['ItemID'];
 			$combinationID = $_GET['combinationID'];
 
-			$query = 'SELECT ID, UUID, Quantity, SerialBatch FROM '.$table_itemSerial.' WHERE ItemID = :ItemID ORDER BY SerialBatch DESC';
+			$query = 'SELECT ID, UUID, Quantity, SerialBatch FROM '.$table_itemSerial.' WHERE ItemID = :ItemID ';
 
 			if( !empty($combinationID) ){
 				$query .= ' AND ItemCombinationID = :combinationID';
 			}
+
+			$query .= ' ORDER BY SerialBatch DESC';
 			
 			$link = new PDO(   $db_url, 
 		                        $user, 
