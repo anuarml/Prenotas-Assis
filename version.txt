@@ -1,0 +1,55 @@
+Prenotas_1.8
+21/09/2015 16:45
+Git SHA: 40cd9f0451399fc7ba52b217fee4ef5e4f664fbc
+
+Agregado el SerialUUID, solo se estaba tomando en cuenta el ID y no el SerialUUID lo cual en SBX se interpretaba que no tenian una  serie/lote asignado.
+Corregido error al crear el ExternalID de combinaciones multiopcion.
+Se cambio el campo donde se guarda la cotizacion pagos fijos de CustomData a S2CreditQuoteNumber.
+Las series informativas se guardan con ID -1.
+Se pone en el campo Label el folio de la prenota cuando no se ingresa un cliente.
+
+Prenotas_1.7
+21/09/2015 16:45
+Git SHA: d6b0b194895350a59077887d287e2d68d81d549e
+
+Activada la lectura de c?digos de barras code93.
+Agregada la configuraci?n para activar/desactivar decodificadores de c?digos de barras.
+Corregido error al desactivar y activar el escaner por medio del teclado asl.
+
+
+Prenotas_1.6
+Git SHA: 324078360320590a983f546da4686084250a681a
+
+Minificaci?n de archivos css y js.
+Corregido t?tulo cotizaci?n pagos fijos.
+Traducci?n al espa?ol de Alert y Confirm.
+Configuraci?n en Javascript para activar/desactivar preguntar por el nombre del cliente en las prenotas.
+
+
+Prenotas_1.5
+Git SHA: 9afd4f33f0e1abe7c1379203ad8405c497648bf2
+
+1. Eliminado el bot?n "Ingresar" en el Login. Se ingresa directamente con la palomita del teclado.
+2. Se agreg? una configuraci?n para indicar si el cliente de la prenotas es opcional u obligatorio(Opcional por default).
+   Cuando es opcional y no se ingresa ning?n cliente se graba null el t?tulo de la prenota y SBX pone por default el nombre del Cliente en el POS.
+3. Se elimino el mensaje "producto agregado" y la confirmacion para mandar a imprimir.
+4. En la plantalla donde se muestra el producto escaneado se cambio el c?digo de la opci?n por la descripci?n.
+   Para que se vea un poco mejor se ajust? el formato de la descripci?n (fuente m?s peque?a y en dos l?neas).
+5. Por cambio de versi?n en el SB1 las notificaciones causaban que la aplicaci?n se minimizara o bloqueara en ocasiones.
+   Se cambiaron todas las notificaciones por alerts y confirms.
+
+
+Prenotas_1.4
+Git SHA: a3ae7220d09c0572fcac8bcc8f2ffcfb3efed34d
+
+Al cargar un art?culo por medio de c?digo de barras no se cargaba la descripci?n de sus opciones.
+
+
+Prenotas_1.3
+Git SHA: 71b4ec03377ff0c34356fa9057d918ce8a0fdf3b
+
+Corregido error al mostrar las badges provocado por el cambio de version de los dispositivos SB1.
+
+
+Prenotas_1.2
+Git SHA: 82192a67e50ec9a5dcdfbcbb85ef24e177ccf579
