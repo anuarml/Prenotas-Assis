@@ -1,3 +1,11 @@
+Prenotas_1.9
+21/09/2015 16:45
+Git SHA: 9343cbf129ec8f5a89490303afd32263265d9dde
+
+Agregado detalles del usuario en el menú de la captura.
+Agregada la clave de la opción a la prenota impresa.
+Ahora se puede mandar a imprimir a una impresora diferente al imprimir la última prenota.
+
 Prenotas_1.8
 21/09/2015 16:45
 Git SHA: 40cd9f0451399fc7ba52b217fee4ef5e4f664fbc
