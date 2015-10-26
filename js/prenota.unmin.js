@@ -237,6 +237,12 @@ try{
 		//window.localStorage.setItem('lastPrenote', json_prenote);
 	}else{
 		json_prenote = window.localStorage.getItem('lastPrenote');
+
+        if(json_prenote != null){
+            var oLastPrenote = JSON.parse(json_prenote);
+            oLastPrenote.printer = selectedPrinter;
+            json_prenote = JSON.stringify(oLastPrenote);
+        }
 	}
 	
 	 save_prenote();
