@@ -25,7 +25,7 @@ var aslOptionList = [
 		}
 	},*/
 	{
-		title:'Detalles',
+		title:'Detalles del artículo',
 		callback: function(){
 			if(product){
     			window.localStorage.setItem('aItemUnits', JSON.stringify(aItemUnits));
@@ -34,6 +34,12 @@ var aslOptionList = [
     		}else{
     			alert('Escanea un producto.');
     		}
+		}
+	},
+	{
+		title:'Usuario',
+		callback: function(){
+    		alert('('+user.Login+') '+user.Name);
 		}
 	},
 	{
