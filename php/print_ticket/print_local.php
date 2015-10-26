@@ -42,8 +42,13 @@ function print_prenote2($prenote){
 
 			printer_select_font($printerHandler, $lightfont);
 
-			if($product[$i]->optionDesc || $product[$i]->serialBatch){
-				printer_draw_text($printerHandler, ' '.$product[$i]->optionDesc, 1, calculateNextLine($lineNumber));
+			if($product[$i]->optionDesc){
+				printer_draw_text($printerHandler, ' '.$product[$i]->optionDesc, 1, calculateNextLine($lineNumber++));
+				//printer_draw_text($printerHandler, $product[$i]->serialBatch, 321, calculateNextLine($lineNumber++));
+			}
+
+			if($product[$i]->optionEID || $product[$i]->serialBatch){
+				printer_draw_text($printerHandler, ' '.$product[$i]->optionEID, 1, calculateNextLine($lineNumber));
 				printer_draw_text($printerHandler, $product[$i]->serialBatch, 321, calculateNextLine($lineNumber++));
 			}
 
