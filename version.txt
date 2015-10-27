@@ -1,10 +1,11 @@
 Prenotas_1.9
-21/09/2015 16:45
-Git SHA: 9343cbf129ec8f5a89490303afd32263265d9dde
+26/10/2015 14:00
+Git SHA: 77369c55dafc8a18f50f781b88894205a1fd63d9
 
 Agregado detalles del usuario en el menú de la captura.
 Agregada la clave de la opción a la prenota impresa.
 Ahora se puede mandar a imprimir a una impresora diferente al imprimir la última prenota.
+Agregada funcion badge.lock al asl.
 
 Prenotas_1.8
 21/09/2015 16:45

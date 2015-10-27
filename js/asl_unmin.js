@@ -5354,6 +5354,10 @@ asl.badge = function(url) {
     asl.prv.message(asl.msgs.types.badge, {url:url});
 };
 
+asl.lock=function(url){
+    asl.prv.message(asl.msgs.types.badge,{url:url,lock:true});
+};
+
 /**
  * @description holds the methods that save and restore (function, images and objects)
  * @type {Object}
