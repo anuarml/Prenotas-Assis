@@ -1,3 +1,11 @@
+Prenotas_1.10
+20/11/2015 16:22
+Git SHA: f1bc70b4b63ef213ffcbdf35e1c827d0b77feee6
+Nuevo servicio de impresión en ASP.NET C#: /PrintPrenote
+Agregada la opción de imprimir prenota al menú de escanear productos.
+Corregido error al imprimir prenotas con caracteres '%' relacionado con la codificacion URI.
+Corregido error al obtener la lista de impresoras en php.
+
 Prenotas_1.9
 26/10/2015 14:00
 Git SHA: 77369c55dafc8a18f50f781b88894205a1fd63d9
