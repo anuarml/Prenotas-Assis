@@ -23,7 +23,7 @@
 
 		    if($result = $handle->fetchObject()){
 		    	echo json_encode($result);
-		    	error_log(json_encode($result));
+		    	//error_log(json_encode($result));
 		    }
 		    else echo json_encode(false);
 		}
