@@ -63,6 +63,8 @@ var oPrenote = function(attr) {
 	this.clientName = attr.clientName || '';
 	this.changeClient = attr.changeClient || false;
 	this.employeeLogin = attr.employeeLogin || '';
+	this.barcodePath = attr.barcodePath || '';
+	this.printTimes = attr.printTimes || 1;
 };
 
 var prenote = null;

@@ -1,4 +1,4 @@
-var json_prenote = null;
+﻿var json_prenote = null;
 var Prenota = {
     list: null,
     pagingTop: null,
@@ -208,6 +208,7 @@ try{
     if(jPrenote != null){
         window.localStorage.removeItem('prenote');
         json_prenote = jPrenote;
+        //sendDebugInfo(json_prenote);
         save_prenote();
         return;
     }
@@ -244,8 +245,8 @@ try{
             json_prenote = JSON.stringify(oLastPrenote);
         }
 	}
-	
-	 save_prenote();
+	//sendDebugInfo(json_prenote);
+	save_prenote();
     }
     catch(e){
         //asl.notify(asl.notifications.application,asl.priority.normal,e.message,JSON.stringify(e),['OK'],[null]);
@@ -320,10 +321,13 @@ function save_prenote() {
                 }
                 
                 if(!printed){
-                    window.localStorage.setItem('prenote', JSON.stringify(prenote));
+                    var jsPrenote = JSON.stringify(prenote);
+                    window.localStorage.setItem('prenote', jsPrenote);
 
                     //asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo imprimir el ticket.','',['OK'],[null]);
-                    alert('No se pudo imprimir el ticket.');
+                    //alert('No se pudo imprimir el ticket.');
+                    printPrenote(jsPrenote);
+
                     return;
                 }
                 
@@ -351,6 +355,59 @@ function save_prenote() {
     xmlhttp.open("POST","php/db/save_ticket.php",true);
     xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded charset=utf-8");
     xmlhttp.send("prenote=" +json_prenote);
+}
+
+function printPrenote(prenote){
+    
+    var xmlhttp;
+
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xmlhttp.onreadystatechange=function() {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+
+            var response = xmlhttp.responseText.trim();
+            //asl.notify(asl.notifications.application,asl.priority.normal,'Error:',response,['OK'],[null]);
+            try{
+                var oResponse = JSON.parse(response);
+
+                var prenote = JSON.parse(window.localStorage.getItem('prenote'));
+
+                //alert(prenote.barcodePath);
+
+                if(oResponse == true){
+                    
+                    window.localStorage.removeItem('prenote');
+                    //asl.notify(asl.notifications.application,asl.priority.normal,'Mensaje:','Ticket impreso con folio: '+ prenote.folio,['OK'],[null]);
+                    alert('Ticket impreso con folio: '+ prenote.folio);
+                    
+                    if(window.localStorage.getItem('nueva_prenota')){
+                        var jPrenote = JSON.stringify(prenote);
+                        window.localStorage.setItem('lastPrenote', jPrenote);
+                        delete_prenote();
+                    }
+                    //alert();
+                }else{
+                    alert('No se pudo imprimir la prenota: '+prenote.folio+'.');
+                }
+            }
+            catch(e){
+                //asl.notify(asl.notifications.application,asl.priority.normal,'Error en el servidor: ',response,['OK'],[null]);
+                alert('Error: '+ response);
+            }
+        }
+    }
+
+    // Llamar al web service del lado del servidor.
+    xmlhttp.open("POST",cfg.uri+"PrintService/",true);
+    xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
+    xmlhttp.send("jsonPrenote=" +encodeURIComponent(prenote));
+    //sendDebugInfo(prenote);
 }
 
 function saveName(inputId, value){
@@ -381,4 +438,36 @@ function askClientName(){
         scanner: true,
         back: false
     }, saveName );
+}
+
+function sendDebugInfo(debugInfo){
+    var xmlhttp;
+
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xmlhttp.onreadystatechange=function() {
+        /*if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+
+            var response = xmlhttp.responseText.trim();
+
+            try{
+                var oResponse = JSON.parse(response);
+            }
+            catch(e){
+                alert('Error: '+ response);
+            }
+        }*/
+    }
+
+    //debugInfo = JSON.stringify([user.ID,debugInfo]);
+
+    // Llamar al web service del lado del servidor.
+    xmlhttp.open("GET","php/debug_info.php?debug_info="+debugInfo,true);
+    //xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded charset=utf-8");
+    xmlhttp.send();
 }

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	include('../../config/config.php');
 	include('global_variables.php');
 	include_once('save_products.php');
@@ -11,8 +11,10 @@
 		if(isset($_POST['prenote']) && $_POST['prenote'] != ""){
 			$json_prenote = $_POST['prenote'];
 
+			//$prenote = json_decode($json_prenote);
+			//error_log($json_prenote);
 			$prenote = json_decode($json_prenote);
-			
+			//error_log(json_encode($prenote));
 			$saved = false;
 			$printed = false;
 			$validClient = false;
@@ -224,12 +226,13 @@
 			}
 			
 			
-			for($i=0;$i<$print_times;$i++){
+			/*for($i=0;$i<$print_times;$i++){
 				$isPrinted = print_ticket($prenote);
-			}
-			
-			$printed = $isPrinted;
-			unlink($prenote->folio.".png");
+			}*/
+			$prenote->printTimes = $print_times;
+			$prenote->barcodePath = $rootPath.'php/db/';
+			$printed = false;
+			//unlink($prenote->folio.".png");
 			
 			echo createResponse($saved, $printed, $prenote, $validClient, '');
 		}
