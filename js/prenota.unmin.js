@@ -353,8 +353,8 @@ function save_prenote() {
 
     // Llamar al web service del lado del servidor.
     xmlhttp.open("POST","php/db/save_ticket.php",true);
-    xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded charset=utf-8");
-    xmlhttp.send("prenote=" +json_prenote);
+    xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
+    xmlhttp.send("prenote=" +encodeURIComponent(json_prenote));
 }
 
 function printPrenote(prenote){
