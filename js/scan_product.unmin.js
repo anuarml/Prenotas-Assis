@@ -13,6 +13,13 @@ var aslOptionList = [
 			window.location = 'prenota.html';
 		}
 	},
+    {
+        title: 'Imprimir prenota',
+        callback: function(){
+			window.localStorage.setItem('nueva_prenota',true);
+			window.location = 'printers_list.html';
+        }
+    },
 	/*{
 		title : 'Descripción de opciones',
 		callback: function(){
