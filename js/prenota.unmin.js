@@ -404,7 +404,7 @@ function printPrenote(prenote){
     }
 
     // Llamar al web service del lado del servidor.
-    xmlhttp.open("POST",cfg.uri+"PrintService/",true);
+    xmlhttp.open("POST",cfg.uri+"PrintPrenote/",true);
     xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
     xmlhttp.send("jsonPrenote=" +encodeURIComponent(prenote));
     //sendDebugInfo(prenote);
