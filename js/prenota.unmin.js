@@ -97,12 +97,12 @@ var Prenota = {
         for (var i = 0; i < productos.length; i++) {
             //total += productos[i].Price * productos[i].Quantity;
             var dPrice = new Decimal(productos[i].Price);
-            var dAmount = dPrice.times(productos[i].Quantity);
+            var dAmount = dPrice.times(productos[i].Quantity).toDP(2);
 
             total = total.plus(dAmount);
         }
 
-        return total.toNumber().toFixed(2);
+        return total.toDP(2).toNumber().toFixed(2);
     },
 	
 	cantidadTotal: function(){

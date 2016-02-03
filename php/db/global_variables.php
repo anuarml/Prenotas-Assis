@@ -29,6 +29,7 @@
     $table_itemUnit = 'ItemUnit';
 	
 	$table_inventoryOnHand = 'InventoryOnHand';
+    $table_inventoryOnHandDetail = 'InventoryOnHandDetail';
 	
 	$table_user = '[User]';
 	$table_person = 'Person';

@@ -7,13 +7,17 @@
 			$id = $_GET['ItemID'];
 			$combinationID = $_GET['combinationID'];
 
-			$query = 'SELECT ID, UUID, Quantity, SerialBatch FROM '.$table_itemSerial.' WHERE ItemID = :ItemID ';
+			//$query = 'SELECT ID, UUID, Quantity, SerialBatch FROM '.$table_itemSerial.' WHERE ItemID = :ItemID ';
+			// Se cambia el campo SerialBatch por Serial y Batch. Y la tabla ItemSerial por InventoryOnHandDetail
+			$query = 'SELECT InventoryOnHandD.ID, InventoryOnHandD.UUID, InventoryOnHandD.Quantity, InventoryOnHandD.Serial, InventoryOnHandD.Batch FROM '.$table_inventoryOnHand.' InventoryOnHand '.
+							 'JOIN '.$table_inventoryOnHandDetail.' InventoryOnHandD ON InventoryOnHandD.InventoryOnHandUUID = InventoryOnHand.UUID'.
+							 'WHERE InventoryOnHand.ItemID = :ItemID ';
 
 			if( !empty($combinationID) ){
-				$query .= ' AND ItemCombinationID = :combinationID';
+				$query .= ' AND InventoryOnHand.ItemCombinationID = :combinationID';
 			}
 
-			$query .= ' ORDER BY SerialBatch DESC';
+			$query .= ' ORDER BY InventoryOnHandD.Serial DESC, InventoryOnHandD.Batch DESC';
 			
 			$link = new PDO(   $db_url, 
 		                        $user, 

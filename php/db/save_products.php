@@ -4,8 +4,9 @@
 		include('../../config/config.php');
 		include('global_variables.php');
 		
+		$query = 'INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, Line, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemSerialUUID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID, Serial, Batch) VALUES (0, NEWID(), :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :line, :ItemUUID, :combinationID, :combinationUUID, :serialID, :serialUUID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID, :serial, :batch)';
 		
-		$handle = $link->prepare('INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, Line, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemSerialUUID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID, ItemSerialBatch) VALUES (0, NEWID(), :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :line, :ItemUUID, :combinationID, :combinationUUID, :serialID, :serialUUID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID, :itemSerialBatch)');
+		$handle = $link->prepare($query);
 				
 		//$handle->bindParam(':UUID', $prenoteDetails_uuid);
 		$handle->bindParam(':creationDate', $lastUpdate);
@@ -23,8 +24,10 @@
 		$handle->bindParam(':Quantity', $Quantity);
 		$handle->bindParam(':Price', $Price);
 		$handle->bindParam(':id_employee', $id_employee, PDO::PARAM_INT);
-		$handle->bindParam(':itemSerialBatch', $itemSerialBatch);
+		//$handle->bindParam(':itemSerialBatch', $itemSerialBatch); //Se cambia por Serial y Batch
 		$handle->bindParam(':line', $line);
+		$handle->bindParam(':serial', $serial);
+		$handle->bindParam(':batch', $batch);
 
 		$handle->bindValue(':recordStatusID', '1');
 		
@@ -32,6 +35,8 @@
 
 		for($i=0;$i<$lenght;$i++){
 			//$prenoteDetails_uuid = UUID::generate(UUID::UUID_RANDOM, UUID::FMT_STRING);
+			$serial= null;
+			$batch = null;
 
 			$UUID = $product[$i]->UUID;
 			$Quantity = $product[$i]->Quantity;
@@ -50,6 +55,14 @@
 
 			if($itemSerialBatch == '')
 				$itemSerialBatch = null;
+
+			if($product[$i]->useSerial == 1){
+				$serial = $itemSerialBatch;
+			}
+
+			if($product[$i]->useBatch == 1){
+				$batch = $itemSerialBatch;
+			}
 
 			$handle->execute();
 		}

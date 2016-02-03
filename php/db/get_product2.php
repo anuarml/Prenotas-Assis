@@ -167,7 +167,7 @@
 		$query =
 			'SELECT TOP 1 Item.ID, Item.UUID, Item.Code, '.
 			'Item.Description, Item.ItemTypeID, Item.Price, '.
-			'Item.UnitID, Item.UseCombination, Item.SerialInfoOptional isSerialInformative, '.
+			'Item.UnitID, Item.UseCombination, Item.UseSerial useSerial, Item.UseBatch useBatch, Item.SerialInfoOptional isSerialInformative, '.
 			'Item.CategoryBranchID, '.
 			'ItemType.Name itemType, ItemStatus.Name itemStatus '.
 			'FROM '.$table_item.' Item '.
@@ -198,7 +198,7 @@
 		$query =
 			'SELECT TOP 1 Item.ID, Item.UUID, Item.Code, '.
 			'Item.Description, Item.ItemTypeID, Item.Price, '.
-			'Item.UnitID, Item.UseCombination, Item.SerialInfoOptional isSerialInformative, '.
+			'Item.UnitID, Item.UseCombination, Item.UseSerial useSerial, Item.UseBatch useBatch, Item.SerialInfoOptional isSerialInformative, '.
 			'Item.CategoryBranchID, '.
 			'ItemType.Name itemType, ItemStatus.Name itemStatus '.
 			'FROM '.$table_item.' Item '.
