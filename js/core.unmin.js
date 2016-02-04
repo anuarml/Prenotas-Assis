@@ -1,4 +1,17 @@
+var ItemType = {};
+
+Object.defineProperty(ItemType, 'NORMAL', { value: 4 });
+
+Object.defineProperty(ItemType, 'SERIE', { value: 5 });
+
+Object.defineProperty(ItemType, 'LOTE', { value: 6 });
+
+Object.defineProperty(ItemType, 'SERVICE', { value: 7 });
+
+
 var Product = function(attr) {
+	attr = attr || {};
+
 	this.ID = attr.ID || '';
     this.UUID = attr.UUID || '';
     this.Code = attr.Code || '';
@@ -40,6 +53,20 @@ var Product = function(attr) {
 	};
 };
 
+Product.prototype.isSerialType = function () {
+	//return this.ItemTypeID == ItemType.SERIE;
+	return this.useSerial;
+}
+
+Product.prototype.isBatchType = function () {
+	//return this.ItemTypeID == ItemType.LOTE;
+	return this.useBatch;
+}
+
+Product.prototype.isServiceType = function () {
+	return this.ItemTypeID == ItemType.SERVICE;
+}
+
 var productos = JSON.parse(window.localStorage.getItem('products'));
 
 if(!productos){
@@ -47,6 +74,8 @@ if(!productos){
 }
 
 var oPrenote = function(attr) {
+	attr = attr || {};
+	
 	this.uuid = attr.uuid || '';
 	this.folio = attr.folio || 0;
 	this.total = attr.total || 0;
@@ -135,13 +164,3 @@ function ajaxRequest(method, url, handle, data){
 	xmlhttp.open( method, url, true);
 	xmlhttp.send(data);
 }
-
-var ItemType = {};
-
-Object.defineProperty(ItemType, 'NORMAL', { value: 4 });
-
-Object.defineProperty(ItemType, 'SERIE', { value: 5 });
-
-Object.defineProperty(ItemType, 'LOTE', { value: 6 });
-
-Object.defineProperty(ItemType, 'SERVICE', { value: 7 });

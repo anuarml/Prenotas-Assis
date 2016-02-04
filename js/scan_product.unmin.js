@@ -371,7 +371,7 @@ function show_product_info(productInfo){
 		//document.getElementById('p_price').innerHTML = '$' + product.Price;
 		document.getElementById('txt_cant').value = product.Quantity;
 
-		if ( (product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE) &&
+		if ( (product.isSerialType() || product.isBatchType()) &&
 		    product.UseCombination == 1 && !product.optionUUID) {
 
 			lockSerialInput();
@@ -400,7 +400,7 @@ function show_product_info(productInfo){
 			i_opcion.style.visibility = 'hidden';
 		}
 
-		if(product.ItemTypeID == ItemType.SERIE){
+		if(product.isSerialType()){
 			blockQuantityField();
 
 			p_serie.innerHTML = 'Serie:';
@@ -412,7 +412,7 @@ function show_product_info(productInfo){
 				document.getElementById('txt_serie').value = product.serialBatch;
 			}
 		}
-		else if(product.ItemTypeID == ItemType.LOTE){
+		else if(product.isBatchType()){
 			unblockQuantityField();
 
 			p_serie.innerHTML = 'Lote:';
@@ -463,7 +463,7 @@ function add_product(){
         
         if(!isNaN(quantity) && quantity > 0){
 
-        	if(product.ItemTypeID == ItemType.SERVICE){
+        	if(product.isServiceType()){
         		product.Quantity = quantity;
         		productos.push(product);
 
@@ -495,7 +495,7 @@ function add_product(){
 				}
 			}
 			
-			if(product.ItemTypeID == ItemType.SERIE){
+			if(product.isSerialType()){
 				if(product.isSerialInformative){
 					if(!product.serialBatch){
 						//asl.notify(asl.notifications.application,asl.priority.normal,'No se pudo agregar el producto:', 'No tiene serie', ['OK'], [null]);
@@ -529,7 +529,7 @@ function add_product(){
 						return;
 					}
 				}
-			}else if(product.ItemTypeID == ItemType.LOTE){
+			}else if(product.isBatchType()){
 				
 				if(product.SerialID){
 					/*if(totalQuantity > product.serialQuantity){
@@ -687,7 +687,7 @@ function combination_assign(combination){
 
 				requestItemPrice(product.ID, product.UnitID, product.optionID);
 
-				if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
+				if(product.isSerialType() || product.isBatchType()){
 					unlockSerialInput();
 				}
 			}
@@ -714,7 +714,7 @@ function clearCombination(){
 	product.optionID = 0;
 	product.QuantityOnHand = 0;
 
-	if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
+	if(product.isSerialType() || product.isBatchType()){
 		document.getElementById('txt_serie').value = '';
 		lockSerialInput();
 	}
@@ -792,7 +792,7 @@ function showCombinationList(){
 }
 
 function showSerialList(){
-	if (product && (product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE)) {
+	if (product && (product.isSerialType() || product.isBatchType())) {
 
 		if(product.UseCombination == 0 || product.UseCombination == 1 && product.optionUUID){
 
@@ -941,7 +941,7 @@ function requestItemCombination(sParams, productID, combExternalID){
 					//document.getElementById('txt_opcion').innerHTML = product.optionEID;
 					document.getElementById('txt_opcion').innerHTML = product.optionDesc;
 
-					if(product.ItemTypeID == ItemType.SERIE || product.ItemTypeID == ItemType.LOTE){
+					if(product.isSerialType() || product.isBatchType()){
 						var oTxtSerie = document.getElementById('txt_serie');
 						
 						oTxtSerie.value = null;

@@ -4,7 +4,7 @@
 		include('../../config/config.php');
 		include('global_variables.php');
 		
-		$query = 'INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, Line, ItemUUID, ItemCombinationID, ItemCombinationUUID, ItemSerialID, ItemSerialUUID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID, Serial, Batch) VALUES (0, NEWID(), :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :line, :ItemUUID, :combinationID, :combinationUUID, :serialID, :serialUUID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID, :serial, :batch)';
+		$query = 'INSERT INTO '.$table_prenoteDetails.' (ID, UUID, CreationDate, CreationUserID, LastUpdate,  LastUpdateUserID,  OperationOnHoldUUID, Line, ItemUUID, ItemCombinationID, ItemCombinationUUID, InventoryOnHandDetailID, InventoryOnHandDetailUUID, ItemBarcode, UnitID, Quantity, UnitPrice, SalesPersonUserID, ParentID, RecordStatusID, Serial, Batch) VALUES (0, NEWID(), :creationDate, :create_id, :last_update,  :update_id, :prenote_uuid, :line, :ItemUUID, :combinationID, :combinationUUID, :serialID, :serialUUID, :barcode, :unitID, :Quantity, :Price, :id_employee, 0, :recordStatusID, :serial, :batch)';
 		
 		$handle = $link->prepare($query);
 				
@@ -50,8 +50,8 @@
 			$itemSerialBatch = $product[$i]->serialBatch;
 			$line = $i + 1;
 
-			if($product[$i]->isSerialInformative == 1)
-				$serialID = -1;
+			//if($product[$i]->isSerialInformative == 1)
+			//	$serialID = -1;
 
 			if($itemSerialBatch == '')
 				$itemSerialBatch = null;

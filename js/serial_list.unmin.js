@@ -41,13 +41,17 @@ var SerialList = {
         var sTitle = '';
         
         if(product){
-            if(product.ItemTypeID == ItemType.SERIE){
-                sTitle = 'Serial';
-            } else if(product.ItemTypeID == ItemType.LOTE){
+            product = new Product(product);
+
+            if(product.isSerialType()){
+                sTitle = 'Serie';
+            }
+
+            if(product.isBatchType()){
                 sTitle = 'Lote';
             }
 
-            this.requestSerialList( product.ID, product.optionID);
+            this.requestSerialList( product.ID, product.optionID, product.useSerial, product.useBatch);
         }
         
         asl.title(sTitle);
@@ -55,9 +59,9 @@ var SerialList = {
         
     },
 
-    requestSerialList: function(itemID, combinationID){
+    requestSerialList: function(itemID, combinationID, useSerial, useBatch){
 
-        var url = 'php/db/get_item_serial_list.php?ItemID='+itemID+'&combinationID='+combinationID;
+        var url = 'php/db/get_item_serial_list.php?ItemID='+itemID+'&combinationID='+combinationID+'&useSerial='+useSerial+'&useBatch='+useBatch;
 
         var handle = function(response){
             try{
