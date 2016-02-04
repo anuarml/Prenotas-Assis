@@ -1,3 +1,11 @@
+Prenotas_1.11
+04/02/2016 12:41
+Git SHA: 089f96b56e6bd53ffb6078fd0d4f1010e9a962f8
+Se cambió la forma de identificar los artículos tipo serie y lote. Antes se identificaban por el campo ItemType, ahora se identifican con los campos UseSerial y UseBatch.
+Se cambió el campo SerialBatch por los campos Serial y Batch en la tabla OperationOnHoldDetail
+Se cambió la tabla para consultar las series/lotes: ItemSerial por InventoryOnHandDetail
+Se cambiaron los campos con los que se relaciona el detalle de la prenota(OperationOnHoldDetail) con la serie/lote correspondiente(Campos ItemSerialID e ItemSerialUUID por InventoryOnHandDetailID e InventoryOnHandDetailUUID).
+
 Prenotas_1.10
 20/11/2015 16:22
 Git SHA: f1bc70b4b63ef213ffcbdf35e1c827d0b77feee6
